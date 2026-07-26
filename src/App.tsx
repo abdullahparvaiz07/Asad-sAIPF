@@ -110,7 +110,7 @@ function MainAppContent() {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-6 sm:mt-16 md:mt-24 max-w-[280px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto"
+              className="mt-12 sm:mt-28 md:mt-40 lg:mt-48 max-w-[280px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto"
             >
               <p className="text-[10px] sm:text-xs font-medium leading-relaxed tracking-widest uppercase text-white/90">
                 Building next-generation AI automation<br/>
