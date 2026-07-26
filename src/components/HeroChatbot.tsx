@@ -146,7 +146,7 @@ User Question: ${userText}`
 
   return (
     <div className="relative pointer-events-auto select-none z-30">
-      {/* Collapsed Pill Button */}
+      {/* Collapsed Minimal Chatbot Icon Button */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
@@ -158,32 +158,21 @@ User Question: ${userText}`
             <button
               type="button"
               onClick={() => setIsOpen(true)}
-              className="group relative flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-[#111115]/90 hover:bg-[#18181f] border border-white/15 hover:border-[#f05a28]/60 text-white shadow-2xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(240,90,40,0.25)] cursor-pointer"
+              className="group relative flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-[#111115]/90 hover:bg-[#18181f] border border-white/15 hover:border-[#f05a28]/60 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(240,90,40,0.3)] cursor-pointer p-2.5"
+              aria-label="Open AI Chatbot"
             >
-              {/* Glowing Pulse Dot */}
-              <div className="relative flex items-center justify-center">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#f05a28]" />
-                <span className="absolute w-2.5 h-2.5 rounded-full bg-[#f05a28]/60 animate-ping" />
+              {/* Glowing Pulse Online Dot */}
+              <div className="absolute -top-1 -right-1 flex items-center justify-center">
+                <span className="w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#111115]" />
+                <span className="absolute w-3 h-3 rounded-full bg-emerald-400/70 animate-ping" />
               </div>
 
-              {/* Bot Icon */}
-              <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center p-1 group-hover:scale-110 transition-transform shadow-md">
-                <img src="/chatbot-icon.svg" alt="Chatbot Icon" className="w-full h-full object-contain" />
-              </div>
-
-              <div className="flex flex-col text-left">
-                <span className="text-[11px] font-bold tracking-wider uppercase text-white leading-tight flex items-center gap-1.5">
-                  AI Assistant
-                  <span className="text-[9px] font-mono text-[#f05a28] font-normal">// Live</span>
-                </span>
-                <span className="text-[9.5px] text-white/50 font-medium tracking-wide">
-                  Ask anything about Asadullah
-                </span>
-              </div>
-
-              <div className="ml-1 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all">
-                <MessageSquare className="w-4 h-4" />
-              </div>
+              {/* Chatbot Icon */}
+              <img 
+                src="/chatbot-icon.svg" 
+                alt="AI Chatbot" 
+                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 filter drop-shadow-md" 
+              />
             </button>
           </motion.div>
         )}
