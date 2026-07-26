@@ -169,7 +169,7 @@ User Question: ${userText}`
 
               {/* Chatbot Icon */}
               <img 
-                src="/chatbot-icon.svg" 
+                src="/chatboticon.png" 
                 alt="AI Chatbot" 
                 className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 filter drop-shadow-md" 
               />
@@ -192,7 +192,7 @@ User Question: ${userText}`
             <div className="px-5 py-4 bg-gradient-to-r from-[#14141c] to-[#0d0d11] border-b border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center p-1 shadow-md shadow-orange-500/10">
-                  <img src="/chatbot-icon.svg" alt="Chatbot Icon" className="w-full h-full object-contain" />
+                  <img src="/chatboticon.png" alt="Chatbot Icon" className="w-full h-full object-contain" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider font-['Outfit'] leading-tight flex items-center gap-1.5">
@@ -227,7 +227,7 @@ User Question: ${userText}`
                 >
                   {msg.sender === 'bot' && (
                     <div className="w-6.5 h-6.5 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center p-0.5 shrink-0 mt-0.5 shadow-sm">
-                      <img src="/chatbot-icon.svg" alt="AI Avatar" className="w-full h-full object-contain" />
+                      <img src="/chatboticon.png" alt="AI Avatar" className="w-full h-full object-contain" />
                     </div>
                   )}
 
@@ -264,7 +264,7 @@ User Question: ${userText}`
                   className="flex gap-2.5 items-center text-zinc-400 text-xs pl-1"
                 >
                   <div className="w-6.5 h-6.5 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center p-0.5 shrink-0 shadow-sm animate-pulse">
-                    <img src="/chatbot-icon.svg" alt="AI Avatar" className="w-full h-full object-contain" />
+                    <img src="/chatboticon.png" alt="AI Avatar" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex items-center gap-1 bg-white/5 border border-white/10 px-3 py-2 rounded-2xl rounded-tl-xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-bounce" style={{ animationDelay: '0ms' }} />
