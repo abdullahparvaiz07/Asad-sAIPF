@@ -167,8 +167,8 @@ User Question: ${userText}`
               </div>
 
               {/* Bot Icon */}
-              <div className="w-7 h-7 rounded-lg bg-[#f05a28]/15 border border-[#f05a28]/30 flex items-center justify-center text-[#f05a28] group-hover:scale-110 transition-transform">
-                <Sparkles className="w-4 h-4 animate-pulse" />
+              <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center p-1 group-hover:scale-110 transition-transform shadow-md">
+                <img src="/chatbot-icon.svg" alt="Chatbot Icon" className="w-full h-full object-contain" />
               </div>
 
               <div className="flex flex-col text-left">
@@ -202,8 +202,8 @@ User Question: ${userText}`
             {/* Top Header */}
             <div className="px-5 py-4 bg-gradient-to-r from-[#14141c] to-[#0d0d11] border-b border-white/10 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
-                <div className="w-8.5 h-8.5 rounded-xl bg-[#f05a28] text-white flex items-center justify-center shadow-lg shadow-orange-500/30">
-                  <Bot className="w-5 h-5" />
+                <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/15 flex items-center justify-center p-1 shadow-md shadow-orange-500/10">
+                  <img src="/chatbot-icon.svg" alt="Chatbot Icon" className="w-full h-full object-contain" />
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider font-['Outfit'] leading-tight flex items-center gap-1.5">
@@ -237,8 +237,8 @@ User Question: ${userText}`
                   className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   {msg.sender === 'bot' && (
-                    <div className="w-6 h-6 rounded-lg bg-[#f05a28]/20 border border-[#f05a28]/40 flex items-center justify-center text-[#f05a28] shrink-0 mt-0.5">
-                      <Sparkles className="w-3 h-3" />
+                    <div className="w-6.5 h-6.5 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center p-0.5 shrink-0 mt-0.5 shadow-sm">
+                      <img src="/chatbot-icon.svg" alt="AI Avatar" className="w-full h-full object-contain" />
                     </div>
                   )}
 
@@ -274,8 +274,8 @@ User Question: ${userText}`
                   animate={{ opacity: 1 }}
                   className="flex gap-2.5 items-center text-zinc-400 text-xs pl-1"
                 >
-                  <div className="w-6 h-6 rounded-lg bg-[#f05a28]/20 border border-[#f05a28]/40 flex items-center justify-center text-[#f05a28] shrink-0">
-                    <Sparkles className="w-3 h-3 animate-spin" />
+                  <div className="w-6.5 h-6.5 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center p-0.5 shrink-0 shadow-sm animate-pulse">
+                    <img src="/chatbot-icon.svg" alt="AI Avatar" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex items-center gap-1 bg-white/5 border border-white/10 px-3 py-2 rounded-2xl rounded-tl-xs">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-bounce" style={{ animationDelay: '0ms' }} />
