@@ -10,7 +10,6 @@ import { Footer } from './components/Footer';
 import { motion } from 'motion/react';
 import { HeroImage } from './components/HeroImage';
 import { BrandLoader } from './components/BrandLoader';
-import { HeroChatbot } from './components/HeroChatbot';
 import {
   SectionTeleprinter,
   ScrollDepthIndicator,
@@ -135,69 +134,57 @@ function MainAppContent() {
               </h2>
             </motion.div>
             
-            {/* STEP 6 — Right Actions: Hero AI Chatbot + Let's Talk Contact Card */}
-            <div className="flex flex-col items-start sm:items-end gap-3 mb-2 mr-2 relative z-10 w-full sm:w-auto">
-              {/* AI Chatbot Widget (Positioned above Let's Talk button) */}
-              <motion.div
-                initial={{ opacity: 0, y: 30, scale: 0.94 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, delay: 6.0, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <HeroChatbot />
-              </motion.div>
-
-              {/* Let's Talk Contact Card / Button */}
-              <motion.div 
-                initial={{ opacity: 0, y: 40, scale: 0.94 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, delay: 6.3, ease: [0.16, 1, 0.3, 1] }}
-                id="hero-lets-talk-btn"
-                role="button"
-                tabIndex={0}
-                onClick={() => scrollTo('contact')}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    scrollTo('contact');
-                  }
-                }}
-                className="flex bg-[#111] rounded-xl p-2 sm:p-2.5 gap-3 sm:gap-3.5 items-stretch border border-white/10 text-white w-full sm:w-[260px] max-w-[280px] pointer-events-auto cursor-pointer group/talk hover:border-white/20 hover:bg-[#151515] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 shadow-2xl relative z-10 focus:outline-none focus:ring-2 focus:ring-[#f05a28]"
-              >
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
-                  <img 
-                    src="/portrait.png" 
-                    alt="Asadullah" 
-                    className="w-full h-full object-cover group-hover/talk:scale-110 transition-transform duration-500"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop";
-                    }}
-                  />
+            {/* STEP 6 — Let's Talk Contact Card / Button (Appears last at 6.3s) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 40, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.8, delay: 6.3, ease: [0.16, 1, 0.3, 1] }}
+              id="hero-lets-talk-btn"
+              role="button"
+              tabIndex={0}
+              onClick={() => scrollTo('contact')}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  scrollTo('contact');
+                }
+              }}
+              className="flex bg-[#111] rounded-xl p-2 sm:p-2.5 gap-3 sm:gap-3.5 items-stretch border border-white/10 text-white w-full sm:w-[260px] max-w-[280px] pointer-events-auto cursor-pointer group/talk hover:border-white/20 hover:bg-[#151515] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 shadow-2xl mb-2 mr-2 relative z-10 focus:outline-none focus:ring-2 focus:ring-[#f05a28]"
+            >
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
+                <img 
+                  src="/portrait.png" 
+                  alt="Asadullah" 
+                  className="w-full h-full object-cover group-hover/talk:scale-110 transition-transform duration-500"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop";
+                  }}
+                />
+              </div>
+              
+              <div className="flex flex-col flex-grow justify-between py-0.5">
+                <div className="flex justify-between items-start">
+                  <span className="text-[10px] sm:text-[11px] text-white/70 font-medium">Let's Talk</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/40 group-hover/talk:text-white/80 group-hover/talk:rotate-180 transition-all duration-500">
+                    <path d="M12 2v20M17 5l-10 14M22 12H2M19 17L5 7" />
+                  </svg>
                 </div>
                 
-                <div className="flex flex-col flex-grow justify-between py-0.5">
-                  <div className="flex justify-between items-start">
-                    <span className="text-[10px] sm:text-[11px] text-white/70 font-medium">Let's Talk</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/40 group-hover/talk:text-white/80 group-hover/talk:rotate-180 transition-all duration-500">
-                      <path d="M12 2v20M17 5l-10 14M22 12H2M19 17L5 7" />
-                    </svg>
+                <div className="flex justify-between items-end mt-1">
+                  <div>
+                    <h4 className="font-bold text-sm sm:text-[15px] leading-tight mb-0.5">Asadullah</h4>
+                    <p className="text-[9px] sm:text-[10px] text-white/50 font-medium tracking-wide">AI Expert</p>
                   </div>
                   
-                  <div className="flex justify-between items-end mt-1">
-                    <div>
-                      <h4 className="font-bold text-sm sm:text-[15px] leading-tight mb-0.5">Asadullah</h4>
-                      <p className="text-[9px] sm:text-[10px] text-white/50 font-medium tracking-wide">AI Expert</p>
-                    </div>
-                    
-                    <div className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded flex items-center justify-center text-black group-hover/talk:-translate-y-0.5 group-hover/talk:translate-x-0.5 transition-transform duration-300">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="7" y1="17" x2="17" y2="7"></line>
-                        <polyline points="7 7 17 7 17 17"></polyline>
-                      </svg>
-                    </div>
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded flex items-center justify-center text-black group-hover/talk:-translate-y-0.5 group-hover/talk:translate-x-0.5 transition-transform duration-300">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="7" y1="17" x2="17" y2="7"></line>
+                      <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
                   </div>
                 </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
         </main>
       </section>
