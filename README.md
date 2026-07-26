@@ -1,6 +1,6 @@
 # Personal Portfolio
 
-A cinematic, interactive portfolio website designed to showcase my expertise in AI engineering, intelligent automation, full-stack development, and immersive digital experiences.
+A cinematic, interactive portfolio website designed to showcase  expertise in AI engineering, intelligent automation, full-stack development, and immersive digital experiences.
 
 Built with a focus on bold visual storytelling, smooth motion, interactive interfaces, and modern web technologies.
 
