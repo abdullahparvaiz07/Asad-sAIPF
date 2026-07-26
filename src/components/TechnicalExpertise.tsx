@@ -716,11 +716,10 @@ export function TechnicalExpertise() {
             </defs>
           </svg>
 
-          {/* Central Robot Focal Point & Holographic Platform Stage */}
+          {/* Central Robot Focal Point */}
           <div className="relative z-10 flex flex-col items-center justify-center pointer-events-auto">
             {/* Holographic Glowing Platform Ring */}
-            <div className="absolute bottom-2 w-[220px] sm:w-[340px] md:w-[420px] h-[60px] sm:h-[90px] rounded-[100%] border-2 border-[#f05a28]/50 bg-gradient-radial from-[#f05a28]/30 via-orange-400/10 to-transparent blur-xs animate-pulse pointer-events-none" />
-            <div className="absolute bottom-0 w-[260px] sm:w-[400px] md:w-[480px] h-[75px] sm:h-[110px] rounded-[100%] border border-slate-300 bg-white/60 shadow-2xl pointer-events-none" />
+            <div className="absolute bottom-2 w-[220px] sm:w-[340px] md:w-[420px] h-[60px] sm:h-[90px] rounded-[100%] border-2 border-[#f05a28]/40 bg-gradient-radial from-[#f05a28]/25 via-orange-400/10 to-transparent blur-xs animate-pulse pointer-events-none" />
 
             {/* Central Robot Intelligence Mascot (Larger Main Focal Point) */}
             <motion.div
