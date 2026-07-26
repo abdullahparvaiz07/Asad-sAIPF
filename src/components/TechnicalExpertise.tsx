@@ -1,0 +1,936 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+
+export interface SkillItem {
+  id: string;
+  name: string;
+  subtitle: string;
+  expertise: string;
+  category: 'ai-core' | 'frameworks' | 'engineering';
+  description: string;
+  useCases: string[];
+  projectsCount: string;
+  projectCategory: string;
+  orbitAngle: number;
+  brandBg: string;
+  brandText: string;
+  brandBorder: string;
+  brandShadow: string;
+  codeSnippet: string;
+  metrics: { label: string; value: string }[];
+}
+
+export const SKILLS: SkillItem[] = [
+  {
+    id: 'ai-agents',
+    name: 'AI Agents',
+    subtitle: 'Autonomous Intelligence',
+    expertise: 'Expertise: 3+ Years',
+    category: 'ai-core',
+    description: 'Designing and building autonomous AI agents that perceive, reason, plan, and act independently to solve complex real-world workflows.',
+    useCases: [
+      'Autonomous task execution & plan decomposition',
+      'Multi-agent debate & consensus loops',
+      'Dynamic tool execution & sandboxed APIs',
+      'Long-term memory retrieval & reflection'
+    ],
+    projectsCount: '20+ Projects',
+    projectCategory: 'Autonomous Agent Networks',
+    orbitAngle: -90,
+    brandBg: 'bg-[#10a37f]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#10a37f]',
+    brandShadow: 'shadow-[#10a37f]/30',
+    metrics: [
+      { label: 'Autonomous Rate', value: '98.4%' },
+      { label: 'Task Success', value: '96.2%' }
+    ],
+    codeSnippet: `const agent = new AutonomousAgent({
+  role: "Lead Strategist",
+  tools: [WebBrowser, CodeInterpreter, SQLQuery],
+  memory: new VectorMemoryStore(),
+  maxIterations: 15
+});
+
+await agent.execute("Analyze competitor pricing and generate strategy report");`
+  },
+  {
+    id: 'langchain',
+    name: 'LangChain',
+    subtitle: 'LLM Application Development',
+    expertise: 'Expertise: 2+ Years',
+    category: 'frameworks',
+    description: 'Building composable LLM applications using LangChain chains, custom memory modules, hybrid retrievers, and tool bindings.',
+    useCases: [
+      'Hybrid dense/sparse vector retrieval',
+      'Structured JSON output parsing',
+      'Custom memory & context compression',
+      'Chain-of-thought prompt pipelines'
+    ],
+    projectsCount: '15+ Projects',
+    projectCategory: 'LangChain Ecosystems',
+    orbitAngle: -135,
+    brandBg: 'bg-[#10B981]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#10B981]',
+    brandShadow: 'shadow-[#10B981]/30',
+    metrics: [
+      { label: 'Latency Optimization', value: '-42%' },
+      { label: 'Retrieval Precision', value: '94.8%' }
+    ],
+    codeSnippet: `const chain = RunnableSequence.from([
+  PromptTemplate.fromTemplate(systemPrompt),
+  new ChatOpenAI({ model: "gpt-4o", temperature: 0.2 }),
+  new StructuredOutputParser(zodSchema)
+]);
+
+const response = await chain.invoke({ query: input });`
+  },
+  {
+    id: 'langgraph',
+    name: 'LangGraph',
+    subtitle: 'Multi-Agent Orchestration',
+    expertise: 'Expertise: 2+ Years',
+    category: 'frameworks',
+    description: 'Stateful, multi-actor graph orchestration with cyclic state updates, human-in-the-loop validation, and persistent time-travel debugging.',
+    useCases: [
+      'Cyclic multi-agent graph networks',
+      'Stateful workflow checkpointing',
+      'Human approval & interrupt gates',
+      'Resilient fallback routing'
+    ],
+    projectsCount: '12+ Projects',
+    projectCategory: 'Multi-Agent State Graphs',
+    orbitAngle: -45,
+    brandBg: 'bg-[#2563eb]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#2563eb]',
+    brandShadow: 'shadow-[#2563eb]/30',
+    metrics: [
+      { label: 'Graph Reliability', value: '99.9%' },
+      { label: 'Checkpoint Speed', value: '<5ms' }
+    ],
+    codeSnippet: `const workflow = new StateGraph(StateAnnotation)
+  .addNode("planner", planStep)
+  .addNode("executor", executeStep)
+  .addConditionalEdges("planner", shouldContinue)
+  .addEdge("executor", "planner");
+
+const app = workflow.compile({ checkpointer: memoryStore });`
+  },
+  {
+    id: 'workflow-automation',
+    name: 'Workflow Automation',
+    subtitle: 'Process Intelligence',
+    expertise: 'Expertise: 3+ Years',
+    category: 'engineering',
+    description: 'Automating end-to-end enterprise business processes by combining custom webhooks, cloud triggers, and AI decision engines.',
+    useCases: [
+      'Event-driven webhook pipelines',
+      'Automated document extraction & OCR',
+      'Custom API sync & CRM integrations',
+      'Self-healing error retry loops'
+    ],
+    projectsCount: '25+ Projects',
+    projectCategory: 'Enterprise Automation',
+    orbitAngle: 0,
+    brandBg: 'bg-[#f05a28]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#f05a28]',
+    brandShadow: 'shadow-[#f05a28]/30',
+    metrics: [
+      { label: 'Time Saved / Month', value: '450+ hrs' },
+      { label: 'Uptime SLA', value: '99.95%' }
+    ],
+    codeSnippet: `@app.post("/webhook/trigger")
+async function process_payload(payload: EventPayload):
+    parsed = await pdf_extractor.extract(payload.doc_url)
+    decision = await ai_engine.evaluate(parsed)
+    await crm_client.sync_account(decision)
+    return {"status": "success"}`
+  },
+  {
+    id: 'gen-ai',
+    name: 'Gen AI',
+    subtitle: 'Generative Intelligence',
+    expertise: 'Expertise: 3+ Years',
+    category: 'ai-core',
+    description: 'Leveraging multimodal generative AI models (GPT-4o, Claude 3.5, Gemini 1.5) for vision, voice, and intelligent content creation.',
+    useCases: [
+      'Multimodal Vision & Document Analysis',
+      'Real-time Speech-to-Text / Audio AI',
+      'Synthetic Data Generation & Augmentation',
+      'Automated Code Refactoring & Testing'
+    ],
+    projectsCount: '30+ Projects',
+    projectCategory: 'Multimodal AI Apps',
+    orbitAngle: 35,
+    brandBg: 'bg-[#6366f1]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#6366f1]',
+    brandShadow: 'shadow-[#6366f1]/30',
+    metrics: [
+      { label: 'Multimodal Accuracy', value: '97.5%' },
+      { label: 'Tokens Processed', value: '100M+' }
+    ],
+    codeSnippet: `const response = await anthropic.messages.create({
+  model: "claude-3-5-sonnet-20241022",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: [{ type: "image", source: imageBuffer }] }]
+});`
+  },
+  {
+    id: 'ai-chatbots',
+    name: 'AI Chatbots',
+    subtitle: 'Conversational Experiences',
+    expertise: 'Expertise: 3+ Years',
+    category: 'ai-core',
+    description: 'Creating context-aware, human-like conversational interfaces equipped with long-term memory, custom personas, and streaming responses.',
+    useCases: [
+      'Interactive customer support automation',
+      'Internal knowledge base search bots',
+      'Multi-turn stateful conversation management',
+      'Real-time Server-Sent Events (SSE) streaming'
+    ],
+    projectsCount: '18+ Projects',
+    projectCategory: 'Conversational Assistants',
+    orbitAngle: 75,
+    brandBg: 'bg-[#0284c7]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#0284c7]',
+    brandShadow: 'shadow-[#0284c7]/30',
+    metrics: [
+      { label: 'CSAT Rating', value: '4.9 / 5' },
+      { label: 'Deflection Rate', value: '82%' }
+    ],
+    codeSnippet: `export async function POST(req: Request) {
+  const { messages } = await req.json();
+  const stream = await OpenAIStream({
+    model: 'gpt-4o',
+    messages,
+    temperature: 0.3
+  });
+  return new Response(stream);
+}`
+  },
+  {
+    id: 'fastapi',
+    name: 'FastAPI',
+    subtitle: 'High-Performance APIs',
+    expertise: 'Expertise: 3+ Years',
+    category: 'engineering',
+    description: 'Developing ultra-fast, asynchronous REST & WebSocket backends with Pydantic type safety for AI model inference serving.',
+    useCases: [
+      'Asynchronous microservices architecture',
+      'High-concurrency streaming endpoints',
+      'Strict Pydantic schema validation',
+      'OpenAPI documentation generation'
+    ],
+    projectsCount: '22+ Projects',
+    projectCategory: 'High-Scale AI Backends',
+    orbitAngle: 115,
+    brandBg: 'bg-[#009688]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#009688]',
+    brandShadow: 'shadow-[#009688]/30',
+    metrics: [
+      { label: 'Avg Latency', value: '18ms' },
+      { label: 'RPS Throughput', value: '5,000+' }
+    ],
+    codeSnippet: `@app.get("/api/v1/inference", response_model=ModelResult)
+async def predict(payload: InferenceRequest):
+    async with asyncio.TaskGroup() as tg:
+        res1 = tg.create_task(model_a.query(payload))
+        res2 = tg.create_task(model_b.query(payload))
+    return aggregate(res1.result(), res2.result())`
+  },
+  {
+    id: 'prompt-engg',
+    name: 'Prompt Engg.',
+    subtitle: 'Crafting Better Instructions',
+    expertise: 'Expertise: 3+ Years',
+    category: 'frameworks',
+    description: 'Mastering advanced prompt design frameworks (Few-Shot, CoT, ReAct, System Steering) to enforce reliable, hallucination-free AI responses.',
+    useCases: [
+      'System persona tuning & steering',
+      'Few-shot exemplar engineering',
+      'ReAct tool calling prompt schemas',
+      'AI safety & injection guardrails'
+    ],
+    projectsCount: '35+ Projects',
+    projectCategory: 'Prompt Architectures',
+    orbitAngle: 155,
+    brandBg: 'bg-[#0f172a]',
+    brandText: 'text-emerald-400',
+    brandBorder: 'border-[#0f172a]',
+    brandShadow: 'shadow-[#0f172a]/30',
+    metrics: [
+      { label: 'Hallucination Rate', value: '<0.5%' },
+      { label: 'Format Compliance', value: '99.8%' }
+    ],
+    codeSnippet: `SYSTEM_PROMPT = """
+You are an expert AI Data Scientist.
+Output ONLY valid JSON adhering strictly to the schema.
+Reason step-by-step inside <thinking> tags before answering.
+"""`
+  },
+  {
+    id: 'llm',
+    name: 'LLM',
+    subtitle: 'Large Language Models',
+    expertise: 'Expertise: 3+ Years',
+    category: 'ai-core',
+    description: 'Integrating, fine-tuning, and evaluating frontier Large Language Models for optimal latency, cost-efficiency, and task accuracy.',
+    useCases: [
+      'Model selection & benchmark evaluation',
+      'Local open-source model deployment (vLLM / Ollama)',
+      'Vector embedding generation & quantization',
+      'Token cost & context window optimization'
+    ],
+    projectsCount: '28+ Projects',
+    projectCategory: 'LLM Architectures',
+    orbitAngle: -180,
+    brandBg: 'bg-[#8b5cf6]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#8b5cf6]',
+    brandShadow: 'shadow-[#8b5cf6]/30',
+    metrics: [
+      { label: 'Cost Savings', value: '-65%' },
+      { label: 'Context Limit', value: '128k+' }
+    ],
+    codeSnippet: `from vllm import LLM, SamplingParams
+
+llm = LLM(model="meta-llama/Llama-3.1-70B-Instruct", tensor_parallel_size=2)
+params = SamplingParams(temperature=0.1, max_tokens=512)
+outputs = llm.generate(prompts, params)`
+  },
+];
+
+function SkillIcon({ skillId, active = false }: { skillId: string; active?: boolean }) {
+  const color = active ? '#ffffff' : '#475569';
+
+  switch (skillId) {
+    case 'ai-agents':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke={color} strokeWidth="1.5" />
+          <circle cx="12" cy="12" r="6" stroke={color} strokeWidth="1.5" />
+          <circle cx="12" cy="12" r="2.5" fill={color} />
+          <line x1="12" y1="2" x2="12" y2="6" stroke={color} strokeWidth="1.5" />
+          <line x1="12" y1="18" x2="12" y2="22" stroke={color} strokeWidth="1.5" />
+          <line x1="2" y1="12" x2="6" y2="12" stroke={color} strokeWidth="1.5" />
+          <line x1="18" y1="12" x2="22" y2="12" stroke={color} strokeWidth="1.5" />
+        </svg>
+      );
+    case 'langchain':
+      return <span className="text-xl font-bold select-none">🦜</span>;
+    case 'langgraph':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <circle cx="6" cy="6" r="3" stroke={color} strokeWidth="1.5" />
+          <circle cx="18" cy="6" r="3" stroke={color} strokeWidth="1.5" />
+          <circle cx="12" cy="18" r="3" stroke={color} strokeWidth="1.5" />
+          <line x1="8.5" y1="7.5" x2="10" y2="15.5" stroke={color} strokeWidth="1.5" />
+          <line x1="15.5" y1="7.5" x2="14" y2="15.5" stroke={color} strokeWidth="1.5" />
+          <line x1="9" y1="6" x2="15" y2="6" stroke={color} strokeWidth="1.5" />
+        </svg>
+      );
+    case 'workflow-automation':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.5" />
+          <rect x="15" y="3" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.5" />
+          <rect x="9" y="15" width="6" height="6" rx="1.5" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1.5" />
+          <path d="M6 9v3a1 1 0 001 1h8a1 1 0 001-1V9M12 13v2" stroke={color} strokeWidth="1.5" />
+        </svg>
+      );
+    case 'gen-ai':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1.2" />
+          <path d="M12 7L13.2 10.8L17 12L13.2 13.2L12 17L10.8 13.2L7 12L10.8 10.8L12 7Z" fill={color} />
+        </svg>
+      );
+    case 'ai-chatbots':
+      return (
+        <div className={`w-6.5 h-6.5 rounded-full flex items-center justify-center text-white shadow-sm ${active ? 'bg-white/20' : 'bg-blue-600'}`}>
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z" />
+          </svg>
+        </div>
+      );
+    case 'fastapi':
+      return (
+        <div className={`w-6.5 h-6.5 rounded-full flex items-center justify-center text-white shadow-sm ${active ? 'bg-white/20' : 'bg-teal-500'}`}>
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="currentColor" />
+          </svg>
+        </div>
+      );
+    case 'prompt-engg':
+      return (
+        <div className={`w-6.5 h-6.5 rounded flex items-center justify-center font-mono text-[11px] font-bold shadow-sm ${active ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/50' : 'bg-slate-900 text-emerald-400'}`}>
+          &gt;_
+        </div>
+      );
+    case 'llm':
+      return (
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill={color} />
+          <circle cx="12" cy="12" r="2.5" fill={active ? "#8b5cf6" : "white"} />
+        </svg>
+      );
+    default:
+      return <circle cx="12" cy="12" r="8" stroke={color} strokeWidth="1.5" />;
+  }
+}
+
+// Helper: Web Audio API synth sound feedback
+function playUiChime(freq = 520) {
+  try {
+    const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0.03, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.1);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  } catch (e) {
+    // Suppress audio context restrictions
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   CONTINUOUS SCROLLING SKILL TICKER STRIP
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+function ContinuousSkillStrip({
+  activeId,
+  onSelect,
+  soundEnabled
+}: {
+  activeId: string;
+  onSelect: (id: string) => void;
+  soundEnabled: boolean;
+}) {
+  const [isPaused, setIsPaused] = useState(false);
+  const doubledSkills = [...SKILLS, ...SKILLS, ...SKILLS];
+
+  return (
+    <div className="relative z-10 w-screen left-1/2 -translate-x-1/2 mt-6 sm:mt-8 overflow-hidden">
+      <div 
+        className="bg-white/90 backdrop-blur-md border-y border-slate-200/80 py-3 shadow-xs overflow-hidden relative w-full"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#F8F8F8] via-[#F8F8F8]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#F8F8F8] via-[#F8F8F8]/80 to-transparent z-10 pointer-events-none" />
+
+        <motion.div
+          className="flex items-center gap-6 w-max"
+          animate={{ x: isPaused ? undefined : ['0%', '-33.333%'] }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: 'loop',
+              duration: 35,
+              ease: 'linear'
+            }
+          }}
+        >
+          {doubledSkills.map((skill, index) => {
+            const isActive = skill.id === activeId;
+            return (
+              <React.Fragment key={`strip-${skill.id}-${index}`}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (soundEnabled) playUiChime(640);
+                    onSelect(skill.id);
+                  }}
+                  onMouseEnter={() => {
+                    if (soundEnabled) playUiChime(500);
+                    onSelect(skill.id);
+                  }}
+                  className="relative flex items-center gap-3 group outline-none cursor-pointer border-none bg-transparent py-1 px-2 select-none"
+                >
+                  <span 
+                    className={`text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-wider transition-all duration-300 ${
+                      isActive
+                        ? 'text-slate-900 drop-shadow-sm scale-105'
+                        : 'text-transparent hover:text-slate-900'
+                    }`}
+                    style={{
+                      WebkitTextStroke: isActive ? 'none' : '1.5px #64748b'
+                    }}
+                  >
+                    {skill.name}
+                  </span>
+                </button>
+
+                {/* Glowing Bullet Dot Separator */}
+                <span 
+                  className={`w-2.5 h-2.5 rounded-full flex-shrink-0 mx-3 transition-colors duration-300 ${
+                    isActive ? 'bg-[#f05a28] shadow-[0_0_8px_#f05a28]' : 'bg-slate-300'
+                  }`} 
+                />
+              </React.Fragment>
+            );
+          })}
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+export function TechnicalExpertise() {
+  const [activeSkillId, setActiveSkillId] = useState<string>('ai-agents');
+  const [cardTab, setCardTab] = useState<'overview' | 'code'>('overview');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'ai-core' | 'frameworks' | 'engineering'>('all');
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Compute dynamic Orbit Radii based on screen breakpoint
+  const { RX, RY } = React.useMemo(() => {
+    if (windowWidth < 640) {
+      return { RX: 130, RY: 100 };
+    } else if (windowWidth < 1024) {
+      return { RX: 210, RY: 150 };
+    }
+    return { RX: 310, RY: 230 };
+  }, [windowWidth]);
+
+  const activeSkill = SKILLS.find((s) => s.id === activeSkillId) || SKILLS[0];
+
+  // Calculate coordinates for all 9 skill nodes
+  const skillCoords = SKILLS.map((skill) => {
+    const rad = (skill.orbitAngle * Math.PI) / 180;
+    return {
+      id: skill.id,
+      x: Math.cos(rad) * RX,
+      y: Math.sin(rad) * RY,
+    };
+  });
+
+  const activeCoord = skillCoords.find((c) => c.id === activeSkillId) || skillCoords[0];
+
+  const handleScrollToProjects = () => {
+    const el = document.getElementById('projects');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section 
+      id="skills" 
+      className="relative min-h-screen py-14 px-4 sm:px-6 lg:px-8 bg-[#F8F8F8] flex flex-col items-center justify-between overflow-hidden"
+    >
+      {/* Left Vertical Indicator Sidebar */}
+      <div className="hidden lg:flex flex-col items-center gap-4 absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 z-20">
+        <div className="flex flex-col items-center gap-2">
+          <span className="w-[5px] h-[5px] rounded-full bg-slate-300" />
+          <span className="w-[5px] h-[5px] rounded-full bg-slate-300" />
+          <span className="w-[7px] h-[7px] rounded-full bg-[#f05a28] ring-[3px] ring-[#f05a28]/20" />
+          <span className="w-[5px] h-[5px] rounded-full bg-slate-300" />
+        </div>
+
+        <div className="w-px h-8 bg-slate-200" />
+
+        <div
+          className="text-[10px] font-bold tracking-[0.3em] uppercase text-slate-400 select-none"
+          style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+        >
+          SKILLS
+        </div>
+
+        <div className="w-px h-8 bg-slate-200" />
+
+        <div className="flex flex-col items-center gap-3 pt-1">
+          <motion.a
+            href="https://github.com"
+            target="_blank"
+            rel="noreferrer"
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 bg-slate-100/80 border border-slate-200/80 hover:bg-[#24292e] hover:text-white hover:border-[#24292e] hover:shadow-lg hover:shadow-[#24292e]/20 transition-all duration-300"
+            whileHover={{ scale: 1.18 }}
+            whileTap={{ scale: 0.92 }}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </motion.a>
+
+          <motion.a
+            href="https://linkedin.com"
+            target="_blank"
+            rel="noreferrer"
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 bg-slate-100/80 border border-slate-200/80 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] hover:shadow-lg hover:shadow-[#0A66C2]/30 transition-all duration-300"
+            whileHover={{ scale: 1.18 }}
+            whileTap={{ scale: 0.92 }}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </motion.a>
+
+          <motion.a
+            href="mailto:contact@example.com"
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 bg-slate-100/80 border border-slate-200/80 hover:bg-[#f05a28] hover:text-white hover:border-[#f05a28] hover:shadow-lg hover:shadow-[#f05a28]/30 transition-all duration-300"
+            whileHover={{ scale: 1.18 }}
+            whileTap={{ scale: 0.92 }}
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </motion.a>
+        </div>
+      </div>
+
+      {/* Soft Ambient Radial Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-gradient-radial from-[#f05a28]/10 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+
+      {/* Top Section Header */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto mb-3 text-center pt-2 select-none">
+        <div className="inline-flex items-center gap-2 mb-3">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-ping" />
+          <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-slate-500">// THE INTELLIGENCE SYSTEM BEHIND MY WORK</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-ping" />
+        </div>
+
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900 leading-none mb-3 font-['Outfit']">
+          Technical <span className="text-[#f05a28]">Ecosystem</span>
+        </h2>
+
+        <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed mb-4 font-medium px-2">
+          Connected technologies, neural frameworks, and automation engines working together to build intelligent digital systems.
+        </p>
+
+        {/* Category Filter Pills */}
+        <div className="inline-flex flex-wrap justify-center items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full">
+          {[
+            { id: 'all', label: 'All Connected Systems' },
+            { id: 'ai-core', label: 'AI & Intelligence Core' },
+            { id: 'frameworks', label: 'Frameworks & Graphs' },
+            { id: 'engineering', label: 'APIs & Backend' }
+          ].map((cat) => {
+            const isCatActive = categoryFilter === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setCategoryFilter(cat.id as any)}
+                className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                  isCatActive
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                }`}
+              >
+                {cat.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Main Container: Centered Orbit Stage + Right-Shifted Floating Detail Card */}
+      <div className="relative z-10 max-w-7xl w-full flex flex-col xl:flex-row items-center justify-between gap-8 lg:gap-16 my-auto">
+        
+        {/* Orbit & Central Robot Intelligence Stage */}
+        <div className="relative w-full max-w-[820px] min-h-[380px] sm:min-h-[540px] md:min-h-[580px] flex items-center justify-center mx-auto xl:translate-x-6">
+
+          {/* SVG Laser Rays & Orbit Track */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
+            viewBox={`-${RX + 100} -${RY + 80} ${(RX + 100) * 2} ${(RY + 80) * 2}`}
+            fill="none"
+            preserveAspectRatio="xMidYMid meet"
+          >
+            {/* Elliptical Orbit Track */}
+            <ellipse
+              cx="0"
+              cy="0"
+              rx={RX}
+              ry={RY}
+              stroke="url(#orbitMainGrad)"
+              strokeWidth="2.5"
+              strokeDasharray="8 8"
+              className="opacity-60"
+            />
+
+            {/* Inner Core Pulse Ring */}
+            <ellipse
+              cx="0"
+              cy="0"
+              rx={RX * 0.52}
+              ry={RY * 0.52}
+              stroke="#f05a28"
+              strokeWidth="1"
+              strokeOpacity="0.2"
+            />
+
+            {/* Spoke Rays connecting Center Robot Core to each technology node */}
+            {skillCoords.map((coord) => {
+              const isActive = coord.id === activeSkillId;
+              return (
+                <g key={`ray-${coord.id}`}>
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2={coord.x}
+                    y2={coord.y}
+                    stroke={isActive ? '#f05a28' : '#cbd5e1'}
+                    strokeWidth={isActive ? 3 : 1}
+                    strokeOpacity={isActive ? 0.95 : 0.25}
+                    strokeDasharray={isActive ? 'none' : '4 4'}
+                  />
+                  {isActive && (
+                    <circle
+                      cx={coord.x * 0.5}
+                      cy={coord.y * 0.5}
+                      r="4"
+                      fill="#f05a28"
+                      className="animate-ping"
+                    />
+                  )}
+                  <circle
+                    cx={coord.x}
+                    cy={coord.y}
+                    r={isActive ? 6 : 3.5}
+                    fill={isActive ? '#f05a28' : '#94a3b8'}
+                  />
+                </g>
+              );
+            })}
+
+            <defs>
+              <linearGradient id="orbitMainGrad" x1="-460" y1="0" x2="460" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stopColor="#f05a28" stopOpacity="0.9" />
+                <stop offset="0.5" stopColor="#ff804d" stopOpacity="0.5" />
+                <stop offset="1" stopColor="#cbd5e1" stopOpacity="0.3" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          {/* Central Robot Focal Point & Holographic Platform Stage */}
+          <div className="relative z-10 flex flex-col items-center justify-center pointer-events-auto">
+            {/* Holographic Glowing Platform Ring */}
+            <div className="absolute bottom-2 w-[220px] sm:w-[340px] md:w-[420px] h-[60px] sm:h-[90px] rounded-[100%] border-2 border-[#f05a28]/50 bg-gradient-radial from-[#f05a28]/30 via-orange-400/10 to-transparent blur-xs animate-pulse pointer-events-none" />
+            <div className="absolute bottom-0 w-[260px] sm:w-[400px] md:w-[480px] h-[75px] sm:h-[110px] rounded-[100%] border border-slate-300 bg-white/60 shadow-2xl pointer-events-none" />
+
+            {/* Central Robot Intelligence Mascot (Larger Main Focal Point) */}
+            <motion.div
+              className="relative z-10 flex justify-center items-center"
+              animate={{ 
+                y: [-8, 8, -8],
+                rotate: activeCoord ? activeCoord.x * 0.015 : 0
+              }}
+              transition={{ 
+                y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' },
+                rotate: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+              }}
+            >
+              <img 
+                src="/robot.png" 
+                alt="AI Intelligence Robot Mascot Core" 
+                className="w-[50vw] max-w-[240px] sm:max-w-[380px] md:max-w-[480px] lg:max-w-[620px] h-auto object-contain drop-shadow-[0_25px_60px_rgba(240,90,40,0.25)] relative z-10"
+              />
+            </motion.div>
+          </div>
+
+          {/* Orbiting Technology Nodes */}
+          {SKILLS.map((skill) => {
+            const isActive = skill.id === activeSkillId;
+            const isDimmed = categoryFilter !== 'all' && skill.category !== categoryFilter;
+            const rad = (skill.orbitAngle * Math.PI) / 180;
+            const x = Math.cos(rad) * RX;
+            const y = Math.sin(rad) * RY;
+
+            return (
+              <div
+                key={skill.id}
+                className={`absolute z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                  isDimmed ? 'opacity-30 scale-85 grayscale' : 'opacity-100'
+                }`}
+                style={{
+                  left: `calc(50% + ${x}px)`,
+                  top: `calc(50% + ${y}px)`,
+                }}
+              >
+                <motion.button
+                  type="button"
+                  onClick={() => {
+                    if (soundEnabled) playUiChime(640);
+                    setActiveSkillId(skill.id);
+                  }}
+                  onMouseEnter={() => {
+                    if (soundEnabled) playUiChime(520);
+                    setActiveSkillId(skill.id);
+                  }}
+                  className={`flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3.5 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl cursor-pointer select-none transition-all duration-300 border outline-none focus:outline-none ${
+                    isActive
+                      ? `bg-white border-[#f05a28] border-2 shadow-2xl shadow-orange-500/25 scale-105 sm:scale-115 z-30 ring-2 sm:ring-4 ring-[#f05a28]/15`
+                      : 'bg-white/95 backdrop-blur-sm border-slate-200/80 shadow-md hover:bg-white hover:border-slate-300 hover:scale-105'
+                  }`}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className={`rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                    isActive 
+                      ? `${skill.brandBg} w-7 h-7 sm:w-10 sm:h-10 shadow-md scale-105` 
+                      : 'bg-slate-100 w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 text-slate-700 hover:bg-slate-200'
+                  }`}>
+                    <SkillIcon skillId={skill.id} active={isActive} />
+                  </div>
+
+                  <div className="hidden sm:flex flex-col text-left pr-1 min-w-0">
+                    <span className={`text-[10px] sm:text-[11.5px] font-bold leading-tight whitespace-nowrap transition-colors duration-200 ${isActive ? 'text-slate-900 font-black' : 'text-slate-800'}`}>
+                      {skill.name}
+                    </span>
+                    <span className="text-[9.5px] text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap max-w-[125px] truncate">
+                      {skill.subtitle}
+                    </span>
+                  </div>
+                </motion.button>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Right Live AI System Diagnostic Panel */}
+        <div className="w-full xl:w-[400px] flex justify-center xl:justify-end flex-shrink-0 xl:ml-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeSkill.id}
+              initial={{ opacity: 0, x: 20, scale: 0.98 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -20, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white/95 backdrop-blur-2xl border border-white rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative overflow-hidden w-full max-w-[400px]"
+            >
+              {/* Glowing Top Accent Strip */}
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#f05a28] via-orange-400 to-[#f05a28]" />
+
+              {/* Panel Telemetry Header */}
+              <div className="flex items-center justify-between mb-5 border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#f05a28] animate-pulse" />
+                  <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400">SYSTEM DIAGNOSTICS</span>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-[10px] font-mono font-bold text-emerald-600 uppercase">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                  <span>SYSTEM ONLINE</span>
+                </div>
+              </div>
+
+              {/* Active Skill Title & Icon */}
+              <div className="flex items-center gap-4 mb-4">
+                <div className={`w-14 h-14 rounded-2xl ${activeSkill.brandBg} shadow-lg ${activeSkill.brandShadow} flex items-center justify-center flex-shrink-0 p-2.5 transition-all duration-300`}>
+                  <SkillIcon skillId={activeSkill.id} active />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900 leading-tight uppercase font-['Outfit']">
+                    {activeSkill.name}
+                  </h3>
+                  <p className="text-xs font-semibold text-[#f05a28] tracking-wide mt-0.5 uppercase">
+                    {activeSkill.subtitle}
+                  </p>
+                </div>
+              </div>
+
+              {/* Engineering Overview */}
+              <div className="mb-5">
+                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">OVERVIEW</div>
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  {activeSkill.description}
+                </p>
+              </div>
+
+              {/* Core Capabilities List */}
+              <div className="mb-6">
+                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#f05a28] mb-2.5 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28]" />
+                  <span>CORE CAPABILITIES</span>
+                </div>
+                <ul className="space-y-2">
+                  {activeSkill.useCases.map((useCase, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700">
+                      <div className="w-4 h-4 rounded-full bg-[#f05a28] text-white flex items-center justify-center flex-shrink-0 text-[9px] font-bold mt-0.5 shadow-sm">
+                        ✓
+                      </div>
+                      <span className="font-semibold text-[12px] leading-snug text-slate-800">{useCase}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Connected Technology Stack Tags */}
+              <div className="mb-6 pt-4 border-t border-slate-100">
+                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-2">CONNECTED TECH STACK</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {[activeSkill.name, 'TypeScript', 'FastAPI', 'Python', 'Supabase'].map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200/80 text-[10px] font-bold font-mono text-slate-700 uppercase"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Card Footer CTA Button */}
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs">⚙️</span>
+                  <span className="text-[11px] font-bold text-slate-900">
+                    {activeSkill.projectsCount}
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleScrollToProjects}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-[#f05a28] text-white text-xs font-bold shadow-lg shadow-slate-900/10 hover:shadow-orange-500/25 transition-all duration-300 cursor-pointer"
+                >
+                  <span>VIEW PROJECTS</span>
+                  <span className="text-xs font-normal">→</span>
+                </button>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+      </div>
+
+      {/* CONTINUOUS SCROLLING SKILL TICKER STRIP */}
+      <ContinuousSkillStrip 
+        activeId={activeSkillId} 
+        onSelect={setActiveSkillId} 
+        soundEnabled={soundEnabled}
+      />
+
+      {/* Bottom Footer Meta */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500 font-medium px-2 mt-4 select-none">
+        <div className="flex items-center gap-2">
+          <span>AI Intelligence System <span className="text-[#f05a28]">•</span></span>
+        </div>
+
+        <div className="flex items-center gap-2 text-slate-500 font-mono text-[10px]">
+          <span>[ INTERACTIVE NODES: Hover or click any technology to inspect system diagnostics ]</span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <span>System Status</span>
+          <div className="w-16 h-1.5 rounded-full bg-slate-200 overflow-hidden">
+            <div className="h-full bg-[#f05a28] rounded-full w-[100%] animate-pulse" />
+          </div>
+          <span className="text-[#f05a28] font-bold">100% ONLINE</span>
+        </div>
+      </div>
+    </section>
+  );
+}
