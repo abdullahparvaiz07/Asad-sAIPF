@@ -85,10 +85,9 @@ function MainAppContent() {
           {/* Warm Orange Glow */}
           <div className="absolute inset-0 bg-[#ff804d] blur-[100px] opacity-40 rounded-full scale-75 transform-gpu translate-y-10"></div>
           
-          {/* Premium Interactive Hero Image with Dual Layer Reveal */}
+          {/* Hero Portrait Image */}
           <HeroImage 
             originalSrc="/portrait.png"
-            revealedSrc="/maskimage.png"
             altText="Asadullah Portfolio Portrait"
             className="relative h-full aspect-[3/4] md:aspect-[4/5] drop-shadow-2xl"
           />

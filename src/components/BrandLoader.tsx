@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { motion } from 'motion/react';
 
 const NAVBAR_LOGO_ID = 'navbar-brand-logo-target';
@@ -9,16 +9,34 @@ interface BrandLoaderProps {
 }
 
 export function BrandLoader({ onComplete }: BrandLoaderProps) {
-  // Timeline Phases: 'hold' (0.0s-1.2s) -> 'travel' (1.2s-2.4s) -> 'complete' (2.4s+)
+  // Timeline Phases: 'hold' (0.0s-1.6s) -> 'travel' (1.6s-3.2s) -> 'complete' (3.2s+)
   const [phase, setPhase] = useState<'hold' | 'travel' | 'complete'>('hold');
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [introBounds, setIntroBounds] = useState<{ width: number; height: number } | null>(null);
 
-  // Target delta transform: deltaX, deltaY, targetScale
-  const [targetTransform, setTargetTransform] = useState<{ x: number; y: number; scale: number } | null>(null);
+  // Target displacement and scale
+  const [targetTransform, setTargetTransform] = useState<{
+    initialX: number;
+    initialY: number;
+    targetX: number;
+    targetY: number;
+    scaleX: number;
+    scaleY: number;
+  } | null>(null);
 
   const logoRef = useRef<HTMLImageElement>(null);
 
-  // Measure navbar logo DOM bounds and calculate center-to-target translation & scale
+  // Synchronously measure unscaled logo bounds on mount before browser paint
+  useLayoutEffect(() => {
+    if (logoRef.current) {
+      const rect = logoRef.current.getBoundingClientRect();
+      if (rect.width > 0 && rect.height > 0) {
+        setIntroBounds({ width: rect.width, height: rect.height });
+      }
+    }
+  }, []);
+
+  // Measure navbar logo DOM bounds and calculate top-left aligned target displacement & exact scaleX/scaleY
   const calculateDelta = useCallback(() => {
     const navbarEl = document.getElementById(NAVBAR_LOGO_ID);
     if (!navbarEl || !logoRef.current) return null;
@@ -26,24 +44,21 @@ export function BrandLoader({ onComplete }: BrandLoaderProps) {
     const navRect = navbarEl.getBoundingClientRect();
     const introRect = logoRef.current.getBoundingClientRect();
 
-    if (navRect.width === 0 || navRect.height === 0 || introRect.width === 0) return null;
+    if (navRect.width === 0 || navRect.height === 0 || introRect.width === 0 || introRect.height === 0) return null;
 
-    // Viewport center coordinates
-    const viewportCenterX = window.innerWidth / 2;
-    const viewportCenterY = window.innerHeight / 2;
+    // Initial centered position relative to top-0 left-0
+    const initialX = (window.innerWidth - introRect.width) / 2;
+    const initialY = (window.innerHeight - introRect.height) / 2;
 
-    // Navbar logo center coordinates
-    const targetCenterX = navRect.left + navRect.width / 2;
-    const targetCenterY = navRect.top + navRect.height / 2;
+    // Target top-left coordinates relative to top-0 left-0
+    const targetX = navRect.left;
+    const targetY = navRect.top;
 
-    // Translation displacement
-    const deltaX = targetCenterX - viewportCenterX;
-    const deltaY = targetCenterY - viewportCenterY;
+    // Exact scale factor matching target dimensions
+    const scaleX = navRect.width / introRect.width;
+    const scaleY = navRect.height / introRect.height;
 
-    // Aspect-ratio preserving scale factor
-    const targetScale = navRect.height / introRect.height;
-
-    return { x: deltaX, y: deltaY, scale: targetScale };
+    return { initialX, initialY, targetX, targetY, scaleX, scaleY };
   }, []);
 
   useEffect(() => {
@@ -77,14 +92,14 @@ export function BrandLoader({ onComplete }: BrandLoaderProps) {
     }, 1600);
 
     const tComplete = setTimeout(() => {
-      setPhase('complete');
-      document.body.style.overflow = '';
-
-      // Reveal navbar logo
+      // Reveal navbar logo FIRST before unmounting loader overlay
       const navEl = document.getElementById(NAVBAR_LOGO_ID);
       if (navEl) {
         navEl.style.opacity = '1';
       }
+
+      document.body.style.overflow = '';
+      setPhase('complete');
 
       if (onComplete) onComplete();
     }, 3200);
@@ -123,9 +138,22 @@ export function BrandLoader({ onComplete }: BrandLoaderProps) {
     );
   }
 
-  const currentX = phase === 'travel' && targetTransform ? targetTransform.x : 0;
-  const currentY = phase === 'travel' && targetTransform ? targetTransform.y : 0;
-  const currentScale = phase === 'travel' && targetTransform ? targetTransform.scale : 1;
+  const initialX = targetTransform
+    ? targetTransform.initialX
+    : introBounds
+    ? (window.innerWidth - introBounds.width) / 2
+    : 0;
+
+  const initialY = targetTransform
+    ? targetTransform.initialY
+    : introBounds
+    ? (window.innerHeight - introBounds.height) / 2
+    : 0;
+
+  const currentX = phase === 'travel' && targetTransform ? targetTransform.targetX : initialX;
+  const currentY = phase === 'travel' && targetTransform ? targetTransform.targetY : initialY;
+  const currentScaleX = phase === 'travel' && targetTransform ? targetTransform.scaleX : 1;
+  const currentScaleY = phase === 'travel' && targetTransform ? targetTransform.scaleY : 1;
 
   return (
     <div className="fixed inset-0 z-[999999] pointer-events-none select-none overflow-hidden">
@@ -157,22 +185,35 @@ export function BrandLoader({ onComplete }: BrandLoaderProps) {
       />
 
       {/* ── 3. DEDICATED INTRO LOGO (MASSIVE VIEWPORT CENTER) ─────────── */}
-      {/* FIRST FRAME GUARANTEE: Rendered massive at fixed top: 50%, left: 50%, transform: translate(-50%, -50%) */}
+      {/* FIRST FRAME GUARANTEE: Rendered massive at fixed top: 0, left: 0, transformOrigin: '0 0' */}
       <motion.img
         ref={logoRef}
         src="/logo.png"
         alt="Asadullah Logo"
-        className="fixed top-1/2 left-1/2 w-[320px] sm:w-[480px] md:w-[640px] lg:w-[760px] xl:w-[840px] h-auto object-contain pointer-events-none filter drop-shadow-[0_16px_50px_rgba(0,0,0,0.35)]"
+        onLoad={() => {
+          if (logoRef.current) {
+            const rect = logoRef.current.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+              setIntroBounds({ width: rect.width, height: rect.height });
+            }
+          }
+        }}
+        className="fixed top-0 left-0 w-[320px] sm:w-[480px] md:w-[640px] lg:w-[760px] xl:w-[840px] h-auto object-contain pointer-events-none filter drop-shadow-[0_16px_50px_rgba(0,0,0,0.35)]"
+        style={{
+          transformOrigin: '0 0',
+        }}
         initial={{
-          x: '-50%',
-          y: '-50%',
-          scale: 1,
+          x: initialX,
+          y: initialY,
+          scaleX: 1,
+          scaleY: 1,
           opacity: 1,
         }}
         animate={{
-          x: `calc(-50% + ${currentX}px)`,
-          y: `calc(-50% + ${currentY}px)`,
-          scale: currentScale,
+          x: currentX,
+          y: currentY,
+          scaleX: currentScaleX,
+          scaleY: currentScaleY,
           opacity: 1,
         }}
         transition={{

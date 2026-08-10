@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 
 export interface SkillItem {
   id: string;
@@ -18,6 +18,7 @@ export interface SkillItem {
   brandShadow: string;
   codeSnippet: string;
   metrics: { label: string; value: string }[];
+  relatedTech: string[];
 }
 
 export const SKILLS: SkillItem[] = [
@@ -45,6 +46,7 @@ export const SKILLS: SkillItem[] = [
       { label: 'Autonomous Rate', value: '98.4%' },
       { label: 'Task Success', value: '96.2%' }
     ],
+    relatedTech: ['OpenAI', 'LangChain', 'Python', 'Redis', 'Pinecone'],
     codeSnippet: `const agent = new AutonomousAgent({
   role: "Lead Strategist",
   tools: [WebBrowser, CodeInterpreter, SQLQuery],
@@ -69,7 +71,7 @@ await agent.execute("Analyze competitor pricing and generate strategy report");`
     ],
     projectsCount: '15+ Projects',
     projectCategory: 'LangChain Ecosystems',
-    orbitAngle: -135,
+    orbitAngle: -130,
     brandBg: 'bg-[#10B981]',
     brandText: 'text-white',
     brandBorder: 'border-[#10B981]',
@@ -78,6 +80,7 @@ await agent.execute("Analyze competitor pricing and generate strategy report");`
       { label: 'Latency Optimization', value: '-42%' },
       { label: 'Retrieval Precision', value: '94.8%' }
     ],
+    relatedTech: ['Python', 'Chroma', 'Pinecone', 'OpenAI', 'Zod'],
     codeSnippet: `const chain = RunnableSequence.from([
   PromptTemplate.fromTemplate(systemPrompt),
   new ChatOpenAI({ model: "gpt-4o", temperature: 0.2 }),
@@ -101,7 +104,7 @@ const response = await chain.invoke({ query: input });`
     ],
     projectsCount: '12+ Projects',
     projectCategory: 'Multi-Agent State Graphs',
-    orbitAngle: -45,
+    orbitAngle: -50,
     brandBg: 'bg-[#2563eb]',
     brandText: 'text-white',
     brandBorder: 'border-[#2563eb]',
@@ -110,6 +113,7 @@ const response = await chain.invoke({ query: input });`
       { label: 'Graph Reliability', value: '99.9%' },
       { label: 'Checkpoint Speed', value: '<5ms' }
     ],
+    relatedTech: ['Python', 'LangChain', 'PostgreSQL', 'Redis', 'FastAPI'],
     codeSnippet: `const workflow = new StateGraph(StateAnnotation)
   .addNode("planner", planStep)
   .addNode("executor", executeStep)
@@ -133,7 +137,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
     ],
     projectsCount: '25+ Projects',
     projectCategory: 'Enterprise Automation',
-    orbitAngle: 0,
+    orbitAngle: -10,
     brandBg: 'bg-[#f05a28]',
     brandText: 'text-white',
     brandBorder: 'border-[#f05a28]',
@@ -142,6 +146,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
       { label: 'Time Saved / Month', value: '450+ hrs' },
       { label: 'Uptime SLA', value: '99.95%' }
     ],
+    relatedTech: ['n8n', 'Make', 'Zapier', 'Python', 'Cloud Functions'],
     codeSnippet: `@app.post("/webhook/trigger")
 async function process_payload(payload: EventPayload):
     parsed = await pdf_extractor.extract(payload.doc_url)
@@ -164,7 +169,7 @@ async function process_payload(payload: EventPayload):
     ],
     projectsCount: '30+ Projects',
     projectCategory: 'Multimodal AI Apps',
-    orbitAngle: 35,
+    orbitAngle: 30,
     brandBg: 'bg-[#6366f1]',
     brandText: 'text-white',
     brandBorder: 'border-[#6366f1]',
@@ -173,6 +178,7 @@ async function process_payload(payload: EventPayload):
       { label: 'Multimodal Accuracy', value: '97.5%' },
       { label: 'Tokens Processed', value: '100M+' }
     ],
+    relatedTech: ['OpenAI', 'Anthropic', 'Gemini', 'Whisper', 'DALL·E'],
     codeSnippet: `const response = await anthropic.messages.create({
   model: "claude-3-5-sonnet-20241022",
   max_tokens: 1024,
@@ -194,7 +200,7 @@ async function process_payload(payload: EventPayload):
     ],
     projectsCount: '18+ Projects',
     projectCategory: 'Conversational Assistants',
-    orbitAngle: 75,
+    orbitAngle: 70,
     brandBg: 'bg-[#0284c7]',
     brandText: 'text-white',
     brandBorder: 'border-[#0284c7]',
@@ -203,6 +209,7 @@ async function process_payload(payload: EventPayload):
       { label: 'CSAT Rating', value: '4.9 / 5' },
       { label: 'Deflection Rate', value: '82%' }
     ],
+    relatedTech: ['Next.js', 'Vercel AI SDK', 'Supabase', 'OpenAI', 'SSE'],
     codeSnippet: `export async function POST(req: Request) {
   const { messages } = await req.json();
   const stream = await OpenAIStream({
@@ -228,7 +235,7 @@ async function process_payload(payload: EventPayload):
     ],
     projectsCount: '22+ Projects',
     projectCategory: 'High-Scale AI Backends',
-    orbitAngle: 115,
+    orbitAngle: 110,
     brandBg: 'bg-[#009688]',
     brandText: 'text-white',
     brandBorder: 'border-[#009688]',
@@ -237,6 +244,7 @@ async function process_payload(payload: EventPayload):
       { label: 'Avg Latency', value: '18ms' },
       { label: 'RPS Throughput', value: '5,000+' }
     ],
+    relatedTech: ['Python', 'Pydantic', 'SQLAlchemy', 'Docker', 'uvicorn'],
     codeSnippet: `@app.get("/api/v1/inference", response_model=ModelResult)
 async def predict(payload: InferenceRequest):
     async with asyncio.TaskGroup() as tg:
@@ -259,7 +267,7 @@ async def predict(payload: InferenceRequest):
     ],
     projectsCount: '35+ Projects',
     projectCategory: 'Prompt Architectures',
-    orbitAngle: 155,
+    orbitAngle: 150,
     brandBg: 'bg-[#0f172a]',
     brandText: 'text-emerald-400',
     brandBorder: 'border-[#0f172a]',
@@ -268,6 +276,7 @@ async def predict(payload: InferenceRequest):
       { label: 'Hallucination Rate', value: '<0.5%' },
       { label: 'Format Compliance', value: '99.8%' }
     ],
+    relatedTech: ['GPT-4o', 'Claude', 'Gemini', 'JSON Schema', 'Zod'],
     codeSnippet: `SYSTEM_PROMPT = """
 You are an expert AI Data Scientist.
 Output ONLY valid JSON adhering strictly to the schema.
@@ -289,7 +298,7 @@ Reason step-by-step inside <thinking> tags before answering.
     ],
     projectsCount: '28+ Projects',
     projectCategory: 'LLM Architectures',
-    orbitAngle: -180,
+    orbitAngle: -170,
     brandBg: 'bg-[#8b5cf6]',
     brandText: 'text-white',
     brandBorder: 'border-[#8b5cf6]',
@@ -298,6 +307,7 @@ Reason step-by-step inside <thinking> tags before answering.
       { label: 'Cost Savings', value: '-65%' },
       { label: 'Context Limit', value: '128k+' }
     ],
+    relatedTech: ['vLLM', 'Ollama', 'HuggingFace', 'GGUF', 'LoRA'],
     codeSnippet: `from vllm import LLM, SamplingParams
 
 llm = LLM(model="meta-llama/Llama-3.1-70B-Instruct", tensor_parallel_size=2)
@@ -310,78 +320,87 @@ function SkillIcon({ skillId, active = false }: { skillId: string; active?: bool
   const color = active ? '#ffffff' : '#475569';
 
   switch (skillId) {
+    /* ── OpenAI logo (AI Agents) ── */
     case 'ai-agents':
       return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke={color} strokeWidth="1.5" />
-          <circle cx="12" cy="12" r="6" stroke={color} strokeWidth="1.5" />
-          <circle cx="12" cy="12" r="2.5" fill={color} />
-          <line x1="12" y1="2" x2="12" y2="6" stroke={color} strokeWidth="1.5" />
-          <line x1="12" y1="18" x2="12" y2="22" stroke={color} strokeWidth="1.5" />
-          <line x1="2" y1="12" x2="6" y2="12" stroke={color} strokeWidth="1.5" />
-          <line x1="18" y1="12" x2="22" y2="12" stroke={color} strokeWidth="1.5" />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill={color}>
+          <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364l2.0201-1.1638a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z" />
         </svg>
       );
+    /* ── LangChain logo ── */
     case 'langchain':
-      return <span className="text-xl font-bold select-none">🦜</span>;
+      return (
+        <img
+          src="/langchain.png"
+          alt="LangChain"
+          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+        />
+      );
+    /* ── LangGraph logo ── */
     case 'langgraph':
       return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <circle cx="6" cy="6" r="3" stroke={color} strokeWidth="1.5" />
-          <circle cx="18" cy="6" r="3" stroke={color} strokeWidth="1.5" />
-          <circle cx="12" cy="18" r="3" stroke={color} strokeWidth="1.5" />
-          <line x1="8.5" y1="7.5" x2="10" y2="15.5" stroke={color} strokeWidth="1.5" />
-          <line x1="15.5" y1="7.5" x2="14" y2="15.5" stroke={color} strokeWidth="1.5" />
-          <line x1="9" y1="6" x2="15" y2="6" stroke={color} strokeWidth="1.5" />
-        </svg>
+        <img
+          src="/langgraph (2).png"
+          alt="LangGraph"
+          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+        />
       );
+    /* ── Workflow Automation (n8n logo) ── */
     case 'workflow-automation':
       return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <rect x="3" y="3" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.5" />
-          <rect x="15" y="3" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.5" />
-          <rect x="9" y="15" width="6" height="6" rx="1.5" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1.5" />
-          <path d="M6 9v3a1 1 0 001 1h8a1 1 0 001-1V9M12 13v2" stroke={color} strokeWidth="1.5" />
-        </svg>
+        <img
+          src="/n8n.png"
+          alt="Workflow Automation n8n"
+          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+        />
       );
+    /* ── Google Gemini logo (Gen AI) ── */
     case 'gen-ai':
       return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill={color} fillOpacity="0.3" stroke={color} strokeWidth="1.2" />
-          <path d="M12 7L13.2 10.8L17 12L13.2 13.2L12 17L10.8 13.2L7 12L10.8 10.8L12 7Z" fill={color} />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill={color}>
+          <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" />
         </svg>
       );
+    /* ── ChatBot official logo (AI Chatbots) ── */
     case 'ai-chatbots':
       return (
-        <div className={`w-6.5 h-6.5 rounded-full flex items-center justify-center text-white shadow-sm ${active ? 'bg-white/20' : 'bg-blue-600'}`}>
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z" />
-          </svg>
-        </div>
-      );
-    case 'fastapi':
-      return (
-        <div className={`w-6.5 h-6.5 rounded-full flex items-center justify-center text-white shadow-sm ${active ? 'bg-white/20' : 'bg-teal-500'}`}>
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="currentColor" />
-          </svg>
-        </div>
-      );
-    case 'prompt-engg':
-      return (
-        <div className={`w-6.5 h-6.5 rounded flex items-center justify-center font-mono text-[11px] font-bold shadow-sm ${active ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/50' : 'bg-slate-900 text-emerald-400'}`}>
-          &gt;_
-        </div>
-      );
-    case 'llm':
-      return (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill={color} />
-          <circle cx="12" cy="12" r="2.5" fill={active ? "#8b5cf6" : "white"} />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill={color}>
+          <path d="M11.999 0c-2.25 0-4.5.06-6.6.21a5.57 5.57 0 00-5.19 5.1c-.24 3.21-.27 6.39-.06 9.6a5.644 5.644 0 005.7 5.19h3.15v-3.9h-3.15c-.93.03-1.74-.63-1.83-1.56-.18-3-.15-6 .06-9 .06-.84.72-1.47 1.56-1.53 2.04-.15 4.2-.21 6.36-.21s4.32.09 6.36.18c.81.06 1.5.69 1.56 1.53.24 3 .24 6 .06 9-.12.93-.9 1.62-1.83 1.59h-3.15l-6 3.9V24l6-3.9h3.15c2.97.03 5.46-2.25 5.7-5.19.21-3.18.18-6.39-.03-9.57a5.57 5.57 0 00-5.19-5.1c-2.13-.18-4.38-.24-6.63-.24zm-5.04 8.76c-.36 0-.66.3-.66.66v2.34c0 .33.18.63.48.78 1.62.78 3.42 1.2 5.22 1.26 1.8-.06 3.6-.48 5.22-1.26.3-.15.48-.45.48-.78V9.42c0-.09-.03-.15-.09-.21a.648.648 0 00-.87-.36c-1.5.66-3.12 1.02-4.77 1.05-1.65-.03-3.27-.42-4.77-1.08a.566.566 0 00-.24-.06z" />
         </svg>
       );
+    /* ── FastAPI logo ── */
+    case 'fastapi':
+      return (
+        <img
+          src="/FastAPI.png"
+          alt="FastAPI"
+          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+        />
+      );
+    /* ── Terminal prompt (Prompt Engineering) ── */
+    case 'prompt-engg':
+      return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <rect x="2" y="3" width="20" height="18" rx="2.5" stroke={color} strokeWidth="1.5" />
+          <path d="M6 15l3.5-3L6 9" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <line x1="12" y1="15" x2="18" y2="15" stroke={color} strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      );
+    /* ── Brain logo (LLM) ── */
+    case 'llm':
+      return (
+        <img
+          src="/brain.png"
+          alt="LLM Brain"
+          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+        />
+      );
     default:
-      return <circle cx="12" cy="12" r="8" stroke={color} strokeWidth="1.5" />;
+      return (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="8" stroke={color} strokeWidth="1.5" />
+        </svg>
+      );
   }
 }
 
@@ -406,6 +425,7 @@ function playUiChime(freq = 520) {
   }
 }
 
+
 /* ═══════════════════════════════════════════════════════════════════════════════
    CONTINUOUS SCROLLING SKILL TICKER STRIP
    ═══════════════════════════════════════════════════════════════════════════════ */
@@ -423,14 +443,20 @@ function ContinuousSkillStrip({
   const doubledSkills = [...SKILLS, ...SKILLS, ...SKILLS];
 
   return (
-    <div className="relative z-10 w-screen left-1/2 -translate-x-1/2 mt-6 sm:mt-8 overflow-hidden">
+    <motion.div 
+      className="relative z-10 w-screen left-1/2 -translate-x-1/2 mt-6 sm:mt-8 overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+    >
       <div 
-        className="bg-white/90 backdrop-blur-md border-y border-slate-200/80 py-3 shadow-xs overflow-hidden relative w-full"
+        className="bg-white/80 backdrop-blur-xl border-y border-slate-200/60 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden relative w-full"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#F8F8F8] via-[#F8F8F8]/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#F8F8F8] via-[#F8F8F8]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F8F8F8] via-[#F8F8F8]/90 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F8F8F8] via-[#F8F8F8]/90 to-transparent z-10 pointer-events-none" />
 
         <motion.div
           className="flex items-center gap-6 w-max"
@@ -467,17 +493,25 @@ function ContinuousSkillStrip({
                         : 'text-transparent hover:text-slate-900'
                     }`}
                     style={{
-                      WebkitTextStroke: isActive ? 'none' : '1.5px #64748b'
+                      WebkitTextStroke: isActive ? 'none' : '1.5px #94a3b8'
                     }}
                   >
                     {skill.name}
                   </span>
+                  {/* Active underline indicator */}
+                  {isActive && (
+                    <motion.div 
+                      className="absolute -bottom-1 left-2 right-2 h-[3px] rounded-full bg-[#f05a28]"
+                      layoutId="stripIndicator"
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                  )}
                 </button>
 
                 {/* Glowing Bullet Dot Separator */}
                 <span 
-                  className={`w-2.5 h-2.5 rounded-full flex-shrink-0 mx-3 transition-colors duration-300 ${
-                    isActive ? 'bg-[#f05a28] shadow-[0_0_8px_#f05a28]' : 'bg-slate-300'
+                  className={`w-2 h-2 rounded-full flex-shrink-0 mx-3 transition-all duration-300 ${
+                    isActive ? 'bg-[#f05a28] shadow-[0_0_10px_#f05a28]' : 'bg-slate-300/60'
                   }`} 
                 />
               </React.Fragment>
@@ -485,7 +519,7 @@ function ContinuousSkillStrip({
           })}
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -496,20 +530,32 @@ export function TechnicalExpertise() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  const ghostY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Reset tab when switching skills
+  useEffect(() => {
+    setCardTab('overview');
+  }, [activeSkillId]);
+
   // Compute dynamic Orbit Radii based on screen breakpoint
   const { RX, RY } = React.useMemo(() => {
     if (windowWidth < 640) {
-      return { RX: 130, RY: 100 };
+      return { RX: 135, RY: 105 };
     } else if (windowWidth < 1024) {
-      return { RX: 210, RY: 150 };
+      return { RX: 230, RY: 160 };
     }
-    return { RX: 310, RY: 230 };
+    return { RX: 340, RY: 240 };
   }, [windowWidth]);
 
   const activeSkill = SKILLS.find((s) => s.id === activeSkillId) || SKILLS[0];
@@ -533,11 +579,33 @@ export function TechnicalExpertise() {
     }
   };
 
+
+
   return (
     <section 
       id="skills" 
-      className="relative min-h-screen py-14 px-4 sm:px-6 lg:px-8 bg-[#F8F8F8] flex flex-col items-center justify-between overflow-hidden"
+      ref={sectionRef}
+      className="relative min-h-screen py-14 px-4 sm:px-6 lg:px-8 bg-[#F8F8F8] flex flex-col items-center justify-between overflow-hidden selection:bg-[#f05a28] selection:text-white"
     >
+      {/* ──── Background Grid Lines (matching About section) ──── */}
+      <div className="absolute top-0 bottom-0 left-[5%] right-[5%] pointer-events-none z-0 flex justify-between">
+        <div className="w-px h-full bg-[#e8e8e8]" />
+        <div className="w-px h-full bg-[#e8e8e8]" />
+        <div className="w-px h-full bg-[#e8e8e8]" />
+        <div className="w-px h-full bg-[#e8e8e8]" />
+        <div className="w-px h-full bg-[#e8e8e8]" />
+      </div>
+
+      {/* ──── Parallax Ghost Watermark Text ──── */}
+      <div className="absolute top-[38%] left-0 w-full pointer-events-none z-[1] select-none flex justify-center overflow-hidden mix-blend-multiply">
+        <motion.h2 
+          style={{ y: ghostY }}
+          className="text-[22vw] font-black leading-[0.8] tracking-tighter uppercase whitespace-nowrap text-[#f0f0f0]"
+        >
+          SKILLS
+        </motion.h2>
+      </div>
+
       {/* Left Vertical Indicator Sidebar */}
       <div className="hidden lg:flex flex-col items-center gap-4 absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 z-20">
         <div className="flex flex-col items-center gap-2">
@@ -560,7 +628,7 @@ export function TechnicalExpertise() {
 
         <div className="flex flex-col items-center gap-3 pt-1">
           <motion.a
-            href="https://github.com"
+            href="https://github.com/asadxagentic-ai"
             target="_blank"
             rel="noreferrer"
             className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 bg-slate-100/80 border border-slate-200/80 hover:bg-[#24292e] hover:text-white hover:border-[#24292e] hover:shadow-lg hover:shadow-[#24292e]/20 transition-all duration-300"
@@ -571,7 +639,7 @@ export function TechnicalExpertise() {
           </motion.a>
 
           <motion.a
-            href="https://linkedin.com"
+            href="https://linkedin.com/in/asadxagentic-ai/"
             target="_blank"
             rel="noreferrer"
             className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 bg-slate-100/80 border border-slate-200/80 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] hover:shadow-lg hover:shadow-[#0A66C2]/30 transition-all duration-300"
@@ -582,7 +650,7 @@ export function TechnicalExpertise() {
           </motion.a>
 
           <motion.a
-            href="mailto:contact@example.com"
+            href="mailto:m.asadullah95e@gmail.com"
             className="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 bg-slate-100/80 border border-slate-200/80 hover:bg-[#f05a28] hover:text-white hover:border-[#f05a28] hover:shadow-lg hover:shadow-[#f05a28]/30 transition-all duration-300"
             whileHover={{ scale: 1.18 }}
             whileTap={{ scale: 0.92 }}
@@ -595,8 +663,14 @@ export function TechnicalExpertise() {
       {/* Soft Ambient Radial Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-gradient-radial from-[#f05a28]/10 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
 
-      {/* Top Section Header */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto mb-3 text-center pt-2 select-none">
+      {/* ──── Top Section Header (Scroll-triggered) ──── */}
+      <motion.div 
+        className="relative z-10 w-full max-w-7xl mx-auto mb-3 text-center pt-2 select-none"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
         <div className="inline-flex items-center gap-2 mb-3">
           <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-ping" />
           <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-slate-500">// THE INTELLIGENCE SYSTEM BEHIND MY WORK</span>
@@ -607,12 +681,18 @@ export function TechnicalExpertise() {
           Technical <span className="text-[#f05a28]">Ecosystem</span>
         </h2>
 
-        <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed mb-4 font-medium px-2">
+        <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed mb-5 font-medium px-2">
           Connected technologies, neural frameworks, and automation engines working together to build intelligent digital systems.
         </p>
 
         {/* Category Filter Pills */}
-        <div className="inline-flex flex-wrap justify-center items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full">
+        <motion.div 
+          className="inline-flex flex-wrap justify-center items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+        >
           {[
             { id: 'all', label: 'All Connected Systems' },
             { id: 'ai-core', label: 'AI & Intelligence Core' },
@@ -634,14 +714,20 @@ export function TechnicalExpertise() {
               </button>
             );
           })}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
-      {/* Main Container: Centered Orbit Stage + Right-Shifted Floating Detail Card */}
+      {/* ──── Main Container: Orbit Stage + Floating Detail Card ──── */}
       <div className="relative z-10 max-w-7xl w-full flex flex-col xl:flex-row items-center justify-between gap-8 lg:gap-16 my-auto">
         
         {/* Orbit & Central Robot Intelligence Stage */}
-        <div className="relative w-full max-w-[820px] min-h-[380px] sm:min-h-[540px] md:min-h-[580px] flex items-center justify-center mx-auto xl:translate-x-6">
+        <motion.div 
+          className="relative w-full max-w-[820px] min-h-[380px] sm:min-h-[540px] md:min-h-[580px] flex items-center justify-center mx-auto xl:translate-x-6"
+          initial={{ opacity: 0, scale: 0.92 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: "-5%" }}
+          transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+        >
 
           {/* SVG Laser Rays & Orbit Track */}
           <svg
@@ -752,7 +838,9 @@ export function TechnicalExpertise() {
             return (
               <div
                 key={skill.id}
-                className={`absolute z-20 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                  isActive ? 'z-30' : 'z-20'
+                } ${
                   isDimmed ? 'opacity-30 scale-85 grayscale' : 'opacity-100'
                 }`}
                 style={{
@@ -770,26 +858,26 @@ export function TechnicalExpertise() {
                     if (soundEnabled) playUiChime(520);
                     setActiveSkillId(skill.id);
                   }}
-                  className={`flex items-center gap-1.5 sm:gap-2.5 px-2 sm:px-3.5 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl cursor-pointer select-none transition-all duration-300 border outline-none focus:outline-none ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl cursor-pointer select-none transition-all duration-300 border outline-none focus:outline-none ${
                     isActive
-                      ? `bg-white border-[#f05a28] border-2 shadow-2xl shadow-orange-500/25 scale-105 sm:scale-115 z-30 ring-2 sm:ring-4 ring-[#f05a28]/15`
-                      : 'bg-white/95 backdrop-blur-sm border-slate-200/80 shadow-md hover:bg-white hover:border-slate-300 hover:scale-105'
+                      ? `bg-white border-[#f05a28] border-2 shadow-xl shadow-orange-500/20 scale-[1.04] sm:scale-105 ring-2 sm:ring-4 ring-[#f05a28]/15`
+                      : 'bg-white/95 backdrop-blur-sm border-slate-200/80 shadow-md hover:bg-white hover:border-slate-300 hover:scale-102'
                   }`}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.96 }}
                 >
                   <div className={`rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                     isActive 
-                      ? `${skill.brandBg} w-7 h-7 sm:w-10 sm:h-10 shadow-md scale-105` 
-                      : 'bg-slate-100 w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 text-slate-700 hover:bg-slate-200'
+                      ? `${skill.brandBg} w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 shadow-md scale-105` 
+                      : 'bg-slate-100 w-6 h-6 sm:w-8 sm:h-8 text-slate-700 hover:bg-slate-200'
                   }`}>
                     <SkillIcon skillId={skill.id} active={isActive} />
                   </div>
 
-                  <div className="hidden sm:flex flex-col text-left pr-1 min-w-0">
-                    <span className={`text-[10px] sm:text-[11.5px] font-bold leading-tight whitespace-nowrap transition-colors duration-200 ${isActive ? 'text-slate-900 font-black' : 'text-slate-800'}`}>
+                  <div className="hidden sm:flex flex-col text-left pr-0.5 min-w-0">
+                    <span className={`text-[10px] sm:text-[11px] font-bold leading-tight whitespace-nowrap transition-colors duration-200 ${isActive ? 'text-slate-900 font-black' : 'text-slate-800'}`}>
                       {skill.name}
                     </span>
-                    <span className="text-[9.5px] text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap max-w-[125px] truncate">
+                    <span className="text-[9px] text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap max-w-[105px] truncate">
                       {skill.subtitle}
                     </span>
                   </div>
@@ -797,111 +885,197 @@ export function TechnicalExpertise() {
               </div>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* Right Live AI System Diagnostic Panel */}
-        <div className="w-full xl:w-[400px] flex justify-center xl:justify-end flex-shrink-0 xl:ml-auto">
+        {/* ──── Right Live AI System Diagnostic Panel ──── */}
+        <motion.div 
+          className="w-full xl:w-[390px] flex justify-center xl:justify-end flex-shrink-0 xl:ml-auto"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-5%" }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSkill.id}
-              initial={{ opacity: 0, x: 20, scale: 0.98 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -20, scale: 0.98 }}
+              initial={{ opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white/95 backdrop-blur-2xl border border-white rounded-3xl p-6 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.08)] relative overflow-hidden w-full max-w-[400px]"
+              className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-4.5 sm:p-5 shadow-[0_16px_45px_rgba(0,0,0,0.06)] relative overflow-hidden w-full max-w-[390px]"
             >
-              {/* Glowing Top Accent Strip */}
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#f05a28] via-orange-400 to-[#f05a28]" />
+              {/* Top Accent Strip */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#f05a28] via-orange-400 to-[#f05a28]" />
 
-              {/* Panel Telemetry Header */}
-              <div className="flex items-center justify-between mb-5 border-b border-slate-100 pb-3">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#f05a28] animate-pulse" />
-                  <span className="font-mono text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400">SYSTEM DIAGNOSTICS</span>
+              {/* Header Row: Category Pill + View Switcher */}
+              <div className="flex items-center justify-between mb-3 pt-0.5">
+                <div className="flex items-center gap-1.5">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100/90 border border-slate-200/70 text-[9.5px] font-mono font-bold uppercase text-slate-700">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-pulse" />
+                    {activeSkill.category === 'ai-core' ? 'AI Core' : activeSkill.category === 'frameworks' ? 'Frameworks' : 'Engineering'}
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-[9px] font-mono font-bold text-emerald-600 uppercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+                    <span>ONLINE</span>
+                  </span>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-[10px] font-mono font-bold text-emerald-600 uppercase">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                  <span>SYSTEM ONLINE</span>
+                {/* Switcher: Info / Code */}
+                <div className="flex items-center gap-0.5 p-0.5 rounded-xl bg-slate-100/90 border border-slate-200/70">
+                  <button
+                    onClick={() => setCardTab('overview')}
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all duration-150 cursor-pointer ${
+                      cardTab === 'overview'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                  >
+                    Overview
+                  </button>
+                  <button
+                    onClick={() => setCardTab('code')}
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all duration-150 cursor-pointer font-mono ${
+                      cardTab === 'code'
+                        ? 'bg-white text-slate-900 shadow-xs'
+                        : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                  >
+                    {'</>'} Code
+                  </button>
                 </div>
               </div>
 
-              {/* Active Skill Title & Icon */}
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`w-14 h-14 rounded-2xl ${activeSkill.brandBg} shadow-lg ${activeSkill.brandShadow} flex items-center justify-center flex-shrink-0 p-2.5 transition-all duration-300`}>
+              {/* Active Skill Info Hero */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${activeSkill.brandBg} shadow-md ${activeSkill.brandShadow} flex items-center justify-center flex-shrink-0 p-2.5 transition-all duration-300`}>
                   <SkillIcon skillId={activeSkill.id} active />
                 </div>
-                <div>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight uppercase font-['Outfit']">
-                    {activeSkill.name}
-                  </h3>
-                  <p className="text-xs font-semibold text-[#f05a28] tracking-wide mt-0.5 uppercase">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-1">
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight uppercase font-['Outfit'] truncate">
+                      {activeSkill.name}
+                    </h3>
+                    <span className="text-[10px] font-mono font-bold text-slate-400 whitespace-nowrap">{activeSkill.expertise.replace('Expertise: ', '')}</span>
+                  </div>
+                  <p className="text-[11px] font-semibold text-[#f05a28] truncate mt-0.5">
                     {activeSkill.subtitle}
                   </p>
                 </div>
               </div>
 
-              {/* Engineering Overview */}
-              <div className="mb-5">
-                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5">OVERVIEW</div>
-                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                  {activeSkill.description}
-                </p>
-              </div>
+              {/* Main Card Body (Overview vs Code) */}
+              <AnimatePresence mode="wait">
+                {cardTab === 'overview' ? (
+                  <motion.div
+                    key="overview"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-3"
+                  >
+                    {/* Short & Concise Description */}
+                    <p className="text-[11.5px] text-slate-600 leading-relaxed font-medium line-clamp-2">
+                      {activeSkill.description}
+                    </p>
 
-              {/* Core Capabilities List */}
-              <div className="mb-6">
-                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#f05a28] mb-2.5 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28]" />
-                  <span>CORE CAPABILITIES</span>
-                </div>
-                <ul className="space-y-2">
-                  {activeSkill.useCases.map((useCase, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700">
-                      <div className="w-4 h-4 rounded-full bg-[#f05a28] text-white flex items-center justify-center flex-shrink-0 text-[9px] font-bold mt-0.5 shadow-sm">
-                        ✓
+                    {/* Micro-Metrics Grid (2-Column Box) */}
+                    <div className="grid grid-cols-2 gap-2">
+                      {activeSkill.metrics.map((metric, idx) => (
+                        <div 
+                          key={idx} 
+                          className="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200/80 flex flex-col justify-between"
+                        >
+                          <span className="text-[9.5px] font-semibold text-slate-500 truncate uppercase tracking-wider">{metric.label}</span>
+                          <span className="text-sm font-black text-[#f05a28] font-mono mt-0.5">{metric.value}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Core Capabilities - Compact List */}
+                    <div>
+                      <div className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
+                        <span>CORE CAPABILITIES</span>
+                        <span className="text-[#f05a28] font-semibold">{activeSkill.projectsCount}</span>
                       </div>
-                      <span className="font-semibold text-[12px] leading-snug text-slate-800">{useCase}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                      <div className="space-y-1.5">
+                        {activeSkill.useCases.slice(0, 3).map((useCase, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-[11px] text-slate-700">
+                            <span className="w-3.5 h-3.5 rounded-full bg-[#f05a28]/10 text-[#f05a28] flex items-center justify-center text-[9px] font-bold flex-shrink-0">✓</span>
+                            <span className="font-medium text-slate-800 truncate">{useCase}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-              {/* Connected Technology Stack Tags */}
-              <div className="mb-6 pt-4 border-t border-slate-100">
-                <div className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-2">CONNECTED TECH STACK</div>
-                <div className="flex flex-wrap gap-1.5">
-                  {[activeSkill.name, 'TypeScript', 'FastAPI', 'Python', 'Supabase'].map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200/80 text-[10px] font-bold font-mono text-slate-700 uppercase"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
+                    {/* Connected Tech Stack Tags */}
+                    <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1">
+                      {activeSkill.relatedTech.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 rounded-md bg-slate-100/90 border border-slate-200/60 text-[9.5px] font-bold font-mono text-slate-600 uppercase hover:bg-[#f05a28]/10 hover:text-[#f05a28] transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="code"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.2 }}
+                    className="space-y-2.5"
+                  >
+                    <div className="relative rounded-xl bg-[#0f172a] border border-slate-700/50 overflow-hidden">
+                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-slate-700/40 bg-slate-900/60">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-red-500/80" />
+                          <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
+                          <span className="w-2 h-2 rounded-full bg-green-500/80" />
+                          <span className="ml-1 text-[9px] font-mono text-slate-400">{activeSkill.id}.ts</span>
+                        </div>
+                        <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase">{activeSkill.name}</span>
+                      </div>
+                      <pre className="p-3 max-h-[170px] overflow-y-auto overflow-x-auto text-[10.5px] leading-[1.6] font-mono text-emerald-300/90 scrollbar-thin">
+                        <code>{activeSkill.codeSnippet}</code>
+                      </pre>
+                    </div>
 
-              {/* Card Footer CTA Button */}
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs">⚙️</span>
-                  <span className="text-[11px] font-bold text-slate-900">
-                    {activeSkill.projectsCount}
-                  </span>
+                    <div className="flex flex-wrap gap-1 pt-1">
+                      {activeSkill.relatedTech.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200/60 text-[9.5px] font-bold font-mono text-slate-600 uppercase"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Footer Action Bar */}
+              <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" />
+                  <span className="text-[10px] font-mono font-bold text-slate-500 uppercase truncate">{activeSkill.projectCategory}</span>
                 </div>
 
                 <button
                   onClick={handleScrollToProjects}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-[#f05a28] text-white text-xs font-bold shadow-lg shadow-slate-900/10 hover:shadow-orange-500/25 transition-all duration-300 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-[#f05a28] text-white text-[11px] font-bold shadow-md shadow-slate-900/10 hover:shadow-orange-500/25 transition-all duration-200 cursor-pointer flex-shrink-0"
                 >
-                  <span>VIEW PROJECTS</span>
-                  <span className="text-xs font-normal">→</span>
+                  <span>View Projects</span>
+                  <span className="text-[11px]">→</span>
                 </button>
               </div>
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
       </div>
 
@@ -912,24 +1086,7 @@ export function TechnicalExpertise() {
         soundEnabled={soundEnabled}
       />
 
-      {/* Bottom Footer Meta */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500 font-medium px-2 mt-4 select-none">
-        <div className="flex items-center gap-2">
-          <span>AI Intelligence System <span className="text-[#f05a28]">•</span></span>
-        </div>
 
-        <div className="flex items-center gap-2 text-slate-500 font-mono text-[10px]">
-          <span>[ INTERACTIVE NODES: Hover or click any technology to inspect system diagnostics ]</span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <span>System Status</span>
-          <div className="w-16 h-1.5 rounded-full bg-slate-200 overflow-hidden">
-            <div className="h-full bg-[#f05a28] rounded-full w-[100%] animate-pulse" />
-          </div>
-          <span className="text-[#f05a28] font-bold">100% ONLINE</span>
-        </div>
-      </div>
     </section>
   );
 }

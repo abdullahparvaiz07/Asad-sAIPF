@@ -23,69 +23,80 @@ interface ProjectItem {
 const PROJECT_DATA: ProjectItem[] = [
   {
     id: '01',
-    title: 'NEXUS AUTOMATION ENGINE',
+    title: 'Linkedin Autoconnect Automation',
     outcome: 'Cut enterprise document processing time from 4 hours to 90 seconds.',
-    description: 'Architected and implemented a high-performance multi-agent automation workflow that securely parses financial datasets, extracts complex tabular data, and performs automated cross-validation audits in real time.',
-    tech: ['Python', 'LangChain', 'FastAPI', 'Supabase', 'Docker'],
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
-    liveUrl: 'https://example.com/nexus',
-    repoUrl: 'https://github.com/example/nexus',
-    altText: 'Technical diagram mock of the Nexus RAG pipeline rendering active nodes'
+    description: 'This n8n workflow automates LinkedIn lead generation and network growth using PhantomBuster agents.',
+    tech: ['n8n', 'PhantomBuster', 'Docker'],
+    image: '/proj1.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/linkedin-auto-connect-automation',
+    repoUrl: 'https://github.com/asadxagentic-ai/linkedin-auto-connect-automation',
+    altText: 'Linkedin Autoconnect Automation'
   },
   {
     id: '02',
-    title: 'APEX NEURAL API',
+    title: 'Agent Swarm',
     outcome: 'Reduced model inference latency by 40% under peak concurrent loads.',
-    description: 'Designed a high-throughput orchestration layer for LLM requests, implementing smart semantic vector caching and load-aware queue routing across distributed GPU nodes to optimize hardware resource allocation.',
-    tech: ['TypeScript', 'Next.js', 'PyTorch', 'Redis', 'AWS'],
-    image: 'https://images.unsplash.com/photo-1633412802994-5c058f151b66?q=80&w=2000&auto=format&fit=crop',
-    liveUrl: 'https://example.com/apex',
-    repoUrl: 'https://github.com/example/apex',
-    altText: 'Obsidian dark dashboard UI presenting neural network api latency statistics'
+    description: 'Agent Swarm is a production-ready, modular n8n workflow that transforms Telegram into a unified interface for intelligent personal assistance.',
+    tech: ['n8n', 'Docker'],
+    image: '/proj2.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/a-fully-agentic-assistant',
+    repoUrl: 'https://github.com/asadxagentic-ai/a-fully-agentic-assistant',
+    altText: 'Agent Swarm'
   },
   {
     id: '03',
-    title: 'AURA SEMANTIC SHOP',
+    title: 'AI CRM Sales Analysis',
     outcome: 'Drove a 24% uplift in cart checkout completions via conceptual search.',
-    description: 'Re-engineered the product discovery flow for a global merchant, replacing traditional keyword filtering with vector embedding indices to match buyer queries on intent, context, and semantic meaning.',
-    tech: ['React', 'Node.js', 'Pinecone', 'Stripe', 'Tailwind'],
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop',
-    liveUrl: 'https://example.com/aura',
-    repoUrl: 'https://github.com/example/aura',
-    altText: 'Mock of Aura ecommerce mobile screen with product search outcomes'
+    description: 'This n8n workflow automates the process of analyzing sales call transcripts from PDF files stored in Google Drive.',
+    tech: ['n8n'],
+    image: '/proj3.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/ai-crm-sales-analysis',
+    repoUrl: 'https://github.com/asadxagentic-ai/ai-crm-sales-analysis',
+    altText: 'AI CRM Sales Analysis'
   },
   {
     id: '04',
-    title: 'ORBIT AGENT PLATFORM',
+    title: 'Vapi AI Recipionist',
     outcome: 'Automated 80% of customer support workflows with zero hallucinations.',
-    description: 'Developed an autonomous agent platform utilizing guardrailed state machines to handle user queries, execute database searches, and generate deterministic multi-step solutions without human intervention.',
-    tech: ['Python', 'LangGraph', 'FastAPI', 'PostgreSQL', 'Vercel'],
-    image: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=2000&auto=format&fit=crop',
-    liveUrl: 'https://example.com/orbit',
-    repoUrl: 'https://github.com/example/orbit',
-    altText: 'Network graph visualization of support agent routing paths'
+    description: 'This n8n workflow automates the process of a AI Recipionist for a Real Estate Agent using Vapi API. The AI Recipionist is able to answer phone calls from potential buyers and schedule viewings.',
+    tech: ['n8n', 'Vapi', 'Docker'],
+    image: '/proj4.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/vapi-ai-receptionist',
+    repoUrl: 'https://github.com/asadxagentic-ai/vapi-ai-receptionist',
+    altText: 'Vapi AI Recipionist'
   },
   {
     id: '05',
-    title: 'SYNAPSE DATA MESH',
+    title: 'AI Weather Report Generator',
     outcome: 'Processed 10M+ daily telemetry events with sub-10ms query speeds.',
-    description: 'Built a real-time event streaming architecture that aggregates distributed IoT sensor logs, performs online feature engineering, and streams analytics directly to live executive dashboards.',
-    tech: ['Rust', 'Apache Kafka', 'GraphQL', 'ClickHouse', 'Docker'],
-    image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2000&auto=format&fit=crop',
-    liveUrl: 'https://example.com/synapse',
-    repoUrl: 'https://github.com/example/synapse',
-    altText: 'Dark theme server and data grid analytics interface'
+    description: 'This n8n workflow automates the generation and delivery of a comprehensive daily weather intelligence report.',
+    tech: ['n8n', 'OpenWeatherMap', 'Docker', 'Telegram'],
+    image: '/proj5.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/ai-weather-intelligence-report-generator',
+    repoUrl: 'https://github.com/asadxagentic-ai/ai-weather-intelligence-report-generator',
+    altText: 'AI Weather Report Generator'
   },
   {
     id: '06',
-    title: 'VORTEX CLOUD VISION',
+    title: 'AI Social media post generator',
     outcome: 'Delivered real-time video stream analytics across 500+ edge endpoints.',
-    description: 'Engineered a decentralized computer vision inference engine capable of multi-camera object tracking and automated anomaly detection with ultra-low latency.',
-    tech: ['Go', 'WebRTC', 'TensorFlow', 'Kubernetes', 'GCP'],
-    image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2000&auto=format&fit=crop',
-    liveUrl: 'https://example.com/vortex',
-    repoUrl: 'https://github.com/example/vortex',
-    altText: 'Futuristic cybernetic vision grid displaying real-time tracking metrics'
+    description: 'This n8n workflow automates the end-to-end creation and publishing of social media content across Facebook, LinkedIn, and Pinterest.',
+    tech: ['n8n', 'Docker'],
+    image: '/proj6.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/ai-social-media-post-generator',
+    repoUrl: 'https://github.com/asadxagentic-ai/ai-social-media-post-generator',
+    altText: 'AI Social media post generator'
+  },
+  {
+    id: '07',
+    title: 'AI Whatsapp Rag Business Assistant',
+    outcome: 'Delivered real-time video stream analytics across 500+ edge endpoints.',
+    description: 'An intelligent WhatsApp business assistant built with n8n that automatically handles incoming messages, classifies them as client inquiries or personal messages.',
+    tech: ['n8n', 'Docker'],
+    image: '/proj6.png',
+    liveUrl: 'https://github.com/asadxagentic-ai/ai-whatsapp-rag-business-assistant',
+    repoUrl: 'https://github.com/asadxagentic-ai/ai-whatsapp-rag-business-assistant',
+    altText: 'AI Whatsapp Rag Business Assistant'
   }
 ];
 
@@ -221,18 +232,28 @@ export function Projects() {
               className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#111115] border border-zinc-800 rounded-3xl shadow-2xl flex flex-col z-10 scrollbar-thin"
             >
               {/* Image Banner */}
-              <div className="h-44 sm:h-56 relative w-full overflow-hidden">
+              <div className="h-48 sm:h-64 relative w-full overflow-hidden bg-[#0c0c0e]">
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.altText}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111115] to-black/30" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111115] via-[#111115]/30 to-black/40" />
                 
+                {/* Mock Window Header Bar */}
+                <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
+                  <span className="w-2 h-2 rounded-full bg-red-500" />
+                  <span className="w-2 h-2 rounded-full bg-amber-500" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <span className="ml-2 font-mono text-[9px] font-bold text-zinc-300 uppercase tracking-widest">
+                    CASE STUDY #{selectedProject.id}
+                  </span>
+                </div>
+
                 {/* Close Button */}
                 <button
                   onClick={() => setActiveProjectIndex(null)}
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full border border-white/10 bg-black/50 backdrop-blur-md text-white hover:text-orange-500 hover:border-orange-500/40 flex items-center justify-center cursor-pointer transition-colors"
+                  className="absolute top-4 right-4 w-9 h-9 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-white hover:text-orange-500 hover:border-orange-500/40 flex items-center justify-center cursor-pointer transition-colors z-20"
                   aria-label="Close case study details"
                 >
                   <X className="w-4 h-4" />

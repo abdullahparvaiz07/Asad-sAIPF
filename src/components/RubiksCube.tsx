@@ -448,17 +448,7 @@ export function RubiksCube() {
         }
 
         .cube-aura {
-          position: absolute;
-          inset: -60px;
-          background: radial-gradient(circle at 50% 50%, rgba(255, 88, 0, 0.18) 0%, rgba(196, 30, 58, 0.12) 40%, transparent 70%);
-          animation: cubeAura 4s ease-in-out infinite;
-          pointer-events: none;
-          border-radius: 50%;
-        }
-
-        @keyframes cubeAura {
-          0%, 100% { transform: scale(1); opacity: 0.8; }
-          50% { transform: scale(1.1); opacity: 1; }
+          display: none;
         }
 
         .cube-viewport {
@@ -509,40 +499,34 @@ export function RubiksCube() {
         }
 
         .shine {
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          height: 38%;
-          border-radius: 0 0 6px 6px;
-          background: rgba(0, 0, 0, 0.22);
-          pointer-events: none;
-          z-index: 1;
+          display: none;
         }
 
-        .fc-red    { background: var(--red); box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), 0 0 12px var(--red); }
-        .fc-orange { background: var(--orange); box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), 0 0 12px var(--orange); }
-        .fc-blue   { background: rgba(0,81,162,1); box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), 0 0 12px rgba(0,81,162,.55); }
-        .fc-green  { background: rgba(0,155,72,1); box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), 0 0 12px rgba(0,155,72,.55); }
-        .fc-yellow { background: rgba(255,213,0,1) !important; box-shadow: inset 0 -4px 0 rgba(0,0,0,.35), 0 0 12px rgba(255,213,0,.55); }
-        .fc-white  { background: rgba(255,255,255,1) !important; box-shadow: inset 0 -4px 0 rgba(0,0,0,.15), 0 0 8px rgba(255,255,255,.3); }
+        .fc-red    { background: var(--red); box-shadow: 0 0 12px var(--red); }
+        .fc-orange { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+        .fc-blue   { background: rgba(0,81,162,1); box-shadow: 0 0 12px rgba(0,81,162,.55); }
+        .fc-green  { background: rgba(0,155,72,1); box-shadow: 0 0 12px rgba(0,155,72,.55); }
+        .fc-yellow { background: rgba(255,213,0,1) !important; box-shadow: 0 0 12px rgba(255,213,0,.55); }
+        .fc-white  { background: rgba(255,255,255,1) !important; box-shadow: 0 0 8px rgba(255,255,255,.3); }
         .fc-inner  { background: transparent !important; box-shadow: none !important; border-color: transparent !important; opacity: 0; }
 
-        .cube-ui { text-align: center; margin-top: 24px; }
+        .cube-ui { text-align: center; margin-top: 50px; padding-top: 10px; }
 
         .cube-status {
           font-family: monospace;
           font-weight: 700;
-          font-size: 0.8rem;
+          font-size: 0.82rem;
           color: #f05a28;
-          letter-spacing: 0.8px;
-          margin-bottom: 10px;
+          letter-spacing: 1px;
+          margin-bottom: 14px;
           min-height: 1.2em;
           text-shadow: 0 0 10px rgba(240, 90, 40, 0.3);
         }
 
-        .cube-btns { display: flex; gap: 8px; justify-content: center; margin-bottom: 6px; }
+        .cube-btns { display: flex; gap: 10px; justify-content: center; margin-bottom: 12px; }
 
         .cbtn {
-          padding: 6px 14px;
+          padding: 8px 18px;
           border: 1px solid rgba(0, 0, 0, 0.15);
           background: rgba(255, 255, 255, 0.8);
           color: #334155;
@@ -559,7 +543,7 @@ export function RubiksCube() {
         .cbtn.cbtn-solve:hover:not(:disabled) { border-color: #f05a28; color: #ffffff; background: #f05a28; }
         .cbtn:disabled { opacity: 0.35; cursor: not-allowed; }
 
-        .cube-hint { font-size: 0.72rem; color: #64748b; letter-spacing: 0.3px; }
+        .cube-hint { font-size: 0.75rem; color: #64748b; letter-spacing: 0.4px; margin-top: 6px; }
       `}</style>
 
       {/* 3D Rubik's Cube Wrapper */}
@@ -579,7 +563,7 @@ export function RubiksCube() {
                 Solve
               </button>
             </div>
-            <div className="cube-hint">Drag to rotate • buttons to scramble/solve</div>
+            <div className="cube-hint">Drag to rotate</div>
           </div>
         </div>
       </div>

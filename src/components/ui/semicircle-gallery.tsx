@@ -40,34 +40,34 @@ export function SemicircleGallery({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Compute fanned positioning, margins, and heights dynamically
+  // Compute smooth semi-circle arc geometry, spacing, and positions dynamically
   const layout = useMemo(() => {
-    let radius = customRadius || 460;
-    let cardSize = 200; // width/height in px
-    let startAngle = -92; // degrees from vertical (reaching the outer edges)
-    let endAngle = 92;   // degrees from vertical (reaching the outer edges)
-    let containerHeight = 740;
-    let centerY = 600;
+    let radius = customRadius || 520;
+    let cardSize = 160;  // width/height in px
+    let startAngle = -84; // clean semi-circle arc span (-84deg to +84deg)
+    let endAngle = 84;
+    let containerHeight = 680;
+    let centerY = 560;
     let isMobile = false;
 
     if (windowWidth < 768) {
       isMobile = true;
     } else if (windowWidth < 1024) {
       // Tablet layout
-      radius = customRadius || 240;
+      radius = customRadius || 320;
       cardSize = 120;
-      startAngle = -82;
-      endAngle = 82;
-      containerHeight = 400;
-      centerY = 310;
+      startAngle = -78;
+      endAngle = 78;
+      containerHeight = 460;
+      centerY = 380;
     } else if (windowWidth < 1280) {
       // Medium Desktop layout
-      radius = customRadius || 360;
-      cardSize = 160;
-      startAngle = -88;
-      endAngle = 88;
+      radius = customRadius || 420;
+      cardSize = 140;
+      startAngle = -82;
+      endAngle = 82;
       containerHeight = 580;
-      centerY = 460;
+      centerY = 480;
     }
 
     const N = items.length;
@@ -81,9 +81,12 @@ export function SemicircleGallery({
       const distFromCenter = Math.abs(angleDegrees) / Math.max(Math.abs(startAngle), Math.abs(endAngle));
       const targetScale = 1 + (1 - distFromCenter) * sizeVariance;
 
-      // Trigonometry positioning: x relative to centerX, y relative to centerY
+      // Trigonometry positioning along true semi-circle radius
       const x = radius * Math.sin(angleRadians);
       const y = -radius * Math.cos(angleRadians);
+      
+      // Symmetrical arc rotation following the curve (-55deg to +55deg)
+      const rotation = angleDegrees * 0.65;
 
       return {
         item,
@@ -91,12 +94,14 @@ export function SemicircleGallery({
         x,
         y,
         angle: angleDegrees,
+        rotation,
         scale: targetScale,
       };
     });
 
     return {
       cards,
+      radius,
       cardSize,
       containerHeight,
       centerY,
@@ -107,7 +112,7 @@ export function SemicircleGallery({
   // Center index for stagger delay calculation
   const centerIndex = (items.length - 1) / 2;
 
-  // Render Mobile Layout: Horizontal Scroll-Snap Carousel
+  // Render Mobile Layout: Horizontal Scroll-Snap Carousel (Never allows overlap)
   if (layout.isMobile) {
     return (
       <div className="w-full flex flex-col gap-8">
@@ -119,21 +124,33 @@ export function SemicircleGallery({
         {/* Scroll Snap Carousel Row */}
         <div 
           ref={scrollContainerRef}
-          className="w-full overflow-x-auto flex gap-4 px-6 snap-x snap-mandatory scroll-smooth scrollbar-none pb-4"
+          className="w-full overflow-x-auto flex gap-6 px-6 snap-x snap-mandatory scroll-smooth scrollbar-none pb-4"
         >
           {items.map((item, i) => (
             <div
               key={`${item.title}-mobile-${i}`}
               onClick={() => onCardClick(i)}
-              className="snap-center shrink-0 w-[240px] h-[240px] rounded-2xl overflow-hidden relative border border-white/[0.08] bg-[#111113] shadow-lg cursor-pointer"
+              className="snap-center shrink-0 w-[240px] h-[240px] rounded-2xl overflow-hidden relative border border-white/10 bg-[#111113] shadow-xl cursor-pointer group flex flex-col"
             >
+              {/* Top Window Bar */}
+              <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-20 pointer-events-none flex items-center px-3 justify-between">
+                <div className="flex items-center gap-1 opacity-75">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500/80" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500/80" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
+                </div>
+                <span className="text-[7px] font-mono font-bold text-white/50 uppercase">
+                  #{ (i + 1).toString().padStart(2, '0') }
+                </span>
+              </div>
+
               <img
                 src={item.image}
                 alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.05] transition-transform duration-500"
                 draggable={false}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent flex flex-col justify-end p-4 text-white">
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-transparent flex flex-col justify-end p-4 text-white z-10">
                 <span className="text-[7px] font-mono font-bold text-orange-500 tracking-wider block mb-1 uppercase">
                   Case Study_{(i + 1).toString().padStart(2, '0')}
                 </span>
@@ -151,14 +168,39 @@ export function SemicircleGallery({
     );
   }
 
-  // Render Desktop/Tablet Layout: Semicircular Arc Gallery
+  // Render Desktop/Tablet Layout: Mathematical Semicircular Arc Gallery
   return (
     <div
-      className="relative w-full flex items-center justify-center select-none overflow-hidden"
+      className="relative w-full flex items-center justify-center select-none overflow-visible pt-8"
       style={{ height: `${layout.containerHeight}px` }}
     >
       {/* Background radial spotlight grid inside the semicircle */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom,rgba(240,90,40,0.03),transparent_60%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom,rgba(240,90,40,0.04),transparent_65%)]" />
+
+      {/* SVG Semi-circle Arc Ring Guide Line */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0">
+        <svg
+          className="w-full h-full pointer-events-none opacity-25"
+          viewBox="0 0 1000 680"
+          fill="none"
+        >
+          <path
+            d={`M ${500 - layout.radius} ${layout.centerY} A ${layout.radius} ${layout.radius} 0 0 1 ${500 + layout.radius} ${layout.centerY}`}
+            stroke="url(#semicircle-line-gradient)"
+            strokeWidth="1.5"
+            strokeDasharray="6 6"
+          />
+          <defs>
+            <linearGradient id="semicircle-line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#f05a28" stopOpacity="0.05" />
+              <stop offset="25%" stopColor="#f05a28" stopOpacity="0.7" />
+              <stop offset="50%" stopColor="#ff7b47" stopOpacity="1" />
+              <stop offset="75%" stopColor="#f05a28" stopOpacity="0.7" />
+              <stop offset="100%" stopColor="#f05a28" stopOpacity="0.05" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
 
       {/* Radial Fanned Project Cards */}
       {layout.cards.map((card) => {
@@ -177,7 +219,7 @@ export function SemicircleGallery({
           fanned: {
             x: card.x,
             y: card.y,
-            rotate: card.angle,
+            rotate: card.rotation,
             scale: card.scale,
             opacity: 1,
             transition: {
@@ -209,43 +251,54 @@ export function SemicircleGallery({
             viewport={{ once: true, margin: "-10%" }}
             whileHover={motionEnabled ? {
               x: card.x,
-              y: card.y - 25, // lift slightly upwards (25px)
-              rotate: 0, // straighten rotation to 0
-              scale: card.scale * 1.08,
-              zIndex: 50,
-              transition: { duration: 0.3, ease: 'easeOut' },
+              y: card.y - 22, // lift 22px upwards
+              rotate: 0, // straighten rotation to 0 on hover
+              scale: card.scale * 1.12,
+              zIndex: 100,
+              transition: { duration: 0.25, ease: 'easeOut' },
             } : undefined}
-            className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/[0.08] bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-shadow hover:shadow-[0_20px_45px_rgba(240,90,40,0.18)]"
+            className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/10 bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(240,90,40,0.25)]"
             style={{
               width: layout.cardSize,
               height: layout.cardSize,
-              // Centered coordinate anchors subtracting the card's half-size
               left: `calc(50% - ${halfSize}px)`,
               top: `calc(${layout.centerY}px - ${halfSize}px)`,
               transformOrigin: 'center center',
             }}
           >
-            {/* Screenshot */}
+            {/* Top Window Bar Frame */}
+            <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-20 pointer-events-none flex items-center px-3 justify-between">
+              <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500/80" />
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500/80" />
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
+              </div>
+              <span className="text-[7px] font-mono font-bold text-white/50 group-hover:text-orange-400 transition-colors uppercase">
+                #{ (card.index + 1).toString().padStart(2, '0') }
+              </span>
+            </div>
+
+            {/* Screenshot with object-top positioning & smooth zoom */}
             <img
               src={card.item.image}
               alt={card.item.title}
-              className="absolute inset-0 w-full h-full object-cover transform scale-100 group-hover:scale-[1.05] transition-transform duration-700 ease-out"
+              className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.08] transition-transform duration-700 ease-out"
               loading="lazy"
               draggable={false}
             />
 
-            {/* Dark Mask on hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent opacity-95 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+            {/* Bottom Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-transparent opacity-85 group-hover:opacity-95 transition-opacity duration-300 pointer-events-none" />
 
             {/* Text Overlay */}
-            <div className="absolute inset-0 p-4.5 flex flex-col justify-end text-left select-none pointer-events-none z-10">
-              <span className="text-[7px] font-mono font-bold text-orange-500 tracking-wider block mb-1 uppercase">
+            <div className="absolute inset-0 p-3.5 sm:p-4 flex flex-col justify-end text-left select-none pointer-events-none z-10">
+              <span className="text-[7px] font-mono font-bold text-orange-500 tracking-wider block mb-0.5 uppercase">
                 Case Study_{(card.index + 1).toString().padStart(2, '0')}
               </span>
-              <h4 className="text-xs font-black uppercase tracking-tight font-['Outfit'] text-white leading-tight group-hover:text-orange-500 transition-colors duration-300 mb-0.5">
+              <h4 className="text-xs font-black uppercase tracking-tight font-['Outfit'] text-white leading-tight group-hover:text-orange-400 transition-colors duration-300 mb-0.5">
                 {card.item.title}
               </h4>
-              <p className="text-[9px] text-zinc-400 font-sans line-clamp-1 group-hover:line-clamp-none transition-all duration-300">
+              <p className="text-[9px] text-zinc-300 font-sans line-clamp-1 group-hover:line-clamp-2 transition-all duration-300 leading-tight">
                 {card.item.outcome}
               </p>
             </div>

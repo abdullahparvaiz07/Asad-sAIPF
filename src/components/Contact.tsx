@@ -125,7 +125,7 @@ export function Contact() {
                 
                 {/* GitHub */}
                 <a
-                  href="https://github.com/asadullah"
+                  href="https://github.com/asadxagentic-ai"
                   target="_blank"
                   rel="noreferrer"
                   className="group relative flex justify-center p-3.5 rounded-md drop-shadow-xl bg-gradient-to-r from-zinc-800 to-zinc-950 text-white font-semibold hover:translate-y-3 hover:rounded-[50%] transition-all duration-500 hover:from-[#24292e] hover:to-[#0f1419] cursor-pointer"
@@ -148,7 +148,7 @@ export function Contact() {
 
                 {/* LinkedIn */}
                 <a
-                  href="https://linkedin.com/in/asadullah"
+                  href="https://linkedin.com/in/asadxagentic-ai/"
                   target="_blank"
                   rel="noreferrer"
                   className="group relative flex justify-center p-3.5 rounded-md drop-shadow-xl bg-gradient-to-r from-[#0077b5] to-[#00598c] text-white font-semibold hover:translate-y-3 hover:rounded-[50%] transition-all duration-500 hover:from-[#00598c] hover:to-[#003c61] cursor-pointer"
