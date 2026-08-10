@@ -5,6 +5,7 @@ import { useScrollSystem } from './ScrollSystem';
 const navItems = [
   { name: 'Home', id: 'home' },
   { name: 'About', id: 'about' },
+  { name: 'Skills', id: 'skills' },
   { name: 'Projects', id: 'projects' },
   { name: 'Contact', id: 'contact' },
 ];
@@ -71,7 +72,7 @@ export function LiquidNavbar() {
     setMousePos({ x: 0, y: 0 });
   };
 
-  const isLight = active === 'about';
+  const isLight = active === 'about' || active === 'skills';
 
   return (
     <>
