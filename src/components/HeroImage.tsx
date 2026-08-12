@@ -23,6 +23,8 @@ export function HeroImage({
       <img
         src={originalSrc}
         alt={altText}
+        fetchPriority="high"
+        decoding="async"
         className="w-full h-full object-cover object-top filter brightness-[0.98] contrast-[1.02] transition-all duration-500"
         onError={(e) => {
           e.currentTarget.src = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop";

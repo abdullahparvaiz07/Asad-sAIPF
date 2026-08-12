@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollSystem } from './ScrollSystem';
+import { DragonToggle } from './DragonToggle';
 
 const navItems = [
   { name: 'Home', id: 'home' },
@@ -76,13 +77,13 @@ export function LiquidNavbar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-full z-[100] pointer-events-none px-[5%] h-[7vh] min-h-[52px] flex items-center justify-between text-xs uppercase tracking-widest font-medium">
+      <div className="fixed top-0 left-0 w-full z-[100] pointer-events-none px-[5%] h-[10vh] min-h-[80px] flex items-center justify-between text-xs uppercase tracking-widest font-medium">
         <div className="flex-shrink-0 pointer-events-auto cursor-pointer flex items-center transition-transform duration-300 hover:scale-105" onClick={() => scrollTo('home')}>
           <img 
             id="navbar-brand-logo-target"
             src="/logo.png" 
             alt="Asadullah Logo" 
-            className="h-9 sm:h-12 md:h-16 lg:h-20 w-auto object-contain filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]" 
+            className="h-20 sm:h-22 md:h-24 lg:h-28 w-auto object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.4)]" 
             style={{ opacity: 0 }}
           />
         </div>
@@ -147,20 +148,24 @@ export function LiquidNavbar() {
           </div>
         </motion.nav>
 
-        {/* Mobile Nav Toggle Button (From Uiverse.io by vinodjangid07) */}
-        <div className="lg:hidden pointer-events-auto">
-          <input
-            type="checkbox"
-            id="checkbox"
-            className="uiverse-checkbox"
-            checked={isMobileMenuOpen}
-            onChange={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          />
-          <label htmlFor="checkbox" className="toggle">
-            <div className={`bars ${isLight ? '!bg-[#111]' : '!bg-white'}`} id="bar1"></div>
-            <div className={`bars ${isLight ? '!bg-[#111]' : '!bg-white'}`} id="bar2"></div>
-            <div className={`bars ${isLight ? '!bg-[#111]' : '!bg-white'}`} id="bar3"></div>
-          </label>
+        {/* Right Controls Area (Dragon Toggle + Mobile Menu Button) */}
+        <div className="flex items-center gap-2 sm:gap-3 pointer-events-auto">
+          <DragonToggle />
+
+          <div className="lg:hidden">
+            <input
+              type="checkbox"
+              id="hamburger-checkbox"
+              className="uiverse-hamburger-checkbox"
+              checked={isMobileMenuOpen}
+              onChange={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            />
+            <label htmlFor="hamburger-checkbox" className="hamburger-toggle" aria-label="Toggle Navigation Menu">
+              <div className={`hamburger-bar hamburger-bar--1 ${isLight && !isMobileMenuOpen ? '!bg-[#111]' : '!bg-white'}`}></div>
+              <div className={`hamburger-bar hamburger-bar--2 ${isLight && !isMobileMenuOpen ? '!bg-[#111]' : '!bg-white'}`}></div>
+              <div className={`hamburger-bar hamburger-bar--3 ${isLight && !isMobileMenuOpen ? '!bg-[#111]' : '!bg-white'}`}></div>
+            </label>
+          </div>
         </div>
       </div>
 

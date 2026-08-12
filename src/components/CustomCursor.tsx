@@ -121,7 +121,7 @@ export function CustomCursor() {
         translateX: '-50%',
         translateY: '-50%',
       }}
-      className={`fixed top-0 left-0 pointer-events-none z-[9999] hidden lg:flex items-center justify-center transition-opacity duration-300 ${
+      className={`fixed top-0 left-0 pointer-events-none z-[9999] hidden lg:flex items-center justify-center transition-opacity duration-300 transform-gpu ${
         isVisible ? 'opacity-100' : 'opacity-0'
       }`}
     >

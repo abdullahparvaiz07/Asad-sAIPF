@@ -3,6 +3,7 @@ import { useScrollSystem } from './ScrollSystem';
 import { SemicircleGallery, ProjectGalleryItem } from './ui/semicircle-gallery';
 import { ArrowUpRight, Github, X, Eye, Code } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { getTechLogo } from './TechnicalExpertise';
 
 /* -----------------------------------------------------------------------------
    PROJECT DATA CONFIGURATION
@@ -158,7 +159,7 @@ export function Projects() {
             <div className="flex items-center justify-center md:justify-start gap-3 mb-3 font-mono text-[9px] font-black tracking-[0.28em] text-zinc-500">
               <span className="text-orange-500">//</span> SELECTED CASE STUDIES
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter uppercase leading-[0.9] font-['Outfit']">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tighter uppercase leading-[0.9] font-['Outfit']">
               FEATURED<br />
               <span
                 className="block text-white"
@@ -189,14 +190,14 @@ export function Projects() {
             onCardClick={(index) => setActiveProjectIndex(index)}
             centerChildren={
               <>
-                <div className="text-[8px] font-mono text-[#f05a28] tracking-widest font-black uppercase mb-2">
+                <div className="text-[10px] font-mono text-[#f05a28] tracking-widest font-black uppercase mb-2">
                   // CORE INVENTORY
                 </div>
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-black font-['Outfit'] tracking-tight leading-none text-white uppercase">
-                  ENGINEERED<br />SOLUTIONS
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-black font-['Outfit'] tracking-tight leading-none text-white uppercase whitespace-nowrap">
+                 AI SYSTEMS ENGINEERING
                 </h3>
-                <p className="text-[10px] text-zinc-400 font-sans max-w-xs mt-2 leading-relaxed leading-normal px-2">
-                  Intelligent workflows, scalable pipelines, and neural agent systems built for performance.
+                <p className="text-xs sm:text-sm text-zinc-400 font-sans max-w-sm sm:max-w-md md:max-w-lg mt-2.5 leading-relaxed px-2">
+                  Designing, deploying, and scaling intelligent systems, agentic workflows, and machine learning infrastructure.
                 </p>
                 <button
                   onClick={handleCTA}
@@ -295,14 +296,18 @@ export function Projects() {
                       INTEGRATION STACK
                     </span>
                     <div className="flex flex-wrap gap-2">
-                      {selectedProject.tech.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-1 rounded bg-white/[0.05] border border-white/[0.05] font-mono text-[8px] text-zinc-300 font-bold uppercase tracking-wider"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                      {selectedProject.tech.map((tag) => {
+                        const logo = getTechLogo(tag);
+                        return (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-1 rounded bg-white/[0.05] border border-white/[0.05] font-mono text-[8px] text-zinc-300 font-bold uppercase tracking-wider flex items-center gap-1.5"
+                          >
+                            {logo && <img src={logo} alt={tag} className="w-3.5 h-3.5 object-contain" />}
+                            <span>{tag}</span>
+                          </span>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

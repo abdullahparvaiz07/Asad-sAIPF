@@ -52,11 +52,12 @@ const EXPLORE_DATA: Record<string, { icon: string; tagline: string; points: stri
 };
 
 const STORY_MILESTONES = [
-  { year: '2021', title: 'The Spark', desc: 'Wrote my first line of code and fell in love with the magic of making machines do what I imagine. Built small scripts that automated my own repetitive tasks.' },
-  { year: '2022', title: 'Going Deep', desc: 'Dove headfirst into full-stack development. Built real products for real people. Learned that the best code is the code nobody notices — it just works.' },
-  { year: '2023', title: 'The AI Shift', desc: 'Discovered the power of AI and automation. Started building intelligent systems that don\'t just respond — they anticipate, learn, and act autonomously.' },
-  { year: '2024', title: 'Building for Others', desc: 'Began taking on clients. Delivered automation systems, AI agents, and full-stack products that saved businesses thousands of hours of manual work.' },
-  { year: 'NOW', title: 'The Mission', desc: 'Building AI experiences that feel like magic. Every project is a step toward a future where technology handles the boring stuff so humans can do what they do best — create.' },
+  { year: '2021', title: 'The Spark', desc: 'Wrote my first line of code and fell in love with making machines execute ideas. Built custom scripts that automated my own repetitive daily workflows.' },
+  { year: '2022', title: 'Full-Stack Foundations', desc: 'Dove headfirst into modern full-stack architecture and cloud infrastructure. Built real products for real users, learning that true code elegance lies in zero-friction execution.' },
+  { year: '2023', title: 'The AI Shift', desc: 'Discovered the power of Large Language Models and vector embeddings. Transitioned from static apps to building systems that don\'t just respond — they perceive, reason, and act.' },
+  { year: '2024', title: 'Enterprise Automations & Clients', desc: 'Partnered with clients globally. Engineered multi-agent workflows, custom n8n pipelines, and RAG systems that slashed manual processing times from hours to seconds.' },
+  { year: '2025', title: 'Agent Swarms & Neural Graphs', desc: 'Architected production-ready multi-agent swarms with LangGraph, vLLM, and real-time voice APIs. Deployed self-healing automation loops operating with 99.9% reliability.' },
+  { year: '2026', title: 'The Frontier of Autonomous Systems', desc: 'Building sovereign AI experiences and self-operating business engines. Transforming complex operations into zero-touch intelligence so humans can focus entirely on creation.' },
 ];
 
 export function About() {
@@ -121,7 +122,7 @@ export function About() {
                 className="text-[9vw] lg:text-[4.5vw] xl:text-[72px] 2xl:text-[80px] font-black leading-[0.9] tracking-tighter uppercase text-[#111]"
               >
                 <FlipText duration={0.8}>I DON'T BUILD</FlipText><br/>
-                <FlipText duration={0.8} delay={0.2}>WEBSITES.</FlipText>
+                <FlipText duration={0.8} delay={0.2}>SYSTEMS.</FlipText>
               </motion.h2>
               <div className="h-12 lg:h-24"></div>
               <motion.h2 
@@ -164,8 +165,8 @@ export function About() {
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               >
-                <p className="text-[13px] md:text-sm font-semibold leading-[1.8] text-[#333] mb-8 pr-4">
-                  I design intelligent systems that eliminate repetitive work, automate businesses, and create digital products that are both beautiful and incredibly efficient.
+                <p className="text-[16px] md:text-sm font-semibold leading-[1.8] text-[#333] mb-8 pr-4">
+                <i>"I design intelligent systems that eliminate repetitive work, automate businesses, and create digital products that are both beautiful and incredibly efficient."</i> 
                 </p>
                 <button 
                   onClick={() => setStoryOpen(true)}

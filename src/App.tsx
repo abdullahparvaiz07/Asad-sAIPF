@@ -5,11 +5,13 @@ import { FlipText } from './components/FlipText';
 import { TechnicalExpertise } from './components/TechnicalExpertise';
 import { Projects } from './components/Projects';
 import { CustomCursor } from './components/CustomCursor';
+import { DragonCursor } from './components/DragonCursor';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { motion } from 'motion/react';
 import { HeroImage } from './components/HeroImage';
 import { BrandLoader } from './components/BrandLoader';
+import { DragonProvider } from './components/DragonContext';
 import {
   SectionTeleprinter,
   ScrollDepthIndicator,
@@ -18,9 +20,11 @@ import { ScrollSystemProvider, useScrollSystem } from './components/ScrollSystem
 
 export default function App() {
   return (
-    <ScrollSystemProvider>
-      <MainAppContent />
-    </ScrollSystemProvider>
+    <DragonProvider>
+      <ScrollSystemProvider>
+        <MainAppContent />
+      </ScrollSystemProvider>
+    </DragonProvider>
   );
 }
 
@@ -36,6 +40,7 @@ function MainAppContent() {
       <ScrollDepthIndicator />
 
       <CustomCursor />
+      <DragonCursor />
       {/* Hero Section */}
       <section id="home" className="relative min-h-screen flex flex-col overflow-hidden">
         {/* Grid Background */}
@@ -104,30 +109,65 @@ function MainAppContent() {
               ASADULLAH
             </div>
             
-            {/* STEP 4 — Left Subheadline (Rises at 4.8s) */}
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
-              className="mt-12 sm:mt-28 md:mt-40 lg:mt-48 max-w-[280px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto"
-            >
-              <p className="text-[10px] sm:text-xs font-medium leading-relaxed tracking-widest uppercase text-white/90">
-                Building next-generation AI automation<br/>
-                that streamlines workflows,<br/>
-                boosts productivity<br/>
-                and scales with your business
-              </p>
-            </motion.div>
+            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-20 sm:mt-32 md:mt-40 lg:mt-48">
+              {/* STEP 4 — Left Subheadline (Rises at 4.8s, pushed downward on mobile) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
+                className="mt-10 sm:mt-12 md:mt-0 max-w-[300px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto leading-[1.35] tracking-[0.02em]"
+              >
+                <div className="uppercase">
+                  <span className="font-['Space_Grotesk'] font-semibold text-[15px] sm:text-[17px] text-white">
+                    BUILDING NEXT-GENERATION{' '}
+                  </span>
+                  <span className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white">
+                    AI AUTOMATION
+                  </span>
+                </div>
+                <p className="font-['Inter'] font-normal text-[14px] sm:text-[16px] text-white/80 mt-1">
+                  <i> that streamlines workflows,<br/>
+                  boosts productivity<br/>
+                  and scales with your business </i>
+                </p>
+              </motion.div>
+
+              {/* STEP 4.5 — Right Subheadline (Hidden on mobile, right-aligned on desktop, rises at 5.0s) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 5.0, ease: [0.16, 1, 0.3, 1] }}
+                className="hidden md:block max-w-[300px] sm:max-w-xs md:max-w-sm mr-1 text-right pointer-events-auto leading-[1.35] tracking-[0.02em]"
+              >
+                <div>
+                  <div className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white uppercase">
+                    AI That Works
+                  </div>
+                  <div className="font-['Space_Grotesk'] font-semibold text-[15px] sm:text-[17px] text-white uppercase">
+                    AUTOMATION that scales
+                  </div>
+                  <p className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white uppercase">
+                    SYSTEMS built for impact
+                  </p>
+                </div>
+              </motion.div>
+            </div>
           </div>
 
           <div className="mt-auto w-full pointer-events-auto flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 sm:gap-0 relative z-10">
-            {/* STEP 5 — Large ASADULLAH Typography (Rises at 5.5s) */}
+            {/* STEP 5 — Large ASADULLAH Typography & Role Tag (Rises at 5.5s) */}
             <motion.div
               initial={{ opacity: 0, y: 140 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.0, delay: 5.5, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="text-xs font-medium mb-1.5 sm:mb-3 ml-1 tracking-widest">©2026</div>
+              <div className="text-xs font-mono font-bold mb-1.5 sm:mb-3 ml-1 tracking-[0.2em] uppercase text-white/90 flex items-center gap-2.5">
+                <span>©2026</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                <span className="text-white/90 tracking-[0.25em] bg-white/10 px-2.5 py-0.5 rounded-full border border-white/15 backdrop-blur-md">
+                  AI ENGINEER
+                </span>
+              </div>
               <h2 className="text-[9vw] sm:text-[8vw] font-black leading-[0.8] tracking-tighter uppercase w-full -ml-1 sm:-ml-2">
                 ASADULLAH
               </h2>
@@ -172,7 +212,7 @@ function MainAppContent() {
                 <div className="flex justify-between items-end mt-1">
                   <div>
                     <h4 className="font-bold text-sm sm:text-[15px] leading-tight mb-0.5">Asadullah</h4>
-                    <p className="text-[9px] sm:text-[10px] text-white/50 font-medium tracking-wide">AI Expert</p>
+                    <p className="text-[9px] sm:text-[10px] text-[#f05a28] font-mono font-bold tracking-wider uppercase">AI Engineer</p>
                   </div>
                   
                   <div className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded flex items-center justify-center text-black group-hover/talk:-translate-y-0.5 group-hover/talk:translate-x-0.5 transition-transform duration-300">

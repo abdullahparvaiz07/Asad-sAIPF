@@ -308,7 +308,7 @@ export function SemicircleGallery({
 
       {/* Central Headline, Subhead, and CTA Pill inside the arch pivot */}
       <div 
-        className="absolute z-10 w-[280px] md:w-[320px] lg:w-[360px] text-center flex flex-col items-center justify-center p-4 select-none pointer-events-auto"
+        className="absolute z-10 w-[340px] md:w-[440px] lg:w-[500px] text-center flex flex-col items-center justify-center p-4 select-none pointer-events-auto"
         style={{
           left: '50%',
           top: `${layout.centerY}px`,

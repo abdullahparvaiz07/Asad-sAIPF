@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { FlipText } from './FlipText';
 
 export interface SkillItem {
   id: string;
@@ -253,35 +254,37 @@ async def predict(payload: InferenceRequest):
     return aggregate(res1.result(), res2.result())`
   },
   {
-    id: 'prompt-engg',
-    name: 'Prompt Engg.',
-    subtitle: 'Crafting Better Instructions',
+    id: 'python',
+    name: 'Python',
+    subtitle: 'Core Language & AI Stack',
     expertise: 'Expertise: 3+ Years',
-    category: 'frameworks',
-    description: 'Mastering advanced prompt design frameworks (Few-Shot, CoT, ReAct, System Steering) to enforce reliable, hallucination-free AI responses.',
+    category: 'engineering',
+    description: 'Developing high-performance Python architectures, AI model integrations, data analysis pipelines, and backend automation.',
     useCases: [
-      'System persona tuning & steering',
-      'Few-shot exemplar engineering',
-      'ReAct tool calling prompt schemas',
-      'AI safety & injection guardrails'
+      'Object-oriented & functional Python design',
+      'Data engineering with Pandas, NumPy & Polars',
+      'AsyncIO & concurrent task execution',
+      'AI pipeline & API SDK integration'
     ],
     projectsCount: '35+ Projects',
-    projectCategory: 'Prompt Architectures',
+    projectCategory: 'Python Architecture',
     orbitAngle: 150,
-    brandBg: 'bg-[#0f172a]',
-    brandText: 'text-emerald-400',
-    brandBorder: 'border-[#0f172a]',
-    brandShadow: 'shadow-[#0f172a]/30',
+    brandBg: 'bg-[#3776ab]',
+    brandText: 'text-white',
+    brandBorder: 'border-[#3776ab]',
+    brandShadow: 'shadow-[#3776ab]/30',
     metrics: [
-      { label: 'Hallucination Rate', value: '<0.5%' },
-      { label: 'Format Compliance', value: '99.8%' }
+      { label: 'Code Coverage', value: '98.5%' },
+      { label: 'Execution Speed', value: 'Optimized' }
     ],
-    relatedTech: ['GPT-4o', 'Claude', 'Gemini', 'JSON Schema', 'Zod'],
-    codeSnippet: `SYSTEM_PROMPT = """
-You are an expert AI Data Scientist.
-Output ONLY valid JSON adhering strictly to the schema.
-Reason step-by-step inside <thinking> tags before answering.
-"""`
+    relatedTech: ['FastAPI', 'PyTorch', 'LangChain', 'Pandas', 'AsyncIO'],
+    codeSnippet: `import asyncio
+from typing import List, Dict
+
+async def process_batch(items: List[Dict]) -> List[Dict]:
+    async with asyncio.TaskGroup() as tg:
+        tasks = [tg.create_task(transform(item)) for item in items]
+    return [task.result() for task in tasks]`
   },
   {
     id: 'llm',
@@ -316,7 +319,46 @@ outputs = llm.generate(prompts, params)`
   },
 ];
 
+const SKILL_LOGOS: Record<string, string> = {
+  'ai-agents': '/openai.png',
+  'langchain': '/langchain.png',
+  'langgraph': '/langgraph.png',
+  'workflow-automation': '/n8n.png',
+  'gen-ai': '/brain.png',
+  'ai-chatbots': '/openai.png',
+  'fastapi': '/FastAPI.png',
+  'prompt-engg': '/Python.png',
+  'python': '/Python.png',
+  'llm': '/brain.png',
+};
+
+export function getTechLogo(name: string): string | null {
+  if (!name) return null;
+  const normalized = name.toLowerCase().trim();
+  if (normalized.includes('openai')) return '/openai.png';
+  if (normalized.includes('langchain')) return '/langchain.png';
+  if (normalized.includes('langgraph')) return '/langgraph.png';
+  if (normalized.includes('n8n')) return '/n8n.png';
+  if (normalized.includes('fastapi')) return '/FastAPI.png';
+  if (normalized.includes('python')) return '/Python.png';
+  if (normalized.includes('brain') || normalized.includes('genai') || normalized.includes('gemini')) return '/brain.png';
+  if (normalized.includes('workflow')) return '/workflow.png';
+  return null;
+}
+
 function SkillIcon({ skillId, active = false }: { skillId: string; active?: boolean }) {
+  const logoSrc = SKILL_LOGOS[skillId];
+
+  if (logoSrc) {
+    return (
+      <img
+        src={logoSrc}
+        alt={`${skillId} logo`}
+        className="w-full h-full object-contain"
+      />
+    );
+  }
+
   const color = active ? '#ffffff' : '#475569';
 
   switch (skillId) {
@@ -330,29 +372,33 @@ function SkillIcon({ skillId, active = false }: { skillId: string; active?: bool
     /* ── LangChain logo ── */
     case 'langchain':
       return (
-        <img
-          src="/langchain.png"
-          alt="LangChain"
-          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
-        />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        </svg>
       );
     /* ── LangGraph logo ── */
     case 'langgraph':
       return (
-        <img
-          src="/langgraph (2).png"
-          alt="LangGraph"
-          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
-        />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="6" cy="6" r="2.5" fill={color} />
+          <circle cx="18" cy="6" r="2.5" fill={color} />
+          <circle cx="12" cy="18" r="2.5" fill={color} />
+          <line x1="8" y1="7.5" x2="10.5" y2="16" stroke={color} />
+          <line x1="16" y1="7.5" x2="13.5" y2="16" stroke={color} />
+          <line x1="8.5" y1="6" x2="15.5" y2="6" stroke={color} />
+        </svg>
       );
     /* ── Workflow Automation (n8n logo) ── */
     case 'workflow-automation':
       return (
-        <img
-          src="/n8n.png"
-          alt="Workflow Automation n8n"
-          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
-        />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="5" height="5" rx="1.5" fill={color} />
+          <rect x="16" y="3" width="5" height="5" rx="1.5" fill={color} />
+          <rect x="9.5" y="16" width="5" height="5" rx="1.5" fill={color} />
+          <path d="M5.5 8v3.5a2.5 2.5 0 0 0 2.5 2.5h4" />
+          <path d="M18.5 8v3.5a2.5 2.5 0 0 1-2.5 2.5h-4" />
+        </svg>
       );
     /* ── Google Gemini logo (Gen AI) ── */
     case 'gen-ai':
@@ -371,11 +417,9 @@ function SkillIcon({ skillId, active = false }: { skillId: string; active?: bool
     /* ── FastAPI logo ── */
     case 'fastapi':
       return (
-        <img
-          src="/FastAPI.png"
-          alt="FastAPI"
-          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
-        />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill={color}>
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.5 17.5l-2.25-4.5H14.5L10.5 6.5l2.25 4.5H9.5l4 6.5z" />
+        </svg>
       );
     /* ── Terminal prompt (Prompt Engineering) ── */
     case 'prompt-engg':
@@ -389,11 +433,10 @@ function SkillIcon({ skillId, active = false }: { skillId: string; active?: bool
     /* ── Brain logo (LLM) ── */
     case 'llm':
       return (
-        <img
-          src="/brain.png"
-          alt="LLM Brain"
-          className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
-        />
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04" />
+          <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04" />
+        </svg>
       );
     default:
       return (
@@ -529,6 +572,15 @@ export function TechnicalExpertise() {
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'ai-core' | 'frameworks' | 'engineering'>('all');
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+
+  const handleCopyCode = (code: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+      setCopiedCode(true);
+      setTimeout(() => setCopiedCode(false), 2000);
+    }
+  };
 
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -665,29 +717,30 @@ export function TechnicalExpertise() {
 
       {/* ──── Top Section Header (Scroll-triggered) ──── */}
       <motion.div 
-        className="relative z-10 w-full max-w-7xl mx-auto mb-3 text-center pt-2 select-none"
+        className="relative z-10 w-full max-w-7xl mx-auto mb-3 text-left pt-2 select-none"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="inline-flex items-center gap-2 mb-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-ping" />
-          <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-slate-500">// THE INTELLIGENCE SYSTEM BEHIND MY WORK</span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-ping" />
+        <div className="text-[#f05a28] text-[10px] font-bold tracking-[0.25em] mb-3 uppercase flex items-center justify-start gap-3">
+          <span>//</span> THE INTELLIGENCE SYSTEM BEHIND MY WORK
         </div>
 
-        <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-900 leading-none mb-3 font-['Outfit']">
-          Technical <span className="text-[#f05a28]">Ecosystem</span>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black leading-[0.9] tracking-tighter uppercase text-[#111] mb-3">
+          <FlipText duration={0.8}>TECHNICAL</FlipText><br />
+          <span className="text-[#f05a28]">
+            <FlipText duration={0.8} delay={0.2}>ECOSYSTEM.</FlipText>
+          </span>
         </h2>
 
-        <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed mb-5 font-medium px-2">
+        <p className="text-xs sm:text-sm text-slate-600 max-w-xl leading-relaxed mb-5 font-medium">
           Connected technologies, neural frameworks, and automation engines working together to build intelligent digital systems.
         </p>
 
         {/* Category Filter Pills */}
         <motion.div 
-          className="inline-flex flex-wrap justify-center items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
+          className="inline-flex flex-wrap justify-start items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -805,13 +858,13 @@ export function TechnicalExpertise() {
           {/* Central Robot Focal Point */}
           <div className="relative z-10 flex flex-col items-center justify-center pointer-events-auto">
             {/* Holographic Glowing Platform Ring */}
-            <div className="absolute bottom-2 w-[220px] sm:w-[340px] md:w-[420px] h-[60px] sm:h-[90px] rounded-[100%] border-2 border-[#f05a28]/40 bg-gradient-radial from-[#f05a28]/25 via-orange-400/10 to-transparent blur-xs animate-pulse pointer-events-none" />
+            <div className="absolute bottom-1 w-[90px] sm:w-[120px] md:w-[150px] h-[22px] sm:h-[32px] rounded-[100%] border border-[#f05a28]/40 bg-gradient-radial from-[#f05a28]/25 via-orange-400/10 to-transparent blur-xs animate-pulse pointer-events-none" />
 
-            {/* Central Robot Intelligence Mascot (Larger Main Focal Point) */}
+            {/* Central Robot Intelligence Mascot */}
             <motion.div
               className="relative z-10 flex justify-center items-center"
               animate={{ 
-                y: [-8, 8, -8],
+                y: [-6, 6, -6],
                 rotate: activeCoord ? activeCoord.x * 0.015 : 0
               }}
               transition={{ 
@@ -822,7 +875,7 @@ export function TechnicalExpertise() {
               <img 
                 src="/robot.png" 
                 alt="AI Intelligence Robot Mascot Core" 
-                className="w-[50vw] max-w-[240px] sm:max-w-[380px] md:max-w-[480px] lg:max-w-[620px] h-auto object-contain drop-shadow-[0_25px_60px_rgba(240,90,40,0.25)] relative z-10"
+                className="w-[100px] sm:w-[135px] md:w-[165px] lg:w-[190px] h-auto object-contain drop-shadow-[0_15px_30px_rgba(240,90,40,0.2)] relative z-10"
               />
             </motion.div>
           </div>
@@ -865,11 +918,7 @@ export function TechnicalExpertise() {
                   }`}
                   whileTap={{ scale: 0.96 }}
                 >
-                  <div className={`rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                    isActive 
-                      ? `${skill.brandBg} w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 shadow-md scale-105` 
-                      : 'bg-slate-100 w-6 h-6 sm:w-8 sm:h-8 text-slate-700 hover:bg-slate-200'
-                  }`}>
+                  <div className="w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 rounded-lg sm:rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center flex-shrink-0 p-1 sm:p-1.5 transition-all duration-300">
                     <SkillIcon skillId={skill.id} active={isActive} />
                   </div>
 
@@ -889,7 +938,7 @@ export function TechnicalExpertise() {
 
         {/* ──── Right Live AI System Diagnostic Panel ──── */}
         <motion.div 
-          className="w-full xl:w-[390px] flex justify-center xl:justify-end flex-shrink-0 xl:ml-auto"
+          className="w-full xl:w-[400px] flex justify-center xl:justify-end flex-shrink-0 xl:ml-auto"
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-5%" }}
@@ -902,42 +951,41 @@ export function TechnicalExpertise() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-4.5 sm:p-5 shadow-[0_16px_45px_rgba(0,0,0,0.06)] relative overflow-hidden w-full max-w-[390px]"
+              className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-5 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08),0_4px_12px_rgba(15,23,42,0.03)] relative overflow-hidden w-full max-w-[400px]"
             >
-              {/* Top Accent Strip */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#f05a28] via-orange-400 to-[#f05a28]" />
+              {/* Subtle Ambient Radial Corner Accent */}
+              <div className="absolute -top-16 -right-16 w-36 h-36 bg-gradient-radial from-[#f05a28]/12 via-orange-400/5 to-transparent rounded-full blur-xl pointer-events-none" />
+              
+              {/* Refined Top Border Accent */}
+              <div className="absolute top-0 left-6 right-6 h-[1.5px] bg-gradient-to-r from-transparent via-[#f05a28]/50 to-transparent" />
 
-              {/* Header Row: Category Pill + View Switcher */}
-              <div className="flex items-center justify-between mb-3 pt-0.5">
+              {/* Header Row: Category Badge + Tab Switcher */}
+              <div className="flex items-center justify-between mb-4 pt-0.5 relative z-10">
                 <div className="flex items-center gap-1.5">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100/90 border border-slate-200/70 text-[9.5px] font-mono font-bold uppercase text-slate-700">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100/90 border border-slate-200/70 text-[9px] font-mono font-bold uppercase tracking-wider text-slate-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#f05a28] animate-pulse" />
-                    {activeSkill.category === 'ai-core' ? 'AI Core' : activeSkill.category === 'frameworks' ? 'Frameworks' : 'Engineering'}
-                  </span>
-                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-[9px] font-mono font-bold text-emerald-600 uppercase">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
-                    <span>ONLINE</span>
+                    <span>NODE // {activeSkill.category === 'ai-core' ? 'AI CORE' : activeSkill.category === 'frameworks' ? 'FRAMEWORKS' : 'ENGINEERING'}</span>
                   </span>
                 </div>
 
-                {/* Switcher: Info / Code */}
+                {/* Tactile Switcher: Overview / Code */}
                 <div className="flex items-center gap-0.5 p-0.5 rounded-xl bg-slate-100/90 border border-slate-200/70">
                   <button
                     onClick={() => setCardTab('overview')}
-                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all duration-150 cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                       cardTab === 'overview'
-                        ? 'bg-white text-slate-900 shadow-xs'
-                        : 'text-slate-500 hover:text-slate-700'
+                        ? 'bg-slate-900 text-white shadow-xs'
+                        : 'text-slate-500 hover:text-slate-800'
                     }`}
                   >
                     Overview
                   </button>
                   <button
                     onClick={() => setCardTab('code')}
-                    className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide transition-all duration-150 cursor-pointer font-mono ${
+                    className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                       cardTab === 'code'
-                        ? 'bg-white text-slate-900 shadow-xs'
-                        : 'text-slate-500 hover:text-slate-700'
+                        ? 'bg-slate-900 text-white shadow-xs'
+                        : 'text-slate-500 hover:text-slate-800'
                     }`}
                   >
                     {'</>'} Code
@@ -945,9 +993,9 @@ export function TechnicalExpertise() {
                 </div>
               </div>
 
-              {/* Active Skill Info Hero */}
-              <div className="flex items-center gap-3 mb-3">
-                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${activeSkill.brandBg} shadow-md ${activeSkill.brandShadow} flex items-center justify-center flex-shrink-0 p-2.5 transition-all duration-300`}>
+              {/* Skill Hero Section */}
+              <div className="flex items-center gap-3.5 mb-4 relative z-10 p-2.5 rounded-2xl bg-gradient-to-r from-slate-50/90 to-transparent border border-slate-100">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/90 shadow-sm flex items-center justify-center flex-shrink-0 p-2.5 transition-all duration-300 relative group">
                   <SkillIcon skillId={activeSkill.id} active />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -955,9 +1003,11 @@ export function TechnicalExpertise() {
                     <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight uppercase font-['Outfit'] truncate">
                       {activeSkill.name}
                     </h3>
-                    <span className="text-[10px] font-mono font-bold text-slate-400 whitespace-nowrap">{activeSkill.expertise.replace('Expertise: ', '')}</span>
+                    <span className="text-[9.5px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200/80 text-slate-500 uppercase whitespace-nowrap">
+                      {activeSkill.expertise.replace('Expertise: ', '')}
+                    </span>
                   </div>
-                  <p className="text-[11px] font-semibold text-[#f05a28] truncate mt-0.5">
+                  <p className="text-[11.5px] font-semibold text-[#f05a28] truncate mt-0.5">
                     {activeSkill.subtitle}
                   </p>
                 </div>
@@ -972,52 +1022,57 @@ export function TechnicalExpertise() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.2 }}
-                    className="space-y-3"
+                    className="space-y-3.5 relative z-10"
                   >
-                    {/* Short & Concise Description */}
-                    <p className="text-[11.5px] text-slate-600 leading-relaxed font-medium line-clamp-2">
+                    {/* Concise Description */}
+                    <p className="text-[11.5px] text-slate-600 leading-relaxed font-medium">
                       {activeSkill.description}
                     </p>
 
-                    {/* Micro-Metrics Grid (2-Column Box) */}
+                    {/* Micro-Metrics Grid */}
                     <div className="grid grid-cols-2 gap-2">
                       {activeSkill.metrics.map((metric, idx) => (
                         <div 
                           key={idx} 
-                          className="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200/80 flex flex-col justify-between"
+                          className="p-2.5 rounded-2xl bg-gradient-to-br from-slate-50/90 to-slate-100/40 border border-slate-200/70 shadow-2xs hover:border-[#f05a28]/30 transition-all duration-200 group"
                         >
-                          <span className="text-[9.5px] font-semibold text-slate-500 truncate uppercase tracking-wider">{metric.label}</span>
-                          <span className="text-sm font-black text-[#f05a28] font-mono mt-0.5">{metric.value}</span>
+                          <span className="text-[9.5px] font-mono font-bold text-slate-400 truncate uppercase tracking-wider block">{metric.label}</span>
+                          <span className="text-base font-black text-slate-900 font-mono mt-0.5 block group-hover:text-[#f05a28] transition-colors">{metric.value}</span>
                         </div>
                       ))}
                     </div>
 
-                    {/* Core Capabilities - Compact List */}
-                    <div>
-                      <div className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-1.5 flex items-center justify-between">
-                        <span>CORE CAPABILITIES</span>
-                        <span className="text-[#f05a28] font-semibold">{activeSkill.projectsCount}</span>
+                    {/* Core Capabilities Checklist */}
+                    <div className="pt-1">
+                      <div className="text-[9.5px] font-mono font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center justify-between">
+                        <span>CAPABILITY MATRIX</span>
+                        <span className="px-2 py-0.5 rounded-md bg-orange-50 border border-orange-200/70 text-[#f05a28] font-bold text-[9px] font-mono">
+                          {activeSkill.projectsCount}
+                        </span>
                       </div>
                       <div className="space-y-1.5">
                         {activeSkill.useCases.slice(0, 3).map((useCase, idx) => (
-                          <div key={idx} className="flex items-center gap-2 text-[11px] text-slate-700">
-                            <span className="w-3.5 h-3.5 rounded-full bg-[#f05a28]/10 text-[#f05a28] flex items-center justify-center text-[9px] font-bold flex-shrink-0">✓</span>
-                            <span className="font-medium text-slate-800 truncate">{useCase}</span>
+                          <div key={idx} className="flex items-center gap-2.5 text-[11px] text-slate-700 p-1.5 rounded-xl hover:bg-slate-50/80 transition-colors">
+                            <span className="w-4 h-4 rounded-full bg-[#f05a28]/10 text-[#f05a28] flex items-center justify-center text-[10px] font-black flex-shrink-0">◈</span>
+                            <span className="font-semibold text-slate-800 truncate">{useCase}</span>
                           </div>
                         ))}
                       </div>
                     </div>
-
                     {/* Connected Tech Stack Tags */}
-                    <div className="pt-2 border-t border-slate-100 flex flex-wrap gap-1">
-                      {activeSkill.relatedTech.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded-md bg-slate-100/90 border border-slate-200/60 text-[9.5px] font-bold font-mono text-slate-600 uppercase hover:bg-[#f05a28]/10 hover:text-[#f05a28] transition-colors"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                    <div className="pt-2.5 border-t border-slate-100 flex flex-wrap gap-1.5">
+                      {activeSkill.relatedTech.map((tag) => {
+                        const logo = getTechLogo(tag);
+                        return (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-1 rounded-lg bg-slate-100/80 border border-slate-200/70 text-[9.5px] font-mono font-bold text-slate-700 uppercase flex items-center gap-1.5 hover:bg-[#f05a28]/10 hover:text-[#f05a28] hover:border-[#f05a28]/30 transition-all duration-200 cursor-default"
+                          >
+                            {logo && <img src={logo} alt={tag} className="w-3.5 h-3.5 object-contain" />}
+                            <span>{tag}</span>
+                          </span>
+                        );
+                      })}
                     </div>
                   </motion.div>
                 ) : (
@@ -1027,28 +1082,33 @@ export function TechnicalExpertise() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.2 }}
-                    className="space-y-2.5"
+                    className="space-y-3 relative z-10"
                   >
-                    <div className="relative rounded-xl bg-[#0f172a] border border-slate-700/50 overflow-hidden">
-                      <div className="flex items-center justify-between px-3 py-1.5 border-b border-slate-700/40 bg-slate-900/60">
+                    <div className="relative rounded-2xl bg-[#090D16] border border-slate-800 shadow-xl overflow-hidden">
+                      <div className="flex items-center justify-between px-3.5 py-2 border-b border-slate-800 bg-[#0B0F19]">
                         <div className="flex items-center gap-1.5">
-                          <span className="w-2 h-2 rounded-full bg-red-500/80" />
-                          <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
-                          <span className="w-2 h-2 rounded-full bg-green-500/80" />
-                          <span className="ml-1 text-[9px] font-mono text-slate-400">{activeSkill.id}.ts</span>
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                          <span className="ml-1 text-[9.5px] font-mono text-slate-400">{activeSkill.id}.ts</span>
                         </div>
-                        <span className="text-[9px] font-mono text-emerald-400 font-bold uppercase">{activeSkill.name}</span>
+                        <button
+                          onClick={() => handleCopyCode(activeSkill.codeSnippet)}
+                          className="text-[9.5px] font-mono font-bold text-slate-400 hover:text-white px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/50 hover:bg-slate-700/60 transition-all duration-150 cursor-pointer"
+                        >
+                          {copiedCode ? '✓ Copied' : 'Copy'}
+                        </button>
                       </div>
-                      <pre className="p-3 max-h-[170px] overflow-y-auto overflow-x-auto text-[10.5px] leading-[1.6] font-mono text-emerald-300/90 scrollbar-thin">
+                      <pre className="p-3.5 max-h-[180px] overflow-y-auto overflow-x-auto text-[10.5px] leading-[1.65] font-mono text-emerald-300/90 scrollbar-thin">
                         <code>{activeSkill.codeSnippet}</code>
                       </pre>
                     </div>
 
-                    <div className="flex flex-wrap gap-1 pt-1">
+                    <div className="flex flex-wrap gap-1.5 pt-1">
                       {activeSkill.relatedTech.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200/60 text-[9.5px] font-bold font-mono text-slate-600 uppercase"
+                          className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200/70 text-[9.5px] font-mono font-bold text-slate-700 uppercase"
                         >
                           {tag}
                         </span>
@@ -1059,15 +1119,15 @@ export function TechnicalExpertise() {
               </AnimatePresence>
 
               {/* Footer Action Bar */}
-              <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5 min-w-0">
+              <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between gap-2 relative z-10">
+                <div className="flex items-center gap-2 min-w-0">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" />
                   <span className="text-[10px] font-mono font-bold text-slate-500 uppercase truncate">{activeSkill.projectCategory}</span>
                 </div>
 
                 <button
                   onClick={handleScrollToProjects}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900 hover:bg-[#f05a28] text-white text-[11px] font-bold shadow-md shadow-slate-900/10 hover:shadow-orange-500/25 transition-all duration-200 cursor-pointer flex-shrink-0"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-900 hover:bg-[#f05a28] text-white text-[11px] font-bold shadow-md shadow-slate-900/10 hover:shadow-orange-500/25 transition-all duration-200 cursor-pointer flex-shrink-0 hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <span>View Projects</span>
                   <span className="text-[11px]">→</span>
