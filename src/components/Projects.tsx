@@ -4,6 +4,7 @@ import { SemicircleGallery, ProjectGalleryItem } from './ui/semicircle-gallery';
 import { ArrowUpRight, Github, X, Eye, Code } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { getTechLogo } from './TechnicalExpertise';
+import { FlipText } from './FlipText';
 
 /* -----------------------------------------------------------------------------
    PROJECT DATA CONFIGURATION
@@ -156,21 +157,17 @@ export function Projects() {
         {/* Title Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 select-none z-20 px-4 md:px-0">
           <div className="text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-3 mb-3 font-mono text-[9px] font-black tracking-[0.28em] text-zinc-500">
-              <span className="text-orange-500">//</span> SELECTED CASE STUDIES
+            <div className="text-[#f05a28] text-[10px] font-bold tracking-[0.25em] mb-3 uppercase flex items-center justify-start gap-3 font-mono">
+              <span>//</span> SELECTED CASE STUDIES
             </div>
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tighter uppercase leading-[0.9] font-['Outfit']">
-              FEATURED<br />
-              <span
-                className="block text-white"
-                style={{
-                  color: 'transparent',
-                  WebkitTextStroke: '1.5px rgba(255,255,255,0.3)',
-                }}
-              >
-                PROJECTS
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black leading-[0.9] tracking-tighter uppercase text-white mb-3 font-sans">
+              <FlipText duration={0.8}>FEATURED</FlipText><br />
+              <span className="text-[#f05a28]">
+                <FlipText duration={0.8} delay={0.2}>PROJECTS.</FlipText>
               </span>
             </h2>
+
+
           </div>
 
           <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
@@ -238,6 +235,8 @@ export function Projects() {
                   src={selectedProject.image}
                   alt={selectedProject.altText}
                   className="w-full h-full object-cover object-top"
+                  decoding="async"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#111115] via-[#111115]/30 to-black/40" />
                 

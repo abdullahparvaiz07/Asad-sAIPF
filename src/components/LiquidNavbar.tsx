@@ -73,7 +73,7 @@ export function LiquidNavbar() {
     setMousePos({ x: 0, y: 0 });
   };
 
-  const isLight = active === 'about' || active === 'skills';
+  const isLight = active === 'about' || active === 'skills' || active === 'contact';
 
   return (
     <>
@@ -85,6 +85,7 @@ export function LiquidNavbar() {
             alt="Asadullah Logo" 
             className="h-20 sm:h-22 md:h-24 lg:h-28 w-auto object-contain filter drop-shadow-[0_4px_16px_rgba(0,0,0,0.4)]" 
             style={{ opacity: 0 }}
+            decoding="async"
           />
         </div>
 

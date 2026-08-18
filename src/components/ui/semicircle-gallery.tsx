@@ -54,12 +54,12 @@ export function SemicircleGallery({
       isMobile = true;
     } else if (windowWidth < 1024) {
       // Tablet layout
-      radius = customRadius || 320;
-      cardSize = 120;
-      startAngle = -78;
-      endAngle = 78;
-      containerHeight = 460;
-      centerY = 380;
+      radius = customRadius || 400;
+      cardSize = 130;
+      startAngle = -80;
+      endAngle = 80;
+      containerHeight = 560;
+      centerY = 470;
     } else if (windowWidth < 1280) {
       // Medium Desktop layout
       radius = customRadius || 420;
@@ -149,6 +149,8 @@ export function SemicircleGallery({
                 alt={item.title}
                 className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.05] transition-transform duration-500"
                 draggable={false}
+                decoding="async"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-transparent flex flex-col justify-end p-4 text-white z-10">
                 <span className="text-[7px] font-mono font-bold text-orange-500 tracking-wider block mb-1 uppercase">
@@ -257,7 +259,7 @@ export function SemicircleGallery({
               zIndex: 100,
               transition: { duration: 0.25, ease: 'easeOut' },
             } : undefined}
-            className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/10 bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-all duration-300 hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(240,90,40,0.25)]"
+            className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/10 bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-[border-color,box-shadow] duration-300 hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(240,90,40,0.25)]"
             style={{
               width: layout.cardSize,
               height: layout.cardSize,
@@ -284,6 +286,7 @@ export function SemicircleGallery({
               alt={card.item.title}
               className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.08] transition-transform duration-700 ease-out"
               loading="lazy"
+              decoding="async"
               draggable={false}
             />
 

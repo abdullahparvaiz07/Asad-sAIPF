@@ -109,7 +109,7 @@ function MainAppContent() {
               ASADULLAH
             </div>
             
-            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-20 sm:mt-32 md:mt-40 lg:mt-48">
+            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-20 sm:mt-32 md:mt-111 lg:mt-48">
               {/* STEP 4 — Left Subheadline (Rises at 4.8s, pushed downward on mobile) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }}
@@ -195,6 +195,8 @@ function MainAppContent() {
                   src="/portrait.png" 
                   alt="Asadullah" 
                   className="w-full h-full object-cover group-hover/talk:scale-110 transition-transform duration-500"
+                  decoding="async"
+                  loading="lazy"
                   onError={(e) => {
                     e.currentTarget.src = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop";
                   }}

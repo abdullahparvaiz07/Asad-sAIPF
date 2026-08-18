@@ -14,7 +14,7 @@ export default defineConfig(() => {
     build: {
       target: 'esnext',
       cssCodeSplit: true,
-      minify: 'esbuild',
+      minify: 'esbuild' as const,
       rollupOptions: {
         output: {
           manualChunks: {

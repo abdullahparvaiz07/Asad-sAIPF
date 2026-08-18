@@ -502,7 +502,7 @@ function ContinuousSkillStrip({
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F8F8F8] via-[#F8F8F8]/90 to-transparent z-10 pointer-events-none" />
 
         <motion.div
-          className="flex items-center gap-6 w-max"
+          className="flex items-center gap-6 w-max transform-gpu will-change-transform"
           animate={{ x: isPaused ? undefined : ['0%', '-33.333%'] }}
           transition={{
             x: {
@@ -727,7 +727,7 @@ export function TechnicalExpertise() {
           <span>//</span> THE INTELLIGENCE SYSTEM BEHIND MY WORK
         </div>
 
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black leading-[0.9] tracking-tighter uppercase text-[#111] mb-3">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black leading-[0.9] tracking-tighter uppercase text-[#111] mb-3 font-sans">
           <FlipText duration={0.8}>TECHNICAL</FlipText><br />
           <span className="text-[#f05a28]">
             <FlipText duration={0.8} delay={0.2}>ECOSYSTEM.</FlipText>
@@ -891,7 +891,7 @@ export function TechnicalExpertise() {
             return (
               <div
                 key={skill.id}
-                className={`absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${
+                className={`absolute -translate-x-1/2 -translate-y-1/2 transition-[opacity,transform] duration-300 ${
                   isActive ? 'z-30' : 'z-20'
                 } ${
                   isDimmed ? 'opacity-30 scale-85 grayscale' : 'opacity-100'
