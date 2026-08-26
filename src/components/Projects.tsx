@@ -26,10 +26,10 @@ const PROJECT_DATA: ProjectItem[] = [
   {
     id: '01',
     title: 'Linkedin Autoconnect Automation',
-    outcome: 'Cut enterprise document processing time from 4 hours to 90 seconds.',
+    outcome: 'Scaled network outreach to 500+ monthly connections with 45% acceptance rate.',
     description: 'This n8n workflow automates LinkedIn lead generation and network growth using PhantomBuster agents.',
     tech: ['n8n', 'PhantomBuster', 'Docker'],
-    image: '/proj1.png',
+    image: '/proj1.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/linkedin-auto-connect-automation',
     repoUrl: 'https://github.com/asadxagentic-ai/linkedin-auto-connect-automation',
     altText: 'Linkedin Autoconnect Automation'
@@ -37,10 +37,10 @@ const PROJECT_DATA: ProjectItem[] = [
   {
     id: '02',
     title: 'Agent Swarm',
-    outcome: 'Reduced model inference latency by 40% under peak concurrent loads.',
+    outcome: 'Consolidated 5+ team communication flows into a single Telegram command center.',
     description: 'Agent Swarm is a production-ready, modular n8n workflow that transforms Telegram into a unified interface for intelligent personal assistance.',
     tech: ['n8n', 'Docker'],
-    image: '/proj2.png',
+    image: '/proj3.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/a-fully-agentic-assistant',
     repoUrl: 'https://github.com/asadxagentic-ai/a-fully-agentic-assistant',
     altText: 'Agent Swarm'
@@ -48,10 +48,10 @@ const PROJECT_DATA: ProjectItem[] = [
   {
     id: '03',
     title: 'AI CRM Sales Analysis',
-    outcome: 'Drove a 24% uplift in cart checkout completions via conceptual search.',
+    outcome: 'Extracted and synchronized actionable CRM insights from 100+ sales transcripts daily.',
     description: 'This n8n workflow automates the process of analyzing sales call transcripts from PDF files stored in Google Drive.',
-    tech: ['n8n'],
-    image: '/proj3.png',
+    tech: ['n8n', 'Docker'],
+    image: '/proj2.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/ai-crm-sales-analysis',
     repoUrl: 'https://github.com/asadxagentic-ai/ai-crm-sales-analysis',
     altText: 'AI CRM Sales Analysis'
@@ -59,43 +59,43 @@ const PROJECT_DATA: ProjectItem[] = [
   {
     id: '04',
     title: 'Vapi AI Recipionist',
-    outcome: 'Automated 80% of customer support workflows with zero hallucinations.',
+    outcome: 'Handled 80% of incoming real estate calls and scheduled viewings automatically.',
     description: 'This n8n workflow automates the process of a AI Recipionist for a Real Estate Agent using Vapi API. The AI Recipionist is able to answer phone calls from potential buyers and schedule viewings.',
     tech: ['n8n', 'Vapi', 'Docker'],
-    image: '/proj4.png',
+    image: '/proj5.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/vapi-ai-receptionist',
     repoUrl: 'https://github.com/asadxagentic-ai/vapi-ai-receptionist',
     altText: 'Vapi AI Recipionist'
   },
   {
     id: '05',
-    title: 'AI Weather Report Generator',
-    outcome: 'Processed 10M+ daily telemetry events with sub-10ms query speeds.',
-    description: 'This n8n workflow automates the generation and delivery of a comprehensive daily weather intelligence report.',
-    tech: ['n8n', 'OpenWeatherMap', 'Docker', 'Telegram'],
-    image: '/proj5.png',
+    title: 'AI Recruiter',
+    outcome: 'Screened and evaluated 500+ candidates with automated voice interview reports.',
+    description: 'An automated recruitment and screening pipeline that extracts resume details, runs ATS evaluation, conducts interactive interviews via Vapi, and generates final HR reports.',
+    tech: ['n8n', 'Vapi', 'Mistral', 'Docker'],
+    image: '/proj4.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/ai-weather-intelligence-report-generator',
     repoUrl: 'https://github.com/asadxagentic-ai/ai-weather-intelligence-report-generator',
-    altText: 'AI Weather Report Generator'
+    altText: 'AI Recruiter'
   },
   {
     id: '06',
-    title: 'AI Social media post generator',
-    outcome: 'Delivered real-time video stream analytics across 500+ edge endpoints.',
-    description: 'This n8n workflow automates the end-to-end creation and publishing of social media content across Facebook, LinkedIn, and Pinterest.',
-    tech: ['n8n', 'Docker'],
-    image: '/proj6.png',
+    title: 'Outbound Sales Outreach',
+    outcome: 'Enriched 1,000+ monthly leads and automated personalized outreach campaigns.',
+    description: 'An automated outbound sales system integrating Apollo leads extraction, LeadIQ contact enrichment, AI-driven personalized drafting, and automated Gmail outreach with reply classification.',
+    tech: ['n8n', 'Apollo', 'HubSpot', 'Docker'],
+    image: '/proj6.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/ai-social-media-post-generator',
     repoUrl: 'https://github.com/asadxagentic-ai/ai-social-media-post-generator',
-    altText: 'AI Social media post generator'
+    altText: 'Outbound Sales Outreach'
   },
   {
     id: '07',
     title: 'AI Whatsapp Rag Business Assistant',
-    outcome: 'Delivered real-time video stream analytics across 500+ edge endpoints.',
+    outcome: 'Handled 95% of incoming client inquiries with automated RAG-based classifications.',
     description: 'An intelligent WhatsApp business assistant built with n8n that automatically handles incoming messages, classifies them as client inquiries or personal messages.',
     tech: ['n8n', 'Docker'],
-    image: '/proj6.png',
+    image: '/proj7.jpeg',
     liveUrl: 'https://github.com/asadxagentic-ai/ai-whatsapp-rag-business-assistant',
     repoUrl: 'https://github.com/asadxagentic-ai/ai-whatsapp-rag-business-assistant',
     altText: 'AI Whatsapp Rag Business Assistant'
@@ -141,7 +141,7 @@ export function Projects() {
   return (
     <section
       id="projects"
-      className="relative bg-[#09090b] border-t border-white/[0.04] py-24 selection:bg-orange-500 selection:text-white overflow-hidden"
+      className="relative bg-[#09090b] border-t border-white/[0.04] pt-24 pb-0 selection:bg-orange-500 selection:text-white overflow-hidden"
     >
       {/* Background Grid Lines */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
@@ -190,7 +190,7 @@ export function Projects() {
                 <div className="text-[10px] font-mono text-[#f05a28] tracking-widest font-black uppercase mb-2">
                   // CORE INVENTORY
                 </div>
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-black font-['Outfit'] tracking-tight leading-none text-white uppercase whitespace-nowrap">
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-black font-serif tracking-tight leading-none text-white uppercase whitespace-nowrap">
                  AI SYSTEMS ENGINEERING
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-400 font-sans max-w-sm sm:max-w-md md:max-w-lg mt-2.5 leading-relaxed px-2">
@@ -230,15 +230,15 @@ export function Projects() {
               className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#111115] border border-zinc-800 rounded-3xl shadow-2xl flex flex-col z-10 scrollbar-thin"
             >
               {/* Image Banner */}
-              <div className="h-48 sm:h-64 relative w-full overflow-hidden bg-[#0c0c0e]">
+              <div className="h-64 sm:h-80 relative w-full overflow-hidden bg-white border-b border-zinc-800/10 flex items-center justify-center p-6 pt-16 pb-10">
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.altText}
-                  className="w-full h-full object-cover object-top"
+                  className="max-w-full max-h-full object-contain"
                   decoding="async"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111115] via-[#111115]/30 to-black/40" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#111115] via-transparent to-black/20 pointer-events-none" />
                 
                 {/* Mock Window Header Bar */}
                 <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">

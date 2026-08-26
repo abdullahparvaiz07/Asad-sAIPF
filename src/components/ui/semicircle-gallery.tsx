@@ -54,20 +54,28 @@ export function SemicircleGallery({
       isMobile = true;
     } else if (windowWidth < 1024) {
       // Tablet layout
-      radius = customRadius || 400;
-      cardSize = 130;
+      radius = customRadius || 310;
+      cardSize = 120;
+      startAngle = -75;
+      endAngle = 75;
+      containerHeight = 440;
+      centerY = 400;
+    } else if (windowWidth < 1280) {
+      // Medium Desktop / Laptop layout
+      radius = customRadius || 380;
+      cardSize = 135;
+      startAngle = -78;
+      endAngle = 78;
+      containerHeight = 495;
+      centerY = 450;
+    } else {
+      // Large Desktop layout
+      radius = customRadius || 460;
+      cardSize = 150;
       startAngle = -80;
       endAngle = 80;
-      containerHeight = 560;
-      centerY = 470;
-    } else if (windowWidth < 1280) {
-      // Medium Desktop layout
-      radius = customRadius || 420;
-      cardSize = 140;
-      startAngle = -82;
-      endAngle = 82;
-      containerHeight = 580;
-      centerY = 480;
+      containerHeight = 550;
+      centerY = 500;
     }
 
     const N = items.length;
@@ -85,8 +93,8 @@ export function SemicircleGallery({
       const x = radius * Math.sin(angleRadians);
       const y = -radius * Math.cos(angleRadians);
       
-      // Symmetrical arc rotation following the curve (-55deg to +55deg)
-      const rotation = angleDegrees * 0.65;
+      // Symmetrical arc rotation following the curve exactly (perpendicular to radial spokes)
+      const rotation = angleDegrees;
 
       return {
         item,
@@ -147,7 +155,7 @@ export function SemicircleGallery({
               <img
                 src={item.image}
                 alt={item.title}
-                className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.05] transition-transform duration-500"
+                className="absolute inset-0 w-full h-full object-contain bg-white pt-8 pb-16 px-4 transform scale-100 group-hover:scale-[1.05] transition-transform duration-500"
                 draggable={false}
                 decoding="async"
                 loading="lazy"
@@ -179,30 +187,16 @@ export function SemicircleGallery({
       {/* Background radial spotlight grid inside the semicircle */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_bottom,rgba(240,90,40,0.04),transparent_65%)]" />
 
-      {/* SVG Semi-circle Arc Ring Guide Line */}
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0">
-        <svg
-          className="w-full h-full pointer-events-none opacity-25"
-          viewBox="0 0 1000 680"
-          fill="none"
-        >
-          <path
-            d={`M ${500 - layout.radius} ${layout.centerY} A ${layout.radius} ${layout.radius} 0 0 1 ${500 + layout.radius} ${layout.centerY}`}
-            stroke="url(#semicircle-line-gradient)"
-            strokeWidth="1.5"
-            strokeDasharray="6 6"
-          />
-          <defs>
-            <linearGradient id="semicircle-line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#f05a28" stopOpacity="0.05" />
-              <stop offset="25%" stopColor="#f05a28" stopOpacity="0.7" />
-              <stop offset="50%" stopColor="#ff7b47" stopOpacity="1" />
-              <stop offset="75%" stopColor="#f05a28" stopOpacity="0.7" />
-              <stop offset="100%" stopColor="#f05a28" stopOpacity="0.05" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+      {/* Mathematically Accurate CSS Guide Arc Line */}
+      <div 
+        className="absolute pointer-events-none border border-dashed border-orange-500/25 rounded-full z-0"
+        style={{
+          width: layout.radius * 2,
+          height: layout.radius * 2,
+          left: `calc(50% - ${layout.radius}px)`,
+          top: `calc(${layout.centerY}px - ${layout.radius}px)`,
+        }}
+      />
 
       {/* Radial Fanned Project Cards */}
       {layout.cards.map((card) => {
@@ -212,10 +206,10 @@ export function SemicircleGallery({
 
         const cardVariants = {
           collapsed: {
-            x: 0,
-            y: 0,
-            rotate: 0,
-            scale: 0.5,
+            x: card.x * 0.6, // start slightly closer to the center horizontally
+            y: card.y + 100, // start lower vertically
+            rotate: card.rotation * 0.3, // start with minimal rotation
+            scale: 0.75,
             opacity: 0,
           },
           fanned: {
@@ -225,9 +219,9 @@ export function SemicircleGallery({
             scale: card.scale,
             opacity: 1,
             transition: {
-              duration: 0.85,
+              duration: 1.1, // slightly longer for an extremely smooth slide-in
               delay: motionEnabled ? staggerDelay : 0,
-              ease: [0.22, 1, 0.36, 1], // premium cubic-bezier easing
+              ease: [0.16, 1, 0.3, 1], // premium easeOutQuart
             },
           },
         };
@@ -259,7 +253,7 @@ export function SemicircleGallery({
               zIndex: 100,
               transition: { duration: 0.25, ease: 'easeOut' },
             } : undefined}
-            className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/10 bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-[border-color,box-shadow] duration-300 hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(240,90,40,0.25)]"
+            className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/10 bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-[border-color,box-shadow,transform] duration-300 hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(240,90,40,0.25)]"
             style={{
               width: layout.cardSize,
               height: layout.cardSize,
@@ -284,7 +278,7 @@ export function SemicircleGallery({
             <img
               src={card.item.image}
               alt={card.item.title}
-              className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.08] transition-transform duration-700 ease-out"
+              className="absolute inset-0 w-full h-full object-contain bg-white pt-6 pb-12 px-2 transform scale-100 group-hover:scale-[1.05] transition-transform duration-500 ease-out"
               loading="lazy"
               decoding="async"
               draggable={false}
@@ -314,7 +308,7 @@ export function SemicircleGallery({
         className="absolute z-10 w-[340px] md:w-[440px] lg:w-[500px] text-center flex flex-col items-center justify-center p-4 select-none pointer-events-auto"
         style={{
           left: '50%',
-          top: `${layout.centerY}px`,
+          top: `${layout.centerY - 55}px`,
           transform: 'translate(-50%, -50%)',
         }}
       >

@@ -343,6 +343,9 @@ export function RubiksCube() {
       lastDy = 0;
       manualMode = true;
       clearTimeout(manualTimer);
+      
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
       e.preventDefault();
     };
 
@@ -362,6 +365,10 @@ export function RubiksCube() {
       dragging = false;
       velY = lastDx * 0.85;
       velX = -lastDy * 0.85;
+      
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      
       manualTimer = setTimeout(() => {
         manualMode = false;
       }, 8000);
@@ -378,6 +385,9 @@ export function RubiksCube() {
       lastDy = 0;
       manualMode = true;
       clearTimeout(manualTimer);
+      
+      document.addEventListener('touchmove', handleTouchMove, { passive: true });
+      document.addEventListener('touchend', handleTouchEnd);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -395,18 +405,17 @@ export function RubiksCube() {
       dragging = false;
       velY = lastDx * 0.85;
       velX = -lastDy * 0.85;
+      
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      
       manualTimer = setTimeout(() => {
         manualMode = false;
       }, 8000);
     };
 
     viewportEl.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-
     viewportEl.addEventListener('touchstart', handleTouchStart, { passive: true });
-    document.addEventListener('touchmove', handleTouchMove, { passive: true });
-    document.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       observer.disconnect();
@@ -415,9 +424,11 @@ export function RubiksCube() {
       btnScramble?.removeEventListener('click', handleScrambleClick);
       btnSolve?.removeEventListener('click', handleSolveClick);
       viewportEl.removeEventListener('mousedown', handleMouseDown);
+      viewportEl.removeEventListener('touchstart', handleTouchStart);
+      
+      // Clean up dynamic listeners if unmounted while dragging
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
-      viewportEl.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
     };

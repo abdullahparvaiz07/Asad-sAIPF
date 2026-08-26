@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
+import { useDragon } from './DragonContext';
 
 export function CustomCursor() {
   const [hoverType, setHoverType] = useState<'default' | 'grow' | 'drag' | 'view'>('default');
@@ -36,14 +37,16 @@ export function CustomCursor() {
       if (!isVisible) setIsVisible(true);
     };
 
+    let lastTarget: HTMLElement | null = null;
     const handlePointerOver = (e: PointerEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
+      const targetEl = e.target as HTMLElement;
+      if (!targetEl || targetEl === lastTarget) return;
+      lastTarget = targetEl;
 
       // Detect cursor targets using custom attributes or tags
-      const dragTarget = target.closest('[data-cursor="drag"]');
-      const viewTarget = target.closest('[data-cursor="view"]');
-      const interactiveTarget = target.closest('a, button, [role="button"], .cursor-pointer, [role="slider"]');
+      const dragTarget = targetEl.closest('[data-cursor="drag"]');
+      const viewTarget = targetEl.closest('[data-cursor="view"]');
+      const interactiveTarget = targetEl.closest('a, button, [role="button"], .cursor-pointer, [role="slider"]');
 
       if (dragTarget) {
         setHoverType('drag');
@@ -74,8 +77,10 @@ export function CustomCursor() {
     };
   }, [mouseX, mouseY, isVisible]);
 
-  // Do not render if on mobile, or reduced motion is preferred
-  if (isMobile || reducedMotion) return null;
+  const { isDragonActive } = useDragon();
+
+  // Do not render if on mobile, reduced motion is preferred, or dragon cursor is active
+  if (isMobile || reducedMotion || isDragonActive) return null;
 
   // Render cursor configurations based on active state
   const cursorVariants = {

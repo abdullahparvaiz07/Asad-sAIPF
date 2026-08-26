@@ -19,30 +19,32 @@ export function LiquidNavbar() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
-      
-      const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean);
-      
-      let currentActive = active;
-      for (const section of sections) {
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          const top = rect.top + window.scrollY;
-          const bottom = top + rect.height;
-          
-          if (scrollPosition >= top && scrollPosition <= bottom) {
-            currentActive = section.id;
-          }
-        }
-      }
-      setActive(currentActive);
+    // High-performance active section tracking using IntersectionObserver
+    // Completely avoids scroll event listener layout reflows (offsetTop/offsetHeight thrashing)
+    const sections = navItems
+      .map(item => document.getElementById(item.id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const observerOptions = {
+      root: null, // viewport
+      rootMargin: '-45% 0px -45% 0px', // center region acts as the active region trigger
+      threshold: 0,
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [active]);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActive(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
 
   useEffect(() => {
     if (isMobileMenuOpen) {

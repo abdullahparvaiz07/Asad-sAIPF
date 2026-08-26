@@ -47,7 +47,7 @@ export const SKILLS: SkillItem[] = [
       { label: 'Autonomous Rate', value: '98.4%' },
       { label: 'Task Success', value: '96.2%' }
     ],
-    relatedTech: ['OpenAI', 'LangChain', 'Python', 'Redis', 'Pinecone'],
+    relatedTech: ['OpenAI', 'LangChain', 'Python','Pinecone'],
     codeSnippet: `const agent = new AutonomousAgent({
   role: "Lead Strategist",
   tools: [WebBrowser, CodeInterpreter, SQLQuery],
@@ -199,7 +199,7 @@ async function process_payload(payload: EventPayload):
       'Multi-turn stateful conversation management',
       'Real-time Server-Sent Events (SSE) streaming'
     ],
-    projectsCount: '18+ Projects',
+    projectsCount: '20+ Projects',
     projectCategory: 'Conversational Assistants',
     orbitAngle: 70,
     brandBg: 'bg-[#0284c7]',
@@ -210,7 +210,7 @@ async function process_payload(payload: EventPayload):
       { label: 'CSAT Rating', value: '4.9 / 5' },
       { label: 'Deflection Rate', value: '82%' }
     ],
-    relatedTech: ['Next.js', 'Vercel AI SDK', 'Supabase', 'OpenAI', 'SSE'],
+    relatedTech: ['Python', 'Supabase', 'OpenAI', 'SSE'], 
     codeSnippet: `export async function POST(req: Request) {
   const { messages } = await req.json();
   const stream = await OpenAIStream({
@@ -310,7 +310,7 @@ async def process_batch(items: List[Dict]) -> List[Dict]:
       { label: 'Cost Savings', value: '-65%' },
       { label: 'Context Limit', value: '128k+' }
     ],
-    relatedTech: ['vLLM', 'Ollama', 'HuggingFace', 'GGUF', 'LoRA'],
+    relatedTech: ['Ollama','API','OpenAI'],
     codeSnippet: `from vllm import LLM, SamplingParams
 
 llm = LLM(model="meta-llama/Llama-3.1-70B-Instruct", tensor_parallel_size=2)
@@ -469,6 +469,8 @@ function playUiChime(freq = 520) {
 }
 
 
+
+
 /* ═══════════════════════════════════════════════════════════════════════════════
    CONTINUOUS SCROLLING SKILL TICKER STRIP
    ═══════════════════════════════════════════════════════════════════════════════ */
@@ -482,7 +484,6 @@ function ContinuousSkillStrip({
   onSelect: (id: string) => void;
   soundEnabled: boolean;
 }) {
-  const [isPaused, setIsPaused] = useState(false);
   const doubledSkills = [...SKILLS, ...SKILLS, ...SKILLS];
 
   return (
@@ -494,16 +495,14 @@ function ContinuousSkillStrip({
       transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
       <div 
-        className="bg-white/80 backdrop-blur-xl border-y border-slate-200/60 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden relative w-full"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        className="bg-white/80 border-y border-slate-200/60 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)] overflow-hidden relative w-full"
       >
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F8F8F8] via-[#F8F8F8]/90 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F8F8F8] via-[#F8F8F8]/90 to-transparent z-10 pointer-events-none" />
 
         <motion.div
-          className="flex items-center gap-6 w-max transform-gpu will-change-transform"
-          animate={{ x: isPaused ? undefined : ['0%', '-33.333%'] }}
+          className="flex items-center gap-6 w-max transform-gpu"
+          animate={{ x: ['0%', '-33.333%'] }}
           transition={{
             x: {
               repeat: Infinity,
@@ -523,17 +522,13 @@ function ContinuousSkillStrip({
                     if (soundEnabled) playUiChime(640);
                     onSelect(skill.id);
                   }}
-                  onMouseEnter={() => {
-                    if (soundEnabled) playUiChime(500);
-                    onSelect(skill.id);
-                  }}
                   className="relative flex items-center gap-3 group outline-none cursor-pointer border-none bg-transparent py-1 px-2 select-none"
                 >
                   <span 
                     className={`text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-wider transition-all duration-300 ${
                       isActive
                         ? 'text-slate-900 drop-shadow-sm scale-105'
-                        : 'text-transparent hover:text-slate-900'
+                        : 'text-transparent group-hover:text-slate-900'
                     }`}
                     style={{
                       WebkitTextStroke: isActive ? 'none' : '1.5px #94a3b8'
@@ -541,7 +536,6 @@ function ContinuousSkillStrip({
                   >
                     {skill.name}
                   </span>
-                  {/* Active underline indicator */}
                   {isActive && (
                     <motion.div 
                       className="absolute -bottom-1 left-2 right-2 h-[3px] rounded-full bg-[#f05a28]"
@@ -602,12 +596,18 @@ export function TechnicalExpertise() {
 
   // Compute dynamic Orbit Radii based on screen breakpoint
   const { RX, RY } = React.useMemo(() => {
-    if (windowWidth < 640) {
-      return { RX: 135, RY: 105 };
+    if (windowWidth < 380) {
+      return { RX: 110, RY: 85 };
+    } else if (windowWidth < 640) {
+      return { RX: 125, RY: 95 };
     } else if (windowWidth < 1024) {
-      return { RX: 230, RY: 160 };
+      return { RX: 220, RY: 150 };
+    } else if (windowWidth < 1280) {
+      return { RX: 240, RY: 170 };
+    } else if (windowWidth < 1536) {
+      return { RX: 250, RY: 180 };
     }
-    return { RX: 340, RY: 240 };
+    return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
   const activeSkill = SKILLS.find((s) => s.id === activeSkillId) || SKILLS[0];
@@ -649,17 +649,17 @@ export function TechnicalExpertise() {
       </div>
 
       {/* ──── Parallax Ghost Watermark Text ──── */}
-      <div className="absolute top-[38%] left-0 w-full pointer-events-none z-[1] select-none flex justify-center overflow-hidden mix-blend-multiply">
+      <div className="absolute top-[38%] left-0 w-full pointer-events-none z-[1] select-none flex justify-center overflow-hidden">
         <motion.h2 
           style={{ y: ghostY }}
-          className="text-[22vw] font-black leading-[0.8] tracking-tighter uppercase whitespace-nowrap text-[#f0f0f0]"
+          className="text-[22vw] font-black leading-[0.8] tracking-tighter uppercase whitespace-nowrap text-slate-200/50"
         >
           SKILLS
         </motion.h2>
       </div>
 
       {/* Left Vertical Indicator Sidebar */}
-      <div className="hidden lg:flex flex-col items-center gap-4 absolute left-4 xl:left-8 top-1/2 -translate-y-1/2 z-20">
+      <div className="hidden lg:flex flex-col items-center gap-4 absolute left-4 xl:left-5 top-1/2 -translate-y-1/2 z-20">
         <div className="flex flex-col items-center gap-2">
           <span className="w-[5px] h-[5px] rounded-full bg-slate-300" />
           <span className="w-[5px] h-[5px] rounded-full bg-slate-300" />
@@ -713,7 +713,7 @@ export function TechnicalExpertise() {
       </div>
 
       {/* Soft Ambient Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-gradient-radial from-[#f05a28]/10 via-transparent to-transparent rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(240,90,40,0.08),transparent_70%)] rounded-full pointer-events-none" />
 
       {/* ──── Top Section Header (Scroll-triggered) ──── */}
       <motion.div 
@@ -775,7 +775,7 @@ export function TechnicalExpertise() {
         
         {/* Orbit & Central Robot Intelligence Stage */}
         <motion.div 
-          className="relative w-full max-w-[820px] min-h-[380px] sm:min-h-[540px] md:min-h-[580px] flex items-center justify-center mx-auto xl:translate-x-6"
+          className="relative w-full max-w-[760px] min-h-[380px] sm:min-h-[540px] md:min-h-[580px] flex items-center justify-center mx-auto xl:translate-x-4"
           initial={{ opacity: 0, scale: 0.92 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-5%" }}
@@ -907,10 +907,6 @@ export function TechnicalExpertise() {
                     if (soundEnabled) playUiChime(640);
                     setActiveSkillId(skill.id);
                   }}
-                  onMouseEnter={() => {
-                    if (soundEnabled) playUiChime(520);
-                    setActiveSkillId(skill.id);
-                  }}
                   className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl cursor-pointer select-none transition-all duration-300 border outline-none focus:outline-none ${
                     isActive
                       ? `bg-white border-[#f05a28] border-2 shadow-xl shadow-orange-500/20 scale-[1.04] sm:scale-105 ring-2 sm:ring-4 ring-[#f05a28]/15`
@@ -951,7 +947,7 @@ export function TechnicalExpertise() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-5 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.08),0_4px_12px_rgba(15,23,42,0.03)] relative overflow-hidden w-full max-w-[400px]"
+              className="bg-white/98 border border-slate-200/90 rounded-3xl p-5 shadow-xl relative overflow-hidden w-full max-w-[400px]"
             >
               {/* Subtle Ambient Radial Corner Accent */}
               <div className="absolute -top-16 -right-16 w-36 h-36 bg-gradient-radial from-[#f05a28]/12 via-orange-400/5 to-transparent rounded-full blur-xl pointer-events-none" />
@@ -1029,18 +1025,7 @@ export function TechnicalExpertise() {
                       {activeSkill.description}
                     </p>
 
-                    {/* Micro-Metrics Grid */}
-                    <div className="grid grid-cols-2 gap-2">
-                      {activeSkill.metrics.map((metric, idx) => (
-                        <div 
-                          key={idx} 
-                          className="p-2.5 rounded-2xl bg-gradient-to-br from-slate-50/90 to-slate-100/40 border border-slate-200/70 shadow-2xs hover:border-[#f05a28]/30 transition-all duration-200 group"
-                        >
-                          <span className="text-[9.5px] font-mono font-bold text-slate-400 truncate uppercase tracking-wider block">{metric.label}</span>
-                          <span className="text-base font-black text-slate-900 font-mono mt-0.5 block group-hover:text-[#f05a28] transition-colors">{metric.value}</span>
-                        </div>
-                      ))}
-                    </div>
+
 
                     {/* Core Capabilities Checklist */}
                     <div className="pt-1">
@@ -1139,13 +1124,14 @@ export function TechnicalExpertise() {
 
       </div>
 
-      {/* CONTINUOUS SCROLLING SKILL TICKER STRIP */}
+
+
+      {/* CONTINUOUS SCROLLING SKILL TICKER STRIP (Click-only card selection) */}
       <ContinuousSkillStrip 
         activeId={activeSkillId} 
         onSelect={setActiveSkillId} 
         soundEnabled={soundEnabled}
       />
-
 
     </section>
   );

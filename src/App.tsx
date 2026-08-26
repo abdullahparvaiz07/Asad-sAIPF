@@ -109,19 +109,19 @@ function MainAppContent() {
               ASADULLAH
             </div>
             
-            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-20 sm:mt-32 md:mt-111 lg:mt-48">
+            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-16 sm:mt-24 md:mt-36 lg:mt-48">
               {/* STEP 4 — Left Subheadline (Rises at 4.8s, pushed downward on mobile) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-10 sm:mt-12 md:mt-0 max-w-[300px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto leading-[1.35] tracking-[0.02em]"
+                className="mt-10 sm:mt-12 md:mt-0 md:-translate-y-[26px] max-w-[300px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto leading-[1.35] tracking-[0.02em]"
               >
-                <div className="uppercase">
-                  <span className="font-['Space_Grotesk'] font-semibold text-[15px] sm:text-[17px] text-white">
+                <div className="uppercase font-['Space_Grotesk'] text-[15px] sm:text-[17px] text-white">
+                  <span className="font-semibold">
                     BUILDING NEXT-GENERATION{' '}
                   </span>
-                  <span className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white">
+                  <span className="font-bold">
                     AI AUTOMATION
                   </span>
                 </div>
@@ -137,7 +137,7 @@ function MainAppContent() {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 5.0, ease: [0.16, 1, 0.3, 1] }}
-                className="hidden md:block max-w-[300px] sm:max-w-xs md:max-w-sm mr-1 text-right pointer-events-auto leading-[1.35] tracking-[0.02em]"
+                className="hidden md:block max-w-[300px] sm:max-w-xs md:max-w-sm mr-1 text-left pointer-events-auto leading-[1.35] tracking-[0.02em]"
               >
                 <div>
                   <div className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white uppercase">
