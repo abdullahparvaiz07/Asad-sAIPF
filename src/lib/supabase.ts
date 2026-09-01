@@ -4,8 +4,8 @@ import { createClient } from '@supabase/supabase-js';
    SUPABASE CLIENT INITIALIZATION
    ----------------------------------------------------------------------------- */
 
-const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || 'https://mipqbjswdpyrylqqtcja.supabase.co';
-const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pcHFianN3ZHB5cnlscXF0Y2phIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1OTY0NjcsImV4cCI6MjEwMzE3MjQ2N30.J-WMfxEK56ls9wrPYYcrwND4dstWGUGJes3uCqgTwT0';
+const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
+const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
