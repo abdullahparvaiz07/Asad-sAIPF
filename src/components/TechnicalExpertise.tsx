@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { FlipText } from './FlipText';
+import { getTechLogo } from '../lib/techLogos';
 
 export interface SkillItem {
   id: string;
@@ -29,12 +30,12 @@ export const SKILLS: SkillItem[] = [
     subtitle: 'Autonomous Intelligence',
     expertise: 'Expertise: 3+ Years',
     category: 'ai-core',
-    description: 'Designing and building autonomous AI agents that perceive, reason, plan, and act independently to solve complex real-world workflows.',
+    description: 'Designing autonomous AI agents capable of reasoning, tool use, independent decision-making, and multi-step problem solving.',
     useCases: [
       'Autonomous task execution & plan decomposition',
-      'Multi-agent debate & consensus loops',
-      'Dynamic tool execution & sandboxed APIs',
-      'Long-term memory retrieval & reflection'
+      'Reasoning & multi-step problem solving',
+      'Dynamic tool use & API execution',
+      'Autonomous decision-making loops'
     ],
     projectsCount: '20+ Projects',
     projectCategory: 'Autonomous Agent Networks',
@@ -63,16 +64,16 @@ await agent.execute("Analyze competitor pricing and generate strategy report");`
     subtitle: 'LLM Application Development',
     expertise: 'Expertise: 2+ Years',
     category: 'frameworks',
-    description: 'Building composable LLM applications using LangChain chains, custom memory modules, hybrid retrievers, and tool bindings.',
+    description: 'Building composable LLM applications with prompt engineering, function calling, RAG pipelines, and agent development.',
     useCases: [
-      'Hybrid dense/sparse vector retrieval',
-      'Structured JSON output parsing',
-      'Custom memory & context compression',
-      'Chain-of-thought prompt pipelines'
+      'LLM integration & framework chains',
+      'Advanced prompt engineering & template design',
+      'Tool & function calling bindings',
+      'RAG pipelines & agent development'
     ],
     projectsCount: '15+ Projects',
     projectCategory: 'LangChain Ecosystems',
-    orbitAngle: -130,
+    orbitAngle: -135,
     brandBg: 'bg-[#10B981]',
     brandText: 'text-white',
     brandBorder: 'border-[#10B981]',
@@ -81,7 +82,7 @@ await agent.execute("Analyze competitor pricing and generate strategy report");`
       { label: 'Latency Optimization', value: '-42%' },
       { label: 'Retrieval Precision', value: '94.8%' }
     ],
-    relatedTech: ['Python', 'Chroma', 'Pinecone', 'OpenAI', 'Zod'],
+    relatedTech: ['Python', 'Function calling',' MCPs', 'OpenAI','Supabase'],
     codeSnippet: `const chain = RunnableSequence.from([
   PromptTemplate.fromTemplate(systemPrompt),
   new ChatOpenAI({ model: "gpt-4o", temperature: 0.2 }),
@@ -96,16 +97,16 @@ const response = await chain.invoke({ query: input });`
     subtitle: 'Multi-Agent Orchestration',
     expertise: 'Expertise: 2+ Years',
     category: 'frameworks',
-    description: 'Stateful, multi-actor graph orchestration with cyclic state updates, human-in-the-loop validation, and persistent time-travel debugging.',
+    description: 'Orchestrating stateful, multi-agent graph workflows with conditional branching, execution loops, and human-in-the-loop systems.',
     useCases: [
-      'Cyclic multi-agent graph networks',
-      'Stateful workflow checkpointing',
-      'Human approval & interrupt gates',
-      'Resilient fallback routing'
+      'Stateful workflow checkpointing & memory',
+      'Multi-agent graph orchestration',
+      'Conditional branching & cyclic loops',
+      'Human-in-the-loop validation systems'
     ],
     projectsCount: '12+ Projects',
     projectCategory: 'Multi-Agent State Graphs',
-    orbitAngle: -50,
+    orbitAngle: -45,
     brandBg: 'bg-[#2563eb]',
     brandText: 'text-white',
     brandBorder: 'border-[#2563eb]',
@@ -129,12 +130,12 @@ const app = workflow.compile({ checkpointer: memoryStore });`
     subtitle: 'Process Intelligence',
     expertise: 'Expertise: 3+ Years',
     category: 'engineering',
-    description: 'Automating end-to-end enterprise business processes by combining custom webhooks, cloud triggers, and AI decision engines.',
+    description: 'Automating enterprise processes with event-driven webhooks, API integrations, task orchestration, and intelligent workflows.',
     useCases: [
+      'Custom API & CRM integrations',
       'Event-driven webhook pipelines',
-      'Automated document extraction & OCR',
-      'Custom API sync & CRM integrations',
-      'Self-healing error retry loops'
+      'Task orchestration & scheduling',
+      'End-to-end enterprise process automation'
     ],
     projectsCount: '25+ Projects',
     projectCategory: 'Enterprise Automation',
@@ -147,7 +148,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
       { label: 'Time Saved / Month', value: '450+ hrs' },
       { label: 'Uptime SLA', value: '99.95%' }
     ],
-    relatedTech: ['n8n', 'Make', 'Zapier', 'Python', 'Cloud Functions'],
+    relatedTech: ['n8n', 'Make', 'Zapier'],
     codeSnippet: `@app.post("/webhook/trigger")
 async function process_payload(payload: EventPayload):
     parsed = await pdf_extractor.extract(payload.doc_url)
@@ -161,16 +162,16 @@ async function process_payload(payload: EventPayload):
     subtitle: 'Generative Intelligence',
     expertise: 'Expertise: 3+ Years',
     category: 'ai-core',
-    description: 'Leveraging multimodal generative AI models (GPT-4o, Claude 3.5, Gemini 1.5) for vision, voice, and intelligent content creation.',
+    description: 'Developing multimodal generative AI applications for text generation, embeddings, content creation, and vision/voice AI.',
     useCases: [
-      'Multimodal Vision & Document Analysis',
-      'Real-time Speech-to-Text / Audio AI',
-      'Synthetic Data Generation & Augmentation',
-      'Automated Code Refactoring & Testing'
+      'Text generation & intelligent content creation',
+      'Vector embeddings & semantic retrieval',
+      'Multimodal vision & audio AI models',
+      'Production AI application development'
     ],
     projectsCount: '30+ Projects',
     projectCategory: 'Multimodal AI Apps',
-    orbitAngle: 30,
+    orbitAngle: 20,
     brandBg: 'bg-[#6366f1]',
     brandText: 'text-white',
     brandBorder: 'border-[#6366f1]',
@@ -192,16 +193,16 @@ async function process_payload(payload: EventPayload):
     subtitle: 'Conversational Experiences',
     expertise: 'Expertise: 3+ Years',
     category: 'ai-core',
-    description: 'Creating context-aware, human-like conversational interfaces equipped with long-term memory, custom personas, and streaming responses.',
+    description: 'Creating conversational AI interfaces featuring long-term memory, RAG-based responses, tool integration, and support automation.',
     useCases: [
-      'Interactive customer support automation',
-      'Internal knowledge base search bots',
-      'Multi-turn stateful conversation management',
-      'Real-time Server-Sent Events (SSE) streaming'
+      'Conversational AI & persona interfaces',
+      'Long-term stateful memory management',
+      'RAG-based knowledge retrieval & answers',
+      'Tool integration & customer-support automation'
     ],
     projectsCount: '20+ Projects',
     projectCategory: 'Conversational Assistants',
-    orbitAngle: 70,
+    orbitAngle: 52,
     brandBg: 'bg-[#0284c7]',
     brandText: 'text-white',
     brandBorder: 'border-[#0284c7]',
@@ -210,7 +211,7 @@ async function process_payload(payload: EventPayload):
       { label: 'CSAT Rating', value: '4.9 / 5' },
       { label: 'Deflection Rate', value: '82%' }
     ],
-    relatedTech: ['Python', 'Supabase', 'OpenAI', 'SSE'], 
+    relatedTech: ['Python', 'Supabase', 'OpenAI', 'Gen AI'], 
     codeSnippet: `export async function POST(req: Request) {
   const { messages } = await req.json();
   const stream = await OpenAIStream({
@@ -227,16 +228,16 @@ async function process_payload(payload: EventPayload):
     subtitle: 'High-Performance APIs',
     expertise: 'Expertise: 3+ Years',
     category: 'engineering',
-    description: 'Developing ultra-fast, asynchronous REST & WebSocket backends with Pydantic type safety for AI model inference serving.',
+    description: 'Developing high-performance REST APIs and async backend services with authentication and schema validation for AI endpoints.',
     useCases: [
-      'Asynchronous microservices architecture',
-      'High-concurrency streaming endpoints',
-      'Strict Pydantic schema validation',
-      'OpenAPI documentation generation'
+      'High-performance REST API development',
+      'Asynchronous backend services & integration',
+      'Secure authentication & Pydantic validation',
+      'High-concurrency AI model inference endpoints'
     ],
     projectsCount: '22+ Projects',
     projectCategory: 'High-Scale AI Backends',
-    orbitAngle: 110,
+    orbitAngle: 128,
     brandBg: 'bg-[#009688]',
     brandText: 'text-white',
     brandBorder: 'border-[#009688]',
@@ -245,7 +246,7 @@ async function process_payload(payload: EventPayload):
       { label: 'Avg Latency', value: '18ms' },
       { label: 'RPS Throughput', value: '5,000+' }
     ],
-    relatedTech: ['Python', 'Pydantic', 'SQLAlchemy', 'Docker', 'uvicorn'],
+    relatedTech: ['Python', 'Pydantic', 'Docker'],
     codeSnippet: `@app.get("/api/v1/inference", response_model=ModelResult)
 async def predict(payload: InferenceRequest):
     async with asyncio.TaskGroup() as tg:
@@ -259,16 +260,16 @@ async def predict(payload: InferenceRequest):
     subtitle: 'Core Language & AI Stack',
     expertise: 'Expertise: 3+ Years',
     category: 'engineering',
-    description: 'Developing high-performance Python architectures, AI model integrations, data analysis pipelines, and backend automation.',
+    description: 'Building core AI/ML pipelines, backend architectures, automation scripts, API integrations, and high-throughput data processing.',
     useCases: [
-      'Object-oriented & functional Python design',
-      'Data engineering with Pandas, NumPy & Polars',
-      'AsyncIO & concurrent task execution',
-      'AI pipeline & API SDK integration'
+      'AI & Machine Learning development',
+      'Automation scripting & task execution',
+      'Backend development & API integration',
+      'Data processing with AsyncIO concurrency'
     ],
     projectsCount: '35+ Projects',
     projectCategory: 'Python Architecture',
-    orbitAngle: 150,
+    orbitAngle: 160,
     brandBg: 'bg-[#3776ab]',
     brandText: 'text-white',
     brandBorder: 'border-[#3776ab]',
@@ -277,7 +278,7 @@ async def predict(payload: InferenceRequest):
       { label: 'Code Coverage', value: '98.5%' },
       { label: 'Execution Speed', value: 'Optimized' }
     ],
-    relatedTech: ['FastAPI', 'PyTorch', 'LangChain', 'Pandas', 'AsyncIO'],
+    relatedTech: ['FastAPI', 'PyTorch', 'LangChain', 'Pandas'],
     codeSnippet: `import asyncio
 from typing import List, Dict
 
@@ -292,16 +293,16 @@ async def process_batch(items: List[Dict]) -> List[Dict]:
     subtitle: 'Large Language Models',
     expertise: 'Expertise: 3+ Years',
     category: 'ai-core',
-    description: 'Integrating, fine-tuning, and evaluating frontier Large Language Models for optimal latency, cost-efficiency, and task accuracy.',
+    description: 'Integrating and optimizing Large Language Models with context management, prompt design, structured outputs, and fast inference.',
     useCases: [
-      'Model selection & benchmark evaluation',
-      'Local open-source model deployment (vLLM / Ollama)',
-      'Vector embedding generation & quantization',
-      'Token cost & context window optimization'
+      'Prompt design & system instruction tuning',
+      'Context management & token optimization',
+      'Model integration & structured JSON outputs',
+      'Inference optimization & benchmark evaluation'
     ],
     projectsCount: '28+ Projects',
     projectCategory: 'LLM Architectures',
-    orbitAngle: -170,
+    orbitAngle: -165,
     brandBg: 'bg-[#8b5cf6]',
     brandText: 'text-white',
     brandBorder: 'border-[#8b5cf6]',
@@ -310,7 +311,7 @@ async def process_batch(items: List[Dict]) -> List[Dict]:
       { label: 'Cost Savings', value: '-65%' },
       { label: 'Context Limit', value: '128k+' }
     ],
-    relatedTech: ['Ollama','API','OpenAI'],
+    relatedTech: ['Ollama','API','OpenAI','Anthropic','Qwen','Gemini','DeepSeek'],
     codeSnippet: `from vllm import LLM, SamplingParams
 
 llm = LLM(model="meta-llama/Llama-3.1-70B-Instruct", tensor_parallel_size=2)
@@ -332,19 +333,7 @@ const SKILL_LOGOS: Record<string, string> = {
   'llm': '/brain.png',
 };
 
-export function getTechLogo(name: string): string | null {
-  if (!name) return null;
-  const normalized = name.toLowerCase().trim();
-  if (normalized.includes('openai')) return '/openai.png';
-  if (normalized.includes('langchain')) return '/langchain.png';
-  if (normalized.includes('langgraph')) return '/langgraph.png';
-  if (normalized.includes('n8n')) return '/n8n.png';
-  if (normalized.includes('fastapi')) return '/FastAPI.png';
-  if (normalized.includes('python')) return '/Python.png';
-  if (normalized.includes('brain') || normalized.includes('genai') || normalized.includes('gemini')) return '/brain.png';
-  if (normalized.includes('workflow')) return '/workflow.png';
-  return null;
-}
+export { getTechLogo } from '../lib/techLogos';
 
 function SkillIcon({ skillId, active = false }: { skillId: string; active?: boolean }) {
   const logoSrc = SKILL_LOGOS[skillId];
@@ -475,6 +464,8 @@ function playUiChime(freq = 520) {
    CONTINUOUS SCROLLING SKILL TICKER STRIP
    ═══════════════════════════════════════════════════════════════════════════════ */
 
+import { useDataContext, DEFAULT_SKILLS } from '../context/DataContext';
+
 function ContinuousSkillStrip({
   activeId,
   onSelect,
@@ -484,6 +475,7 @@ function ContinuousSkillStrip({
   onSelect: (id: string) => void;
   soundEnabled: boolean;
 }) {
+  const { skills: SKILLS } = useDataContext();
   const doubledSkills = [...SKILLS, ...SKILLS, ...SKILLS];
 
   return (
@@ -561,7 +553,8 @@ function ContinuousSkillStrip({
 }
 
 export function TechnicalExpertise() {
-  const [activeSkillId, setActiveSkillId] = useState<string>('ai-agents');
+  const { skills: SKILLS } = useDataContext();
+  const [activeSkillId, setActiveSkillId] = useState<string>(SKILLS[0]?.id || 'ai-agents');
   const [cardTab, setCardTab] = useState<'overview' | 'code'>('overview');
   const [categoryFilter, setCategoryFilter] = useState<'all' | 'ai-core' | 'frameworks' | 'engineering'>('all');
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
@@ -610,10 +603,11 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
-  const activeSkill = SKILLS.find((s) => s.id === activeSkillId) || SKILLS[0];
-
   // Calculate coordinates for all 9 skill nodes
-  const skillCoords = SKILLS.map((skill) => {
+  const displaySkills = SKILLS && SKILLS.length > 0 ? SKILLS : DEFAULT_SKILLS;
+  const activeSkill = displaySkills.find((s) => s.id === activeSkillId) || displaySkills[0];
+
+  const skillCoords = displaySkills.map((skill) => {
     const rad = (skill.orbitAngle * Math.PI) / 180;
     return {
       id: skill.id,
@@ -862,7 +856,7 @@ export function TechnicalExpertise() {
 
             {/* Central Robot Intelligence Mascot */}
             <motion.div
-              className="relative z-10 flex justify-center items-center"
+              className="relative z-10 flex justify-center items-center transform-gpu will-change-transform"
               animate={{ 
                 y: [-6, 6, -6],
                 rotate: activeCoord ? activeCoord.x * 0.015 : 0
@@ -872,11 +866,16 @@ export function TechnicalExpertise() {
                 rotate: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
               }}
             >
-              <img 
-                src="/robot.png" 
-                alt="AI Intelligence Robot Mascot Core" 
-                className="w-[100px] sm:w-[135px] md:w-[165px] lg:w-[190px] h-auto object-contain drop-shadow-[0_15px_30px_rgba(240,90,40,0.2)] relative z-10"
-              />
+              <picture>
+                <source srcSet="/robot.webp" type="image/webp" />
+                <img 
+                  src="/robot.png" 
+                  alt="AI Intelligence Robot Mascot Core" 
+                  decoding="async"
+                  loading="eager"
+                  className="w-[100px] sm:w-[135px] md:w-[165px] lg:w-[190px] h-auto object-contain drop-shadow-[0_12px_24px_rgba(240,90,40,0.2)] relative z-10 transform-gpu"
+                />
+              </picture>
             </motion.div>
           </div>
 
@@ -923,7 +922,7 @@ export function TechnicalExpertise() {
                       {skill.name}
                     </span>
                     <span className="text-[9px] text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap max-w-[105px] truncate">
-                      {skill.subtitle}
+                      {skill.subtitle || skill.category}
                     </span>
                   </div>
                 </motion.button>
@@ -1000,11 +999,11 @@ export function TechnicalExpertise() {
                       {activeSkill.name}
                     </h3>
                     <span className="text-[9.5px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200/80 text-slate-500 uppercase whitespace-nowrap">
-                      {activeSkill.expertise.replace('Expertise: ', '')}
+                      {activeSkill.expertise ? activeSkill.expertise.replace('Expertise: ', '') : 'PRO ENGINE'}
                     </span>
                   </div>
                   <p className="text-[11.5px] font-semibold text-[#f05a28] truncate mt-0.5">
-                    {activeSkill.subtitle}
+                    {activeSkill.subtitle || activeSkill.category}
                   </p>
                 </div>
               </div>

@@ -140,22 +140,10 @@ export function SemicircleGallery({
               onClick={() => onCardClick(i)}
               className="snap-center shrink-0 w-[240px] h-[240px] rounded-2xl overflow-hidden relative border border-white/10 bg-[#111113] shadow-xl cursor-pointer group flex flex-col"
             >
-              {/* Top Window Bar */}
-              <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-20 pointer-events-none flex items-center px-3 justify-between">
-                <div className="flex items-center gap-1 opacity-75">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500/80" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500/80" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
-                </div>
-                <span className="text-[7px] font-mono font-bold text-white/50 uppercase">
-                  #{ (i + 1).toString().padStart(2, '0') }
-                </span>
-              </div>
-
               <img
                 src={item.image}
                 alt={item.title}
-                className="absolute inset-0 w-full h-full object-contain bg-white pt-8 pb-16 px-4 transform scale-100 group-hover:scale-[1.05] transition-transform duration-500"
+                className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.05] transition-transform duration-500"
                 draggable={false}
                 decoding="async"
                 loading="lazy"
@@ -200,16 +188,15 @@ export function SemicircleGallery({
 
       {/* Radial Fanned Project Cards */}
       {layout.cards.map((card) => {
-        // Calculate stagger delay based on distance from center card
-        const distanceFromCenter = Math.abs(card.index - centerIndex);
-        const staggerDelay = distanceFromCenter * 0.08;
+        // Sequential left-to-right appearance delay (Card 0 -> Card N)
+        const staggerDelay = card.index * 0.1;
 
         const cardVariants = {
           collapsed: {
-            x: card.x * 0.6, // start slightly closer to the center horizontally
-            y: card.y + 100, // start lower vertically
-            rotate: card.rotation * 0.3, // start with minimal rotation
-            scale: 0.75,
+            x: card.x,
+            y: card.y + 12,
+            rotate: card.rotation,
+            scale: card.scale * 0.95,
             opacity: 0,
           },
           fanned: {
@@ -219,9 +206,8 @@ export function SemicircleGallery({
             scale: card.scale,
             opacity: 1,
             transition: {
-              duration: 1.1, // slightly longer for an extremely smooth slide-in
-              delay: motionEnabled ? staggerDelay : 0,
-              ease: [0.16, 1, 0.3, 1], // premium easeOutQuart
+              opacity: { duration: 0.4, delay: motionEnabled ? staggerDelay : 0, ease: 'easeOut' as any },
+              default: { duration: 0.18, delay: 0, ease: [0.16, 1, 0.3, 1] as any }
             },
           },
         };
@@ -244,14 +230,15 @@ export function SemicircleGallery({
             variants={cardVariants}
             initial={motionEnabled ? "collapsed" : "fanned"}
             whileInView="fanned"
-            viewport={{ once: true, margin: "-10%" }}
+            viewport={{ once: true, margin: "200px" }}
+            transition={{ duration: 0.18, delay: 0, ease: [0.16, 1, 0.3, 1] as any }}
             whileHover={motionEnabled ? {
               x: card.x,
               y: card.y - 22, // lift 22px upwards
               rotate: 0, // straighten rotation to 0 on hover
               scale: card.scale * 1.12,
               zIndex: 100,
-              transition: { duration: 0.25, ease: 'easeOut' },
+              transition: { duration: 0.18, delay: 0, ease: [0.16, 1, 0.3, 1] as any },
             } : undefined}
             className="absolute rounded-2xl shadow-xl overflow-hidden border border-white/10 bg-[#111113] cursor-pointer group focus:outline-none focus:ring-2 focus:ring-orange-500 transform-gpu transition-[border-color,box-shadow,transform] duration-300 hover:border-orange-500/50 hover:shadow-[0_20px_45px_rgba(240,90,40,0.25)]"
             style={{
@@ -262,23 +249,11 @@ export function SemicircleGallery({
               transformOrigin: 'center center',
             }}
           >
-            {/* Top Window Bar Frame */}
-            <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-20 pointer-events-none flex items-center px-3 justify-between">
-              <div className="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500/80" />
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-500/80" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/80" />
-              </div>
-              <span className="text-[7px] font-mono font-bold text-white/50 group-hover:text-orange-400 transition-colors uppercase">
-                #{ (card.index + 1).toString().padStart(2, '0') }
-              </span>
-            </div>
-
             {/* Screenshot with object-top positioning & smooth zoom */}
             <img
               src={card.item.image}
               alt={card.item.title}
-              className="absolute inset-0 w-full h-full object-contain bg-white pt-6 pb-12 px-2 transform scale-100 group-hover:scale-[1.05] transition-transform duration-500 ease-out"
+              className="absolute inset-0 w-full h-full object-cover object-top transform scale-100 group-hover:scale-[1.05] transition-transform duration-500 ease-out"
               loading="lazy"
               decoding="async"
               draggable={false}

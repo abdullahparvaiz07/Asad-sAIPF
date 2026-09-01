@@ -159,7 +159,7 @@ export function Contact() {
                   </li>
                   <li className="icon-content">
                     <a
-                      href="https://www.upwork.com/"
+                      href="https://www.upwork.com/freelancers/~01b340170e0882a0b0?viewMode=1"
                       aria-label="Upwork"
                       data-social="upwork"
                       className="link"

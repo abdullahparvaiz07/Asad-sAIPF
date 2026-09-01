@@ -32,8 +32,8 @@ const ScrollSystemContext = createContext<ScrollSystemContextProps>({
 export const useScrollSystem = () => useContext(ScrollSystemContext);
 
 // Global cubic-bezier curves for unified premium feel
-export const PREMIUM_EASE = [0.16, 1, 0.3, 1]; // Ultra-smooth out
-export const STAGGER_EASE = [0.215, 0.61, 0.355, 1];
+export const PREMIUM_EASE = [0.16, 1, 0.3, 1] as any; // Ultra-smooth out
+export const STAGGER_EASE = [0.215, 0.61, 0.355, 1] as any;
 
 export function ScrollSystemProvider({ children }: { children: React.ReactNode }) {
   const [motionEnabled, setMotionEnabled] = useState(true);
@@ -112,16 +112,6 @@ export function ScrollSystemProvider({ children }: { children: React.ReactNode }
   return (
     <ScrollSystemContext.Provider value={{ motionEnabled, setMotionEnabled, scrollTo }}>
       {children}
-      {/* Dynamic Global Toggle overlay bottom-right */}
-      <div className="fixed bottom-8 right-6 z-[99990] flex items-center gap-2 pointer-events-auto select-none">
-        <button
-          onClick={() => setMotionEnabled(!motionEnabled)}
-          className="px-3 py-1.5 rounded-full border border-white/10 bg-[#09090b]/80 backdrop-blur text-[8px] font-mono font-bold tracking-widest uppercase text-white/60 hover:text-white hover:border-white/20 transition-all duration-300 shadow-xl"
-          aria-label={motionEnabled ? "Disable scroll motion" : "Enable scroll motion"}
-        >
-          {motionEnabled ? "Motion: ON" : "Motion: OFF"}
-        </button>
-      </div>
     </ScrollSystemContext.Provider>
   );
 }

@@ -342,7 +342,7 @@ function StoryModal({ onClose }: { onClose: () => void }) {
 
       {/* Content */}
       <motion.div
-        className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto px-6 md:px-12 py-16 scrollbar-thin"
+        className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto px-6 md:px-12 py-16 scrollbar-thin rounded-3xl bg-[#0d0d0d]/90 border border-white/10"
         initial={{ y: 60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 40, opacity: 0 }}
@@ -351,7 +351,8 @@ function StoryModal({ onClose }: { onClose: () => void }) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className="fixed top-6 right-6 md:top-10 md:right-10 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-[#f05a28] hover:bg-[#f05a28]/10 transition-all duration-300 text-lg cursor-pointer z-50"
+          className="absolute top-6 right-6 w-11 h-11 rounded-full border border-white/20 bg-black/50 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:border-[#f05a28] hover:bg-[#f05a28]/20 transition-all duration-300 text-base cursor-pointer z-50 shadow-xl"
+          title="Close Story"
         >
           ✕
         </button>

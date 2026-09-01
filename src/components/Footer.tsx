@@ -146,15 +146,15 @@ export function Footer() {
             className="text-[12vw] font-black uppercase tracking-tighter leading-none pointer-events-none select-none block font-['Outfit'] transition-all duration-1000 group-hover:tracking-[-0.02em]"
             style={{
               letterSpacing: '-0.05em',
-              color: '#141419',
+              color: '#2d2d38',
               transition: 'color 1s ease, text-shadow 1s ease',
             }}
             onMouseEnter={(e) => {
-              (e.target as HTMLElement).style.color = '#1a1a22';
-              (e.target as HTMLElement).style.textShadow = '0 0 80px rgba(240, 90, 40, 0.04)';
+              (e.target as HTMLElement).style.color = '#3f3f4d';
+              (e.target as HTMLElement).style.textShadow = '0 0 80px rgba(240, 90, 40, 0.08)';
             }}
             onMouseLeave={(e) => {
-              (e.target as HTMLElement).style.color = '#141419';
+              (e.target as HTMLElement).style.color = '#2d2d38';
               (e.target as HTMLElement).style.textShadow = 'none';
             }}
           >

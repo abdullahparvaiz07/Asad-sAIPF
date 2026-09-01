@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useScrollSystem } from './ScrollSystem';
 import { SemicircleGallery, ProjectGalleryItem } from './ui/semicircle-gallery';
-import { ArrowUpRight, Github, X, Eye, Code } from 'lucide-react';
+import { ArrowUpRight, Github, X, Maximize2, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { getTechLogo } from './TechnicalExpertise';
+import { getTechLogo } from '../lib/techLogos';
 import { FlipText } from './FlipText';
 
 /* -----------------------------------------------------------------------------
@@ -102,19 +102,25 @@ const PROJECT_DATA: ProjectItem[] = [
   }
 ];
 
+import { useDataContext, DEFAULT_PROJECTS } from '../context/DataContext';
+
 export function Projects() {
+  const { projects } = useDataContext();
+  const PROJECT_DATA = projects && projects.length > 0 ? projects : DEFAULT_PROJECTS;
   const { motionEnabled, scrollTo } = useScrollSystem();
   const [activeProjectIndex, setActiveProjectIndex] = useState<number | null>(null);
+  const [isZoomOpen, setIsZoomOpen] = useState<boolean>(false);
+  const [zoomScale, setZoomScale] = useState<number>(1);
 
-  // Lock body scroll when modal is open
+  // Lock body scroll when modal or zoom lightbox is open
   useEffect(() => {
-    if (activeProjectIndex !== null) {
+    if (activeProjectIndex !== null || isZoomOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
-  }, [activeProjectIndex]);
+  }, [activeProjectIndex, isZoomOpen]);
 
   const galleryItems: ProjectGalleryItem[] = useMemo(() =>
     PROJECT_DATA.map((item) => ({
@@ -166,14 +172,20 @@ export function Projects() {
                 <FlipText duration={0.8} delay={0.2}>PROJECTS.</FlipText>
               </span>
             </h2>
-
-
           </div>
 
-          <div className="flex flex-col items-center md:items-end gap-2 text-center md:text-right">
-            <span className="font-mono text-xs font-bold tracking-widest text-[#f05a28] uppercase">
-              Fanned Arc Showcase
-            </span>
+          <div className="flex flex-col items-center md:items-end gap-3 text-center md:text-right">
+            <a
+              href="#all-projects"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.hash = '#all-projects';
+              }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#141419] hover:bg-[#f05a28] border border-white/10 text-xs font-mono font-bold text-white uppercase tracking-wider transition-all shadow-lg group cursor-pointer"
+            >
+              <span>View All Projects ({PROJECT_DATA.length})</span>
+              <ArrowUpRight className="w-4 h-4 text-[#f05a28] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
             <p className="text-xs text-zinc-400 font-sans max-w-xs leading-relaxed">
               Hover over a case study thumbnail to inspect it, or click to lock target and download complete diagnostic parameters.
             </p>
@@ -187,21 +199,30 @@ export function Projects() {
             onCardClick={(index) => setActiveProjectIndex(index)}
             centerChildren={
               <>
-                <div className="text-[10px] font-mono text-[#f05a28] tracking-widest font-black uppercase mb-2">
-                  // CORE INVENTORY
-                </div>
                 <h3 className="text-xl md:text-2xl lg:text-3xl font-black font-serif tracking-tight leading-none text-white uppercase whitespace-nowrap">
                  AI SYSTEMS ENGINEERING
                 </h3>
                 <p className="text-xs sm:text-sm text-zinc-400 font-sans max-w-sm sm:max-w-md md:max-w-lg mt-2.5 leading-relaxed px-2">
                   Designing, deploying, and scaling intelligent systems, agentic workflows, and machine learning infrastructure.
                 </p>
-                <button
-                  onClick={handleCTA}
-                  className="px-8 py-3 bg-[#f05a28] hover:bg-[#ff6d39] text-white font-bold text-[11px] uppercase tracking-widest rounded-full mt-5 cursor-pointer shadow-lg shadow-orange-500/20 active:scale-95 transition-all select-none"
-                >
-                  LET'S COLLABORATE
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-5 select-none">
+                  <button
+                    onClick={handleCTA}
+                    className="px-6 py-3 bg-[#f05a28] hover:bg-[#ff6d39] text-white font-bold text-[11px] uppercase tracking-widest rounded-full cursor-pointer shadow-lg shadow-orange-500/20 active:scale-95 transition-all"
+                  >
+                    LET'S COLLABORATE
+                  </button>
+                  <a
+                    href="#all-projects"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.hash = '#all-projects';
+                    }}
+                    className="px-6 py-3 bg-zinc-900/90 hover:bg-zinc-800 border border-white/10 text-white font-bold text-[11px] uppercase tracking-widest rounded-full cursor-pointer transition-all"
+                  >
+                    VIEW ALL ({PROJECT_DATA.length})
+                  </a>
+                </div>
               </>
             }
           />
@@ -211,7 +232,7 @@ export function Projects() {
       {/* Case Study Detail Modal (Signature Interaction) */}
       <AnimatePresence>
         {selectedProject && (
-          <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-[99999] flex items-center justify-center p-2 sm:p-4 md:p-6">
             {/* Dark blur backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -221,39 +242,42 @@ export function Projects() {
               className="absolute inset-0 bg-black/90 backdrop-blur-md"
             />
 
-            {/* Modal Box */}
+            {/* Modal Box - Expanded Dimensions for Full-Width Workflow Clarity */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 30 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#111115] border border-zinc-800 rounded-3xl shadow-2xl flex flex-col z-10 scrollbar-thin"
+              className="relative w-full max-w-4xl lg:max-w-5xl max-h-[92vh] overflow-y-auto bg-[#0d0e12] border border-zinc-800 rounded-3xl shadow-2xl flex flex-col z-10 scrollbar-thin"
             >
-              {/* Image Banner */}
-              <div className="h-64 sm:h-80 relative w-full overflow-hidden bg-white border-b border-zinc-800/10 flex items-center justify-center p-6 pt-16 pb-10">
+              {/* Full-Width Workflow Banner Container */}
+              <div 
+                onClick={() => setIsZoomOpen(true)}
+                className="h-72 sm:h-[420px] md:h-[480px] relative w-full overflow-hidden bg-white border-b border-zinc-800 flex items-center justify-center group cursor-pointer"
+              >
                 <img
                   src={selectedProject.image}
                   alt={selectedProject.altText}
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-500"
                   decoding="async"
                   loading="lazy"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#111115] via-transparent to-black/20 pointer-events-none" />
-                
-                {/* Mock Window Header Bar */}
-                <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-                  <span className="w-2 h-2 rounded-full bg-red-500" />
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span className="ml-2 font-mono text-[9px] font-bold text-zinc-300 uppercase tracking-widest">
-                    CASE STUDY #{selectedProject.id}
-                  </span>
+
+                {/* Fullscreen Expand CTA Badge */}
+                <div 
+                  className="absolute bottom-4 right-4 z-20 flex items-center gap-2 px-3.5 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/20 text-white group-hover:bg-[#f05a28] group-hover:border-[#f05a28] transition-all duration-300 text-xs font-mono font-bold tracking-wider uppercase shadow-2xl cursor-pointer"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                  <span>Inspect / Zoom Fullscreen</span>
                 </div>
 
                 {/* Close Button */}
                 <button
-                  onClick={() => setActiveProjectIndex(null)}
-                  className="absolute top-4 right-4 w-9 h-9 rounded-full border border-white/10 bg-black/60 backdrop-blur-md text-white hover:text-orange-500 hover:border-orange-500/40 flex items-center justify-center cursor-pointer transition-colors z-20"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveProjectIndex(null);
+                  }}
+                  className="absolute top-4 right-4 w-9 h-9 rounded-full border border-white/10 bg-black/75 backdrop-blur-md text-white hover:text-orange-500 hover:border-orange-500/40 flex items-center justify-center cursor-pointer transition-colors z-20"
                   aria-label="Close case study details"
                 >
                   <X className="w-4 h-4" />
@@ -270,7 +294,7 @@ export function Projects() {
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                   </div>
 
-                  <h3 className="text-xl sm:text-2xl font-black font-['Outfit'] uppercase text-white tracking-tight leading-none mb-4">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black font-['Outfit'] uppercase text-white tracking-tight leading-none mb-4">
                     {selectedProject.title}
                   </h3>
 
@@ -279,13 +303,13 @@ export function Projects() {
                     <span className="text-[8px] font-mono text-orange-500 tracking-wider font-bold block mb-1 uppercase">
                       SYSTEM IMPACT / KEY OUTCOME
                     </span>
-                    <p className="text-sm font-bold text-white leading-relaxed">
+                    <p className="text-sm sm:text-base font-bold text-white leading-relaxed">
                       {selectedProject.outcome}
                     </p>
                   </div>
 
                   {/* Deep Description */}
-                  <p className="text-xs text-zinc-400 font-sans leading-relaxed mb-6">
+                  <p className="text-xs sm:text-sm text-zinc-400 font-sans leading-relaxed mb-6">
                     {selectedProject.description}
                   </p>
 
@@ -300,9 +324,9 @@ export function Projects() {
                         return (
                           <span
                             key={tag}
-                            className="px-2.5 py-1 rounded bg-white/[0.05] border border-white/[0.05] font-mono text-[8px] text-zinc-300 font-bold uppercase tracking-wider flex items-center gap-1.5"
+                            className="px-3 py-1.5 rounded-lg bg-white/[0.05] border border-white/[0.05] font-mono text-[9px] text-zinc-300 font-bold uppercase tracking-wider flex items-center gap-2"
                           >
-                            {logo && <img src={logo} alt={tag} className="w-3.5 h-3.5 object-contain" />}
+                            {logo && <img src={logo} alt={tag} className="w-4 h-4 object-contain" />}
                             <span>{tag}</span>
                           </span>
                         );
@@ -318,9 +342,9 @@ export function Projects() {
                       href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#f05a28] hover:bg-[#ff6d39] text-white font-bold text-[10px] uppercase tracking-widest cursor-pointer active:scale-95 transition-all"
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#f05a28] hover:bg-[#ff6d39] text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-widest cursor-pointer active:scale-95 transition-all shadow-lg shadow-orange-500/20"
                     >
-                      <span>Live Site</span>
+                      <span>Live Site / Repo</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </a>
                   )}
@@ -329,9 +353,9 @@ export function Projects() {
                       href={selectedProject.repoUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-zinc-800 bg-zinc-950/80 hover:bg-zinc-900 hover:text-white text-zinc-400 font-bold text-[10px] uppercase tracking-widest cursor-pointer active:scale-95 transition-all"
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-zinc-800 bg-zinc-950/80 hover:bg-zinc-900 hover:text-white text-zinc-400 font-bold text-[10px] sm:text-[11px] uppercase tracking-widest cursor-pointer active:scale-95 transition-all"
                     >
-                      <span>Github Repo</span>
+                      <span>Github Code</span>
                       <Github className="w-3.5 h-3.5" />
                     </a>
                   )}
@@ -339,6 +363,83 @@ export function Projects() {
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* FULL-SCREEN WORKFLOW LIGHTBOX ZOOM MODAL */}
+      <AnimatePresence>
+        {isZoomOpen && selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-xl flex flex-col justify-between p-3 sm:p-6 overflow-hidden select-none"
+          >
+            {/* Header bar */}
+            <div className="flex items-center justify-between w-full z-20 pb-3 border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] sm:text-xs font-mono font-bold text-[#f05a28] tracking-widest uppercase">
+                  // FULL RESOLUTION WORKFLOW INSPECTOR
+                </span>
+                <span className="text-xs sm:text-sm font-black text-white uppercase hidden sm:inline-block">
+                  {selectedProject.title}
+                </span>
+              </div>
+
+              {/* Zoom Controls */}
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <button
+                  onClick={() => setZoomScale(prev => Math.max(0.6, prev - 0.25))}
+                  className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                  title="Zoom Out"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </button>
+                <span className="font-mono text-xs text-white/80 px-2 min-w-[45px] text-center font-bold">
+                  {Math.round(zoomScale * 100)}%
+                </span>
+                <button
+                  onClick={() => setZoomScale(prev => Math.min(3.5, prev + 0.25))}
+                  className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                  title="Zoom In"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setZoomScale(1)}
+                  className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                  title="Reset Zoom"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+                <div className="w-px h-6 bg-white/20 mx-1" />
+                <button
+                  onClick={() => setIsZoomOpen(false)}
+                  className="p-2 rounded-full bg-red-500/80 hover:bg-red-500 text-white transition-colors cursor-pointer"
+                  title="Close Fullscreen View"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Main Interactive Zoom Area */}
+            <div className="flex-grow w-full overflow-auto flex items-center justify-center p-2 sm:p-6 relative">
+              <motion.img
+                src={selectedProject.image}
+                alt={selectedProject.altText}
+                style={{ scale: zoomScale }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="max-w-none w-auto max-h-[85vh] object-contain rounded-xl shadow-2xl bg-white p-2 sm:p-4 border border-white/20 transition-transform duration-200"
+                draggable={false}
+              />
+            </div>
+
+            {/* Footer hint */}
+            <div className="text-center text-[10px] font-mono text-white/50 pt-2">
+              Tip: Use the zoom controls above (+/-) to inspect individual n8n nodes, API endpoints, and decision paths in high resolution.
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { About } from './components/About';
 import { LiquidNavbar } from './components/LiquidNavbar';
 import { FlipText } from './components/FlipText';
@@ -17,15 +17,75 @@ import {
   ScrollDepthIndicator,
 } from './components/ScrollAnimations';
 import { ScrollSystemProvider, useScrollSystem } from './components/ScrollSystem';
+import { DataProvider } from './context/DataContext';
+import { AdminLogin } from './components/admin/AdminLogin';
+import { AdminDashboard } from './components/admin/AdminDashboard';
+import { NotFound } from './components/NotFound';
+import { AllProjects } from './components/AllProjects';
 
 export default function App() {
   return (
-    <DragonProvider>
-      <ScrollSystemProvider>
-        <MainAppContent />
-      </ScrollSystemProvider>
-    </DragonProvider>
+    <DataProvider>
+      <DragonProvider>
+        <ScrollSystemProvider>
+          <AppRouter />
+        </ScrollSystemProvider>
+      </DragonProvider>
+    </DataProvider>
   );
+}
+
+function AppRouter() {
+  const [currentPath, setCurrentPath] = useState(typeof window !== 'undefined' ? window.location.pathname : '/');
+  const [currentHash, setCurrentHash] = useState(typeof window !== 'undefined' ? window.location.hash : '');
+  const [isAdminAuth, setIsAdminAuth] = useState(false);
+
+  useEffect(() => {
+    const checkRoute = () => {
+      setCurrentPath(window.location.pathname);
+      setCurrentHash(window.location.hash);
+
+      const savedAuth = sessionStorage.getItem('asad_admin_authenticated') === 'true';
+      setIsAdminAuth(savedAuth);
+    };
+
+    checkRoute();
+    window.addEventListener('popstate', checkRoute);
+    window.addEventListener('hashchange', checkRoute);
+    return () => {
+      window.removeEventListener('popstate', checkRoute);
+      window.removeEventListener('hashchange', checkRoute);
+    };
+  }, []);
+
+  const isAdminPath = currentPath === '/admin' || currentHash === '#admin';
+  const isAllProjectsPath = currentPath === '/projects' || currentHash === '#all-projects' || currentHash === '#projects-all';
+  const isHomePath = currentPath === '/' || currentPath === '' || currentPath === '/index.html';
+
+  if (isAdminPath) {
+    if (!isAdminAuth) {
+      return <AdminLogin onLoginSuccess={() => setIsAdminAuth(true)} />;
+    }
+    return (
+      <AdminDashboard
+        onLogout={() => {
+          sessionStorage.removeItem('asad_admin_authenticated');
+          setIsAdminAuth(false);
+          window.location.hash = '';
+        }}
+      />
+    );
+  }
+
+  if (isAllProjectsPath) {
+    return <AllProjects />;
+  }
+
+  if (isHomePath) {
+    return <MainAppContent />;
+  }
+
+  return <NotFound />;
 }
 
 function MainAppContent() {
@@ -109,44 +169,42 @@ function MainAppContent() {
               ASADULLAH
             </div>
             
-            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-16 sm:mt-24 md:mt-36 lg:mt-48">
-              {/* STEP 4 — Left Subheadline (Rises at 4.8s, pushed downward on mobile) */}
+            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-12 sm:mt-20 md:mt-[48vh] lg:mt-[52vh] xl:mt-[54vh]">
+              {/* STEP 4 — Left Subheadline (Positioned near shoulder on iPad & Tablet) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-10 sm:mt-12 md:mt-0 md:-translate-y-[26px] max-w-[300px] sm:max-w-xs md:max-w-sm ml-1 pointer-events-auto leading-[1.35] tracking-[0.02em]"
+                className="mt-4 sm:mt-8 md:mt-0 max-w-full sm:max-w-xs md:max-w-sm lg:max-w-md ml-1 pointer-events-auto leading-relaxed tracking-[0.01em]"
               >
-                <div className="uppercase font-['Space_Grotesk'] text-[15px] sm:text-[17px] text-white">
-                  <span className="font-semibold">
+                <div className="uppercase font-['Space_Grotesk'] text-[13px] xs:text-[15px] sm:text-[16px] md:text-[17px] text-white leading-snug">
+                  <span className="font-semibold inline">
                     BUILDING NEXT-GENERATION{' '}
                   </span>
-                  <span className="font-bold">
+                  <span className="font-bold whitespace-nowrap inline">
                     AI AUTOMATION
                   </span>
                 </div>
-                <p className="font-['Inter'] font-normal text-[14px] sm:text-[16px] text-white/80 mt-1">
-                  <i> that streamlines workflows,<br/>
-                  boosts productivity<br/>
-                  and scales with your business </i>
+                <p className="font-['Inter'] font-normal text-[12px] xs:text-[14px] sm:text-[15px] text-white/90 mt-1 leading-relaxed">
+                  <i>that streamlines workflows, boosts productivity, and scales with your business</i>
                 </p>
               </motion.div>
 
-              {/* STEP 4.5 — Right Subheadline (Hidden on mobile, right-aligned on desktop, rises at 5.0s) */}
+              {/* STEP 4.5 — Right Subheadline (Positioned near shoulder on iPad & Tablet) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 5.0, ease: [0.16, 1, 0.3, 1] }}
-                className="hidden md:block max-w-[300px] sm:max-w-xs md:max-w-sm mr-1 text-left pointer-events-auto leading-[1.35] tracking-[0.02em]"
+                className="hidden md:block max-w-[280px] sm:max-w-xs md:max-w-sm mr-1 text-left pointer-events-auto leading-[1.35] tracking-[0.02em]"
               >
                 <div>
-                  <div className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white uppercase">
+                  <div className="font-['Space_Grotesk'] font-bold text-[14px] sm:text-[16px] md:text-[17px] text-white uppercase">
                     AI That Works
                   </div>
-                  <div className="font-['Space_Grotesk'] font-semibold text-[15px] sm:text-[17px] text-white uppercase">
+                  <div className="font-['Space_Grotesk'] font-semibold text-[14px] sm:text-[16px] md:text-[17px] text-white uppercase">
                     AUTOMATION that scales
                   </div>
-                  <p className="font-['Space_Grotesk'] font-bold text-[15px] sm:text-[17px] text-white uppercase">
+                  <p className="font-['Space_Grotesk'] font-bold text-[14px] sm:text-[16px] md:text-[17px] text-white uppercase">
                     SYSTEMS built for impact
                   </p>
                 </div>
