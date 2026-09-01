@@ -37,7 +37,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   const [successMsg, setSuccessMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Secret Override Modal State
   const [isSecretModalOpen, setIsSecretModalOpen] = useState(false);
   const [secretCodeInput, setSecretCodeInput] = useState('');
   const [showSecretCode, setShowSecretCode] = useState(false);
@@ -52,7 +51,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   });
   const [lockoutTimeLeft, setLockoutTimeLeft] = useState<number>(0);
 
-  // Keyboard shortcut listener: Ctrl + Shift + Alt triggers secret modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && e.altKey) {
@@ -116,13 +114,11 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
     }
   };
 
-  // Secret Override Submit Handler
   const handleSecretOverrideSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSecretErrorMsg('');
 
     if (secretCodeInput.trim() === SECRET_OVERRIDE_CODE) {
-      // Emergency Unlock Granted
       localStorage.removeItem('asad_admin_lockout_until');
       localStorage.setItem('asad_admin_failed_attempts', '0');
       setFailedAttempts(0);
@@ -442,7 +438,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
                 <div className="flex items-center gap-2 text-orange-500">
                   <Terminal className="w-5 h-5 animate-pulse" />
                   <span className="font-bold text-sm tracking-widest uppercase">
-                    SECRET OVERRIDE CONSOLE
+                    ADMIN SECURITY RECOVERY
                   </span>
                 </div>
                 <button
@@ -462,7 +458,7 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
               <form onSubmit={handleSecretOverrideSubmit} className="space-y-4">
                 <div>
                   <label className="block text-[10px] text-zinc-400 font-bold mb-2 uppercase tracking-widest">
-                    ENTER EMERGENCY SECURITY OVERRIDE CODE:
+                    ENTER SECURITY AUTHORIZATION CODE:
                   </label>
                   <div className="relative">
                     <Key className="w-4 h-4 text-orange-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
