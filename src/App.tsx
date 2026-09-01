@@ -169,13 +169,13 @@ function MainAppContent() {
               ASADULLAH
             </div>
             
-            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-12 sm:mt-20 md:mt-[48vh] lg:mt-[52vh] xl:mt-[54vh]">
-              {/* STEP 4 — Left Subheadline (Positioned near shoulder on iPad & Tablet) */}
+            <div className="w-full flex flex-col md:flex-row items-start justify-between gap-4 md:gap-6 mt-10 sm:mt-16 md:mt-[44vh] lg:mt-32 xl:mt-36 2xl:mt-40">
+              {/* STEP 4 — Left Subheadline (Positioned upward on Laptop/PC) */}
               <motion.div 
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 4.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-4 sm:mt-8 md:mt-0 max-w-full sm:max-w-xs md:max-w-sm lg:max-w-md ml-1 pointer-events-auto leading-relaxed tracking-[0.01em]"
+                className="mt-4 sm:mt-8 md:mt-0 max-w-full sm:max-w-xs md:max-w-sm lg:max-w-xs xl:max-w-sm ml-1 pointer-events-auto leading-relaxed tracking-[0.01em]"
               >
                 <div className="uppercase font-['Space_Grotesk'] text-[13px] xs:text-[15px] sm:text-[16px] md:text-[17px] text-white leading-snug">
                   <span className="font-semibold inline">
