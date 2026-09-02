@@ -32,7 +32,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [editingSkill, setEditingSkill] = useState<SkillItem | null>(null);
   const [skillId, setSkillId] = useState('');
   const [skillName, setSkillName] = useState('');
-  const [skillCategory, setSkillCategory] = useState('');
+  const [skillCategory, setSkillCategory] = useState('ai-core');
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategoryInput, setCustomCategoryInput] = useState('');
   const [skillDesc, setSkillDesc] = useState('');
   const [skillUseCases, setSkillUseCases] = useState('');
   const [skillProjectsCount, setSkillProjectsCount] = useState('10+ Systems');
@@ -41,6 +43,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [skillRelatedTech, setSkillRelatedTech] = useState('');
   const [skillCodeSnippet, setSkillCodeSnippet] = useState('');
   const [skillIconSrc, setSkillIconSrc] = useState('');
+
+  // Extract unique custom categories added previously
+  const existingCustomCategories = React.useMemo(() => {
+    const standard = new Set(['ai-core', 'frameworks', 'engineering']);
+    const customSet = new Set<string>();
+    skills.forEach(s => {
+      if (s.category && !standard.has(s.category)) {
+        customSet.add(s.category);
+      }
+    });
+    return Array.from(customSet);
+  }, [skills]);
 
   /* --- PROJECT HANDLERS --- */
   const openNewProjectModal = () => {
@@ -116,6 +130,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setEditingSkill(null);
     setSkillId('');
     setSkillName('');
+    setIsCustomCategory(false);
+    setCustomCategoryInput('');
     setSkillCategory('ai-core');
     setSkillDesc('');
     setSkillUseCases('');
@@ -132,6 +148,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setEditingSkill(skill);
     setSkillId(skill.id);
     setSkillName(skill.name);
+    
+    const standard = ['ai-core', 'frameworks', 'engineering'];
+    if (!standard.includes(skill.category) && !existingCustomCategories.includes(skill.category)) {
+      setIsCustomCategory(true);
+      setCustomCategoryInput(skill.category);
+    } else {
+      setIsCustomCategory(false);
+      setCustomCategoryInput('');
+    }
+
     setSkillCategory(skill.category);
     setSkillDesc(skill.description);
     setSkillUseCases(skill.useCases.join('\n'));
@@ -515,12 +541,48 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   </div>
                   <div>
                     <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">CATEGORY</label>
-                    <input type="text" value={skillCategory} onChange={e => setSkillCategory(e.target.value)} required placeholder="e.g. Stateful Workflows" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
+                    <select
+                      value={isCustomCategory ? 'custom' : skillCategory}
+                      onChange={(e) => {
+                        if (e.target.value === 'custom') {
+                          setIsCustomCategory(true);
+                          setCustomCategoryInput('');
+                        } else {
+                          setIsCustomCategory(false);
+                          setSkillCategory(e.target.value);
+                        }
+                      }}
+                      className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500 cursor-pointer"
+                    >
+                      <option value="ai-core">AI & Intelligence Core (ai-core)</option>
+                      <option value="frameworks">Frameworks & Graphs (frameworks)</option>
+                      <option value="engineering">APIs & Backend (engineering)</option>
+                      {existingCustomCategories.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                      ))}
+                      <option value="custom" className="text-orange-400 font-bold">+ Create Custom Category...</option>
+                    </select>
+
+                    {isCustomCategory && (
+                      <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
+                        <input
+                          type="text"
+                          value={customCategoryInput}
+                          onChange={(e) => {
+                            setCustomCategoryInput(e.target.value);
+                            setSkillCategory(e.target.value);
+                          }}
+                          required
+                          placeholder="Enter new category (e.g. DevOps, Voice AI)"
+                          className="w-full bg-zinc-900 border border-orange-500/50 rounded-xl p-2.5 text-xs text-orange-300 focus:outline-none focus:border-orange-500 placeholder-zinc-500 font-mono"
+                        />
+                      </motion.div>
+                    )}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">VERBATIM TECHNICAL DESCRIPTION</label>
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">TECHNICAL DESCRIPTION</label>
                   <textarea value={skillDesc} onChange={e => setSkillDesc(e.target.value)} required rows={2} placeholder="stateful workflows, multi-agent orchestration..." className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
                 </div>
 

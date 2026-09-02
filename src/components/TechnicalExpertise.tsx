@@ -560,11 +560,35 @@ export function TechnicalExpertise() {
   const { skills: SKILLS } = useDataContext();
   const [activeSkillId, setActiveSkillId] = useState<string>(SKILLS[0]?.id || 'ai-agents');
   const [cardTab, setCardTab] = useState<'overview' | 'code'>('overview');
-  const [categoryFilter, setCategoryFilter] = useState<'all' | 'ai-core' | 'frameworks' | 'engineering'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
   const [isAllSkillsModalOpen, setIsAllSkillsModalOpen] = useState<boolean>(false);
+
+  // Dynamic category filter list including any newly created custom categories
+  const dynamicCategories = React.useMemo(() => {
+    const defaultCats = [
+      { id: 'all', label: 'All Connected Systems' },
+      { id: 'ai-core', label: 'AI & Intelligence Core' },
+      { id: 'frameworks', label: 'Frameworks & Graphs' },
+      { id: 'engineering', label: 'APIs & Backend' },
+    ];
+    const catMap = new Map<string, string>();
+    defaultCats.forEach((c) => catMap.set(c.id, c.label));
+
+    SKILLS.forEach((s) => {
+      if (s.category && !catMap.has(s.category)) {
+        const formattedLabel = s.category
+          .split(/[-_ ]+/)
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+        catMap.set(s.category, formattedLabel);
+      }
+    });
+
+    return Array.from(catMap.entries()).map(([id, label]) => ({ id, label }));
+  }, [SKILLS]);
 
   const handleCopyCode = (code: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -758,17 +782,12 @@ export function TechnicalExpertise() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            {[
-              { id: 'all', label: 'All Connected Systems' },
-              { id: 'ai-core', label: 'AI & Intelligence Core' },
-              { id: 'frameworks', label: 'Frameworks & Graphs' },
-              { id: 'engineering', label: 'APIs & Backend' }
-            ].map((cat) => {
+            {dynamicCategories.map((cat) => {
               const isCatActive = categoryFilter === cat.id;
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setCategoryFilter(cat.id as any)}
+                  onClick={() => setCategoryFilter(cat.id)}
                   className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-all duration-200 cursor-pointer ${
                     isCatActive
                       ? 'bg-slate-900 text-white shadow-sm'
