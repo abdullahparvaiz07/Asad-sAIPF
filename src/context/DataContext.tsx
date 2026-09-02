@@ -226,6 +226,7 @@ app = workflow.compile(checkpointer=MemorySaver())`
     projectsCount: '35+ Workflows',
     projectCategory: 'n8n & Enterprise Pipelines',
     orbitAngle: -10,
+    iconSrc: '/n8n.png',
     brandBg: 'bg-[#f05a28]',
     brandText: 'text-white',
     brandBorder: 'border-[#f05a28]',

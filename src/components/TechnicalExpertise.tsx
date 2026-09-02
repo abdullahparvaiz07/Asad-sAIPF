@@ -325,6 +325,7 @@ const SKILL_LOGOS: Record<string, string> = {
   'langchain': '/langchain.png',
   'langgraph': '/langgraph.png',
   'workflow-automation': '/n8n.png',
+  'workflow-auto': '/n8n.png',
   'gen-ai': '/brain.png',
   'ai-chatbots': '/openai.png',
   'fastapi': '/FastAPI.png',
