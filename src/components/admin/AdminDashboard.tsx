@@ -306,16 +306,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               <span>Add New Project</span>
             </button>
           )}
-
-          {activeTab === 'skills' && (
-            <button
-              onClick={openNewSkillModal}
-              className="px-4 py-2.5 rounded-xl bg-green-600 hover:bg-green-500 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-green-600/20"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add New Skill</span>
-            </button>
-          )}
         </div>
 
         {/* TAB 1: PROJECTS MANAGER */}
@@ -526,110 +516,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         )}
       </AnimatePresence>
 
-      {/* MODAL: ADD / EDIT SKILL */}
-      <AnimatePresence>
-        {isSkillModalOpen && (
-          <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setIsSkillModalOpen(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative w-full max-w-2xl bg-[#111115] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                <h3 className="text-xl font-bold font-['Outfit'] uppercase text-white">
-                  {editingSkill ? 'Edit Skill' : 'Add New Skill Node'}
-                </h3>
-                <button onClick={() => setIsSkillModalOpen(false)} className="p-2 rounded-full hover:bg-white/10 text-zinc-400">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSaveSkill} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">SKILL NAME</label>
-                    <input type="text" value={skillName} onChange={e => setSkillName(e.target.value)} required placeholder="e.g. LangGraph" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">CATEGORY</label>
-                    <select
-                      value={isCustomCategory ? 'custom' : skillCategory}
-                      onChange={(e) => {
-                        if (e.target.value === 'custom') {
-                          setIsCustomCategory(true);
-                          setCustomCategoryInput('');
-                        } else {
-                          setIsCustomCategory(false);
-                          setSkillCategory(e.target.value);
-                        }
-                      }}
-                      className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500 cursor-pointer"
-                    >
-                      <option value="ai-core">AI & Intelligence Core (ai-core)</option>
-                      <option value="frameworks">Frameworks & Graphs (frameworks)</option>
-                      <option value="engineering">APIs & Backend (engineering)</option>
-                      {existingCustomCategories.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                      <option value="custom" className="text-orange-400 font-bold">+ Create Custom Category...</option>
-                    </select>
-
-                    {isCustomCategory && (
-                      <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="mt-2">
-                        <input
-                          type="text"
-                          value={customCategoryInput}
-                          onChange={(e) => {
-                            setCustomCategoryInput(e.target.value);
-                            setSkillCategory(e.target.value);
-                          }}
-                          required
-                          placeholder="Enter new category (e.g. DevOps, Voice AI)"
-                          className="w-full bg-zinc-900 border border-orange-500/50 rounded-xl p-2.5 text-xs text-orange-300 focus:outline-none focus:border-orange-500 placeholder-zinc-500 font-mono"
-                        />
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">TECHNICAL DESCRIPTION</label>
-                  <textarea value={skillDesc} onChange={e => setSkillDesc(e.target.value)} required rows={2} placeholder="stateful workflows, multi-agent orchestration..." className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">USE CASES (one per line)</label>
-                  <textarea value={skillUseCases} onChange={e => setSkillUseCases(e.target.value)} required rows={3} placeholder="Multi-step workflow execution&#10;Tool calling bindings" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">RELATED TECH (comma separated)</label>
-                  <input type="text" value={skillRelatedTech} onChange={e => setSkillRelatedTech(e.target.value)} required placeholder="Python, OpenAI, FastAPI" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">CODE SNIPPET</label>
-                  <textarea value={skillCodeSnippet} onChange={e => setSkillCodeSnippet(e.target.value)} required rows={3} className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 font-mono text-xs text-orange-300 focus:outline-none focus:border-orange-500" />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">SKILL LOGO (IMAGE URL OR FILE UPLOAD)</label>
-                  <div className="flex gap-2">
-                    <input type="text" value={skillIconSrc} onChange={e => setSkillIconSrc(e.target.value)} placeholder="e.g. /n8n.png, /openai.png or https://..." className="flex-1 bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                    <label className="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-mono text-xs font-bold cursor-pointer flex items-center gap-2 shrink-0">
-                      <Upload className="w-4 h-4" />
-                      <span>Upload Logo</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={e => handleImageFileUpload(e, setSkillIconSrc)} />
-                    </label>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
-                  <button type="button" onClick={() => setIsSkillModalOpen(false)} className="px-5 py-2.5 rounded-xl border border-white/10 text-xs font-mono font-bold uppercase">Cancel</button>
-                  <button type="submit" className="px-6 py-2.5 rounded-xl bg-[#f05a28] hover:bg-[#ff6d39] text-white font-mono text-xs font-bold uppercase shadow-lg shadow-orange-500/20">Save Skill</button>
-                </div>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
