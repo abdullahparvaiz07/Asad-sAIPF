@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   FolderPlus, Plus, Trash2, Edit3, LogOut, Database, CheckCircle2, 
-  ExternalLink, Layers, Copy, Check, Upload, Image as ImageIcon, Sparkles, X, ArrowLeft
+  ExternalLink, Layers, Upload, Image as ImageIcon, Sparkles, X, ArrowLeft
 } from 'lucide-react';
 import { useDataContext, ProjectItem, SkillItem } from '../../context/DataContext';
-import { isSupabaseConfigured, SUPABASE_SQL_SETUP } from '../../lib/supabase';
+import { isSupabaseConfigured } from '../../lib/supabase';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -14,8 +14,8 @@ interface AdminDashboardProps {
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const { projects, skills, addProject, updateProject, deleteProject, addSkill, updateSkill, deleteSkill, resetToDefaults } = useDataContext();
 
-  const [activeTab, setActiveTab] = useState<'projects' | 'skills' | 'supabase'>('projects');
-  
+  const [activeTab, setActiveTab] = useState<'projects' | 'skills'>('projects');
+
   // Project Modal State
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
@@ -40,9 +40,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [skillOrbitAngle, setSkillOrbitAngle] = useState(0);
   const [skillRelatedTech, setSkillRelatedTech] = useState('');
   const [skillCodeSnippet, setSkillCodeSnippet] = useState('');
-
-  // SQL Copy state
-  const [copiedSql, setCopiedSql] = useState(false);
 
   /* --- PROJECT HANDLERS --- */
   const openNewProjectModal = () => {
@@ -187,12 +184,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setIsSkillModalOpen(false);
   };
 
-  const copySqlToClipboard = () => {
-    navigator.clipboard.writeText(SUPABASE_SQL_SETUP);
-    setCopiedSql(true);
-    setTimeout(() => setCopiedSql(false), 2500);
-  };
-
   return (
     <div className="min-h-screen bg-[#09090b] text-white selection:bg-orange-500 selection:text-white font-sans flex flex-col">
       {/* Header */}
@@ -261,18 +252,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             >
               <Layers className="w-4 h-4" />
               <span>Skills ({skills.length})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('supabase')}
-              className={`px-4 sm:px-5 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
-                activeTab === 'supabase'
-                  ? 'bg-[#f05a28] text-white shadow-lg shadow-orange-500/20'
-                  : 'bg-white/[0.04] text-zinc-400 hover:text-white border border-white/5'
-              }`}
-            >
-              <Database className="w-4 h-4" />
-              <span>Supabase Setup</span>
             </button>
           </div>
 
@@ -428,67 +407,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
-        {/* TAB 3: SUPABASE SETUP & SQL GUIDE */}
-        {activeTab === 'supabase' && (
-          <div className="bg-[#111115] border border-white/10 rounded-3xl p-8 max-w-4xl mx-auto flex flex-col gap-6">
-            <div className="flex items-center justify-between border-b border-white/10 pb-6">
-              <div>
-                <h2 className="text-xl font-bold font-['Outfit'] uppercase text-white mb-1">
-                  SUPABASE DATABASE INTEGRATION
-                </h2>
-                <p className="text-xs text-zinc-400">
-                  Connect your Supabase project to enable real-time global syncing across all devices worldwide.
-                </p>
-              </div>
-              <div className="px-3 py-1.5 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 font-mono text-xs font-bold">
-                SQL READY
-              </div>
-            </div>
-
-            {/* Steps */}
-            <div className="space-y-4 text-xs text-zinc-300 font-sans">
-              <div className="bg-zinc-950 p-4 rounded-xl border border-white/5 flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-orange-500 text-white font-mono font-bold flex items-center justify-center shrink-0">1</span>
-                <div>
-                  <h4 className="font-bold text-white mb-1">Create Supabase Account & Project</h4>
-                  Go to <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-orange-400 underline">supabase.com</a>, create a free project, and navigate to the <b>SQL Editor</b>.
-                </div>
-              </div>
-
-              <div className="bg-zinc-950 p-4 rounded-xl border border-white/5 flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-orange-500 text-white font-mono font-bold flex items-center justify-center shrink-0">2</span>
-                <div className="w-full">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-bold text-white">Run SQL Setup Commands</h4>
-                    <button
-                      onClick={copySqlToClipboard}
-                      className="px-3 py-1 rounded-lg bg-orange-500/20 text-orange-400 hover:bg-orange-500/30 border border-orange-500/30 text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer"
-                    >
-                      {copiedSql ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedSql ? 'Copied!' : 'Copy SQL Script'}</span>
-                    </button>
-                  </div>
-                  <pre className="bg-black/90 p-3 rounded-lg font-mono text-[10px] text-zinc-400 max-h-48 overflow-y-auto border border-white/10">
-                    {SUPABASE_SQL_SETUP}
-                  </pre>
-                </div>
-              </div>
-
-              <div className="bg-zinc-950 p-4 rounded-xl border border-white/5 flex items-start gap-3">
-                <span className="w-6 h-6 rounded-full bg-orange-500 text-white font-mono font-bold flex items-center justify-center shrink-0">3</span>
-                <div>
-                  <h4 className="font-bold text-white mb-1">Set Credentials in Vercel or `.env` file</h4>
-                  Copy your <code>URL</code> and <code>anon key</code> from <b>Project Settings → API</b> into your environment variables:
-                  <pre className="mt-2 bg-black/90 p-3 rounded-lg font-mono text-[11px] text-orange-300 border border-white/10">
-VITE_SUPABASE_URL=https://your-project.supabase.co{"\n"}
-VITE_SUPABASE_ANON_KEY=your-anon-key-here
-                  </pre>
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>
