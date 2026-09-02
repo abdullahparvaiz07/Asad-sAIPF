@@ -566,29 +566,7 @@ export function TechnicalExpertise() {
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
   const [isAllSkillsModalOpen, setIsAllSkillsModalOpen] = useState<boolean>(false);
 
-  // Dynamic category filter list including any newly created custom categories
-  const dynamicCategories = React.useMemo(() => {
-    const defaultCats = [
-      { id: 'all', label: 'All Connected Systems' },
-      { id: 'ai-core', label: 'AI & Intelligence Core' },
-      { id: 'frameworks', label: 'Frameworks & Graphs' },
-      { id: 'engineering', label: 'APIs & Backend' },
-    ];
-    const catMap = new Map<string, string>();
-    defaultCats.forEach((c) => catMap.set(c.id, c.label));
 
-    SKILLS.forEach((s) => {
-      if (s.category && !catMap.has(s.category)) {
-        const formattedLabel = s.category
-          .split(/[-_ ]+/)
-          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(' ');
-        catMap.set(s.category, formattedLabel);
-      }
-    });
-
-    return Array.from(catMap.entries()).map(([id, label]) => ({ id, label }));
-  }, [SKILLS]);
 
   const handleCopyCode = (code: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -782,7 +760,12 @@ export function TechnicalExpertise() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
-            {dynamicCategories.map((cat) => {
+            {[
+              { id: 'all', label: 'All Connected Systems' },
+              { id: 'ai-core', label: 'AI & Intelligence Core' },
+              { id: 'frameworks', label: 'Frameworks & Graphs' },
+              { id: 'engineering', label: 'APIs & Backend' }
+            ].map((cat) => {
               const isCatActive = categoryFilter === cat.id;
               return (
                 <button
