@@ -24,9 +24,9 @@ interface AdminLoginProps {
 
 const MAX_FAILED_ATTEMPTS = 3;
 const LOCKOUT_DURATION_MS = 24 * 60 * 60 * 1000; // 24 Hours Security Lockout
-const TARGET_ADMIN_EMAIL = (import.meta as any).env?.VITE_ADMIN_EMAIL || 'asadullah@asadpf.ai';
-const TARGET_ADMIN_PASSWORD = (import.meta as any).env?.VITE_ADMIN_PASSWORD || 'xyz42188@@asad';
-const SECRET_OVERRIDE_CODE = (import.meta as any).env?.VITE_SECRET_OVERRIDE_CODE || 'asadxagentic';
+const TARGET_ADMIN_EMAIL = (import.meta as any).env?.VITE_ADMIN_EMAIL || '';
+const TARGET_ADMIN_PASSWORD = (import.meta as any).env?.VITE_ADMIN_PASSWORD || '';
+const SECRET_OVERRIDE_CODE = (import.meta as any).env?.VITE_SECRET_OVERRIDE_CODE || '';
 
 export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
