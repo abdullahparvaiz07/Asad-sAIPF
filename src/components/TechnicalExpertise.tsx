@@ -607,15 +607,32 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
-  // Helper to guarantee exact horizontal correspondence between Workflow Automation (-10 deg) and LLMs (-170 deg)
+  // Helper to guarantee clean, non-overlapping orbit angles for all skill nodes
   const getSkillAngle = (skill: { id: string; orbitAngle: number }) => {
-    if (skill.id === 'workflow-automation' || skill.id === 'workflow-auto') {
-      return -10;
+    switch (skill.id) {
+      case 'ai-agents':
+        return -90;
+      case 'langchain':
+        return -135;
+      case 'langgraph':
+        return -45;
+      case 'workflow-automation':
+      case 'workflow-auto':
+        return -10;
+      case 'gen-ai':
+        return 20;
+      case 'ai-chatbots':
+        return 65;
+      case 'fastapi':
+        return 125;
+      case 'python':
+        return 160;
+      case 'llm':
+      case 'llms':
+        return -170;
+      default:
+        return skill.orbitAngle || 0;
     }
-    if (skill.id === 'llm' || skill.id === 'llms') {
-      return -170;
-    }
-    return skill.orbitAngle;
   };
 
   // Calculate coordinates for all 9 core skill nodes
