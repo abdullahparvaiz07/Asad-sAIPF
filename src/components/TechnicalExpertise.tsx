@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import { Sparkles, ArrowUpRight, Layers } from 'lucide-react';
 import { FlipText } from './FlipText';
 import { getTechLogo } from '../lib/techLogos';
+import { AllSkillsModal } from './AllSkillsModal';
 
 export interface SkillItem {
   id: string;
@@ -21,6 +23,7 @@ export interface SkillItem {
   codeSnippet: string;
   metrics: { label: string; value: string }[];
   relatedTech: string[];
+  iconSrc?: string;
 }
 
 export const SKILLS: SkillItem[] = [
@@ -561,6 +564,7 @@ export function TechnicalExpertise() {
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
   const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [isAllSkillsModalOpen, setIsAllSkillsModalOpen] = useState<boolean>(false);
 
   const handleCopyCode = (code: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -745,36 +749,50 @@ export function TechnicalExpertise() {
           Connected technologies, neural frameworks, and automation engines working together to build intelligent digital systems.
         </p>
 
-        {/* Category Filter Pills */}
-        <motion.div 
-          className="inline-flex flex-wrap justify-start items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {[
-            { id: 'all', label: 'All Connected Systems' },
-            { id: 'ai-core', label: 'AI & Intelligence Core' },
-            { id: 'frameworks', label: 'Frameworks & Graphs' },
-            { id: 'engineering', label: 'APIs & Backend' }
-          ].map((cat) => {
-            const isCatActive = categoryFilter === cat.id;
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setCategoryFilter(cat.id as any)}
-                className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-all duration-200 cursor-pointer ${
-                  isCatActive
-                    ? 'bg-slate-900 text-white shadow-sm'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
-                }`}
-              >
-                {cat.label}
-              </button>
-            );
-          })}
-        </motion.div>
+        {/* Category Filter Pills & View All Button */}
+        <div className="flex flex-wrap items-center justify-between gap-3 max-w-full">
+          <motion.div 
+            className="inline-flex flex-wrap justify-start items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {[
+              { id: 'all', label: 'All Connected Systems' },
+              { id: 'ai-core', label: 'AI & Intelligence Core' },
+              { id: 'frameworks', label: 'Frameworks & Graphs' },
+              { id: 'engineering', label: 'APIs & Backend' }
+            ].map((cat) => {
+              const isCatActive = categoryFilter === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setCategoryFilter(cat.id as any)}
+                  className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                    isCatActive
+                      ? 'bg-slate-900 text-white shadow-sm'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              );
+            })}
+          </motion.div>
+
+          <motion.button
+            type="button"
+            onClick={() => setIsAllSkillsModalOpen(true)}
+            className="px-4 py-2 rounded-2xl sm:rounded-full bg-[#f05a28] hover:bg-[#ff6d39] text-white text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-300 shadow-lg shadow-orange-500/25 cursor-pointer group"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Sparkles className="w-4 h-4 text-white animate-pulse" />
+            <span>VIEW ALL SKILLS ({SKILLS.length})</span>
+            <ArrowUpRight className="w-4 h-4 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </motion.button>
+        </div>
       </motion.div>
 
       {/* ──── Main Container: Orbit Stage + Floating Detail Card ──── */}
@@ -1144,6 +1162,12 @@ export function TechnicalExpertise() {
         activeId={activeSkillId} 
         onSelect={setActiveSkillId} 
         soundEnabled={soundEnabled}
+      />
+
+      {/* ALL SKILLS DIRECTORY MODAL */}
+      <AllSkillsModal
+        isOpen={isAllSkillsModalOpen}
+        onClose={() => setIsAllSkillsModalOpen(false)}
       />
 
     </section>
