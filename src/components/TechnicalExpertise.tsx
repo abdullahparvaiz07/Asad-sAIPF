@@ -139,7 +139,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
     ],
     projectsCount: '25+ Projects',
     projectCategory: 'Enterprise Automation',
-    orbitAngle: -35,
+    orbitAngle: -22,
     brandBg: 'bg-[#f05a28]',
     brandText: 'text-white',
     brandBorder: 'border-[#f05a28]',
@@ -603,10 +603,13 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
-  // Helper to guarantee skill angles
+  // Helper to guarantee exact horizontal correspondence between Workflow Automation (-22 deg) and LLMs (-158 deg)
   const getSkillAngle = (skill: { id: string; orbitAngle: number }) => {
     if (skill.id === 'workflow-automation' || skill.id === 'workflow-auto') {
-      return -35;
+      return -22;
+    }
+    if (skill.id === 'llm' || skill.id === 'llms') {
+      return -158;
     }
     return skill.orbitAngle;
   };
