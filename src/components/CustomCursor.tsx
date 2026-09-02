@@ -34,7 +34,7 @@ export function CustomCursor() {
     const handleMouseMove = (e: MouseEvent) => {
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      if (!isVisible) setIsVisible(true);
+      setIsVisible(prev => prev ? prev : true);
     };
 
     let lastTarget: HTMLElement | null = null;
@@ -75,7 +75,7 @@ export function CustomCursor() {
       document.removeEventListener('mouseleave', handleMouseLeaveDoc);
       document.removeEventListener('mouseenter', handleMouseEnterDoc);
     };
-  }, [mouseX, mouseY, isVisible]);
+  }, [mouseX, mouseY]);
 
   const { isDragonActive } = useDragon();
 
