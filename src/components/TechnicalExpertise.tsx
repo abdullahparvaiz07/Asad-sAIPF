@@ -607,7 +607,12 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
-  const getSkillAngle = (skill: { id: string; orbitAngle?: number }, index: number = 0, total: number = 9) => {
+  // Calculate coordinates for all skill nodes added from Admin Dashboard without collisions
+  const displaySkills = SKILLS && SKILLS.length > 0 ? SKILLS : DEFAULT_SKILLS;
+  const activeSkill = displaySkills.find((s) => s.id === activeSkillId) || displaySkills[0];
+
+  const skillCoordsMap = React.useMemo(() => {
+    let customIndex = 0;
     const defaultAngles: Record<string, number> = {
       'ai-agents': -90,
       'langchain': -55,
@@ -622,31 +627,34 @@ export function TechnicalExpertise() {
       'python': -130,
     };
 
-    if (defaultAngles[skill.id] !== undefined) {
-      return defaultAngles[skill.id];
-    }
-    if (skill.orbitAngle !== undefined && skill.orbitAngle !== 0) {
-      return skill.orbitAngle;
-    }
-    const step = 360 / Math.max(total, 1);
-    return Math.round((index * step) % 360);
-  };
+    const map = new Map<string, { x: number; y: number; angle: number }>();
+    displaySkills.forEach((skill) => {
+      let angle: number;
+      if (defaultAngles[skill.id] !== undefined) {
+        angle = defaultAngles[skill.id];
+      } else if (skill.orbitAngle && skill.orbitAngle !== 0) {
+        angle = skill.orbitAngle;
+      } else {
+        const openGapSlots = [-32.5, 12.5, -110, 55, 135, -150, 95, -72.5, 172.5];
+        angle = openGapSlots[customIndex % openGapSlots.length];
+        customIndex++;
+      }
+      const rad = (angle * Math.PI) / 180;
+      map.set(skill.id, {
+        x: Math.cos(rad) * RX,
+        y: Math.sin(rad) * RY,
+        angle
+      });
+    });
+    return map;
+  }, [displaySkills, RX, RY]);
 
-  // Calculate coordinates for all skill nodes added from Admin Dashboard
-  const displaySkills = SKILLS && SKILLS.length > 0 ? SKILLS : DEFAULT_SKILLS;
-  const activeSkill = displaySkills.find((s) => s.id === activeSkillId) || displaySkills[0];
+  const skillCoords = displaySkills.map((s) => ({
+    id: s.id,
+    ...(skillCoordsMap.get(s.id) || { x: 0, y: 0, angle: 0 })
+  }));
 
-  const skillCoords = displaySkills.map((skill, index) => {
-    const angle = getSkillAngle(skill, index, displaySkills.length);
-    const rad = (angle * Math.PI) / 180;
-    return {
-      id: skill.id,
-      x: Math.cos(rad) * RX,
-      y: Math.sin(rad) * RY,
-    };
-  });
-
-  const activeCoord = skillCoords.find((c) => c.id === activeSkillId) || skillCoords[0];
+  const activeCoord = skillCoordsMap.get(activeSkillId) || skillCoords[0];
 
   const handleScrollToProjects = () => {
     const el = document.getElementById('projects');
@@ -912,13 +920,12 @@ export function TechnicalExpertise() {
           </div>
 
           {/* Orbiting Technology Nodes */}
-          {SKILLS.map((skill) => {
+          {displaySkills.map((skill) => {
             const isActive = skill.id === activeSkillId;
             const isDimmed = categoryFilter !== 'all' && skill.category !== categoryFilter;
-            const angle = getSkillAngle(skill);
-            const rad = (angle * Math.PI) / 180;
-            const x = Math.cos(rad) * RX;
-            const y = Math.sin(rad) * RY;
+            const coord = skillCoordsMap.get(skill.id) || { x: 0, y: 0, angle: 0 };
+            const x = coord.x;
+            const y = coord.y;
 
             return (
               <div
