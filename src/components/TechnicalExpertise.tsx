@@ -139,7 +139,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
     ],
     projectsCount: '25+ Projects',
     projectCategory: 'Enterprise Automation',
-    orbitAngle: -10,
+    orbitAngle: -22,
     brandBg: 'bg-[#f05a28]',
     brandText: 'text-white',
     brandBorder: 'border-[#f05a28]',
@@ -302,7 +302,7 @@ async def process_batch(items: List[Dict]) -> List[Dict]:
     ],
     projectsCount: '28+ Projects',
     projectCategory: 'LLM Architectures',
-    orbitAngle: -165,
+    orbitAngle: -158,
     brandBg: 'bg-[#8b5cf6]',
     brandText: 'text-white',
     brandBorder: 'border-[#8b5cf6]',
@@ -589,18 +589,18 @@ export function TechnicalExpertise() {
 
   // Compute dynamic Orbit Radii based on screen breakpoint
   const { RX, RY } = React.useMemo(() => {
-    if (windowWidth < 400) {
-      return { RX: 125, RY: 100 };
+    if (windowWidth < 380) {
+      return { RX: 110, RY: 85 };
     } else if (windowWidth < 640) {
-      return { RX: 145, RY: 115 };
+      return { RX: 125, RY: 95 };
     } else if (windowWidth < 1024) {
-      return { RX: 230, RY: 165 };
+      return { RX: 220, RY: 150 };
     } else if (windowWidth < 1280) {
-      return { RX: 260, RY: 185 };
+      return { RX: 240, RY: 170 };
     } else if (windowWidth < 1536) {
-      return { RX: 285, RY: 205 };
+      return { RX: 250, RY: 180 };
     }
-    return { RX: 310, RY: 220 };
+    return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
   // Calculate coordinates for all 9 skill nodes
@@ -882,7 +882,6 @@ export function TechnicalExpertise() {
           {/* Orbiting Technology Nodes */}
           {SKILLS.map((skill) => {
             const isActive = skill.id === activeSkillId;
-            const isPrimary = skill.id === 'ai-agents';
             const isDimmed = categoryFilter !== 'all' && skill.category !== categoryFilter;
             const rad = (skill.orbitAngle * Math.PI) / 180;
             const x = Math.cos(rad) * RX;
@@ -907,26 +906,22 @@ export function TechnicalExpertise() {
                     if (soundEnabled) playUiChime(640);
                     setActiveSkillId(skill.id);
                   }}
-                  className={`flex items-center gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-2xl cursor-pointer select-none transition-all duration-300 border outline-none focus:outline-none ${
-                    isPrimary
-                      ? 'w-[140px] xs:w-[155px] sm:w-[185px]'
-                      : 'w-[130px] xs:w-[145px] sm:w-[170px]'
-                  } h-[44px] sm:h-[50px] ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl cursor-pointer select-none transition-all duration-300 border outline-none focus:outline-none ${
                     isActive
                       ? `bg-white border-[#f05a28] border-2 shadow-xl shadow-orange-500/20 scale-[1.04] sm:scale-105 ring-2 sm:ring-4 ring-[#f05a28]/15`
                       : 'bg-white/95 backdrop-blur-sm border-slate-200/80 shadow-md hover:bg-white hover:border-slate-300 hover:scale-102'
                   }`}
                   whileTap={{ scale: 0.96 }}
                 >
-                  <div className="w-7 h-7 sm:w-8.5 sm:h-8.5 rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center flex-shrink-0 p-1 sm:p-1.5 transition-all duration-300">
+                  <div className="w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 rounded-lg sm:rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center flex-shrink-0 p-1 sm:p-1.5 transition-all duration-300">
                     <SkillIcon skillId={skill.id} active={isActive} />
                   </div>
 
-                  <div className="flex flex-col text-left pr-0.5 min-w-0 flex-1">
-                    <span className={`text-[10px] sm:text-[11.5px] font-bold leading-tight truncate transition-colors duration-200 ${isActive ? 'text-slate-900 font-black' : 'text-slate-800'}`}>
+                  <div className="hidden sm:flex flex-col text-left pr-0.5 min-w-0">
+                    <span className={`text-[10px] sm:text-[11px] font-bold leading-tight whitespace-nowrap transition-colors duration-200 ${isActive ? 'text-slate-900 font-black' : 'text-slate-800'}`}>
                       {skill.name}
                     </span>
-                    <span className="text-[8.5px] sm:text-[9.5px] text-slate-500 font-medium leading-tight mt-0.5 truncate">
+                    <span className="text-[9px] text-slate-500 font-medium leading-tight mt-0.5 whitespace-nowrap max-w-[105px] truncate">
                       {skill.subtitle || skill.category}
                     </span>
                   </div>
