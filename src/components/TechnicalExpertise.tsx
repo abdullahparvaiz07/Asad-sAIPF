@@ -139,7 +139,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
     ],
     projectsCount: '25+ Projects',
     projectCategory: 'Enterprise Automation',
-    orbitAngle: -22,
+    orbitAngle: -35,
     brandBg: 'bg-[#f05a28]',
     brandText: 'text-white',
     brandBorder: 'border-[#f05a28]',
@@ -603,12 +603,21 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
+  // Helper to guarantee skill angles
+  const getSkillAngle = (skill: { id: string; orbitAngle: number }) => {
+    if (skill.id === 'workflow-automation' || skill.id === 'workflow-auto') {
+      return -35;
+    }
+    return skill.orbitAngle;
+  };
+
   // Calculate coordinates for all 9 skill nodes
   const displaySkills = SKILLS && SKILLS.length > 0 ? SKILLS : DEFAULT_SKILLS;
   const activeSkill = displaySkills.find((s) => s.id === activeSkillId) || displaySkills[0];
 
   const skillCoords = displaySkills.map((skill) => {
-    const rad = (skill.orbitAngle * Math.PI) / 180;
+    const angle = getSkillAngle(skill);
+    const rad = (angle * Math.PI) / 180;
     return {
       id: skill.id,
       x: Math.cos(rad) * RX,
@@ -883,7 +892,8 @@ export function TechnicalExpertise() {
           {SKILLS.map((skill) => {
             const isActive = skill.id === activeSkillId;
             const isDimmed = categoryFilter !== 'all' && skill.category !== categoryFilter;
-            const rad = (skill.orbitAngle * Math.PI) / 180;
+            const angle = getSkillAngle(skill);
+            const rad = (angle * Math.PI) / 180;
             const x = Math.cos(rad) * RX;
             const y = Math.sin(rad) * RY;
 
