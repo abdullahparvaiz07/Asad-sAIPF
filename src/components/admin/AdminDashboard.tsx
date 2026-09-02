@@ -40,6 +40,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [skillOrbitAngle, setSkillOrbitAngle] = useState(0);
   const [skillRelatedTech, setSkillRelatedTech] = useState('');
   const [skillCodeSnippet, setSkillCodeSnippet] = useState('');
+  const [skillIconSrc, setSkillIconSrc] = useState('');
 
   /* --- PROJECT HANDLERS --- */
   const openNewProjectModal = () => {
@@ -115,14 +116,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setEditingSkill(null);
     setSkillId('');
     setSkillName('');
-    setSkillCategory('Core Intelligence');
+    setSkillCategory('ai-core');
     setSkillDesc('');
-    setSkillUseCases('Use case 1\nUse case 2');
-    setSkillProjectsCount('15+ Projects');
-    setSkillProjectCat('AI Systems');
-    setSkillOrbitAngle(45);
+    setSkillUseCases('');
+    setSkillProjectsCount('10+ Systems');
+    setSkillProjectCat('AI Engineering');
+    setSkillOrbitAngle(0);
     setSkillRelatedTech('Python, OpenAI');
-    setSkillCodeSnippet('// Sample snippet');
+    setSkillCodeSnippet('');
+    setSkillIconSrc('');
     setIsSkillModalOpen(true);
   };
 
@@ -138,6 +140,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setSkillOrbitAngle(skill.orbitAngle);
     setSkillRelatedTech(skill.relatedTech.join(', '));
     setSkillCodeSnippet(skill.codeSnippet);
+    setSkillIconSrc(skill.iconSrc || '');
     setIsSkillModalOpen(true);
   };
 
@@ -157,6 +160,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         orbitAngle: Number(skillOrbitAngle),
         relatedTech: relatedTechArray,
         codeSnippet: skillCodeSnippet,
+        iconSrc: skillIconSrc || undefined,
       });
     } else {
       await addSkill({
@@ -178,6 +182,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         ],
         relatedTech: relatedTechArray,
         codeSnippet: skillCodeSnippet,
+        iconSrc: skillIconSrc || undefined,
       });
     }
 
@@ -363,7 +368,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     </span>
                   </div>
 
-                  <h3 className="font-bold text-lg text-white mb-2">{skill.name}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    {skill.iconSrc ? (
+                      <img src={skill.iconSrc} alt={skill.name} className="w-6 h-6 object-contain shrink-0" />
+                    ) : (
+                      <Layers className="w-5 h-5 text-orange-400 shrink-0" />
+                    )}
+                    <h3 className="font-bold text-lg text-white line-clamp-1">{skill.name}</h3>
+                  </div>
                   <p className="text-xs text-zinc-400 mb-4 line-clamp-3">{skill.description}</p>
 
                   <div className="mb-4">
@@ -531,6 +543,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 <div>
                   <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">CODE SNIPPET</label>
                   <textarea value={skillCodeSnippet} onChange={e => setSkillCodeSnippet(e.target.value)} required rows={3} className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 font-mono text-xs text-orange-300 focus:outline-none focus:border-orange-500" />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">SKILL LOGO (IMAGE URL OR FILE UPLOAD)</label>
+                  <div className="flex gap-2">
+                    <input type="text" value={skillIconSrc} onChange={e => setSkillIconSrc(e.target.value)} placeholder="e.g. /n8n.png, /openai.png or https://..." className="flex-1 bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
+                    <label className="px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl font-mono text-xs font-bold cursor-pointer flex items-center gap-2 shrink-0">
+                      <Upload className="w-4 h-4" />
+                      <span>Upload Logo</span>
+                      <input type="file" accept="image/*" className="hidden" onChange={e => handleImageFileUpload(e, setSkillIconSrc)} />
+                    </label>
+                  </div>
                 </div>
 
                 <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
