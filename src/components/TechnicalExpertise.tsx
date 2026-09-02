@@ -754,14 +754,14 @@ export function TechnicalExpertise() {
         {/* Category Filter Pills & View All Button */}
         <div className="flex flex-wrap items-center justify-between gap-3 max-w-full">
           <motion.div 
-            className="inline-flex flex-wrap justify-start items-center gap-1.5 p-1 rounded-2xl sm:rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
+            className="inline-flex flex-wrap justify-start items-center gap-1 p-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full sm:ml-auto"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             {[
-              { id: 'all', label: 'All Systems' },
+              { id: 'all', label: 'All' },
               { id: 'ai-core', label: 'AI Core' },
               { id: 'frameworks', label: 'Frameworks' },
               { id: 'engineering', label: 'APIs & Backend' }
@@ -771,7 +771,7 @@ export function TechnicalExpertise() {
                 <button
                   key={cat.id}
                   onClick={() => setCategoryFilter(cat.id)}
-                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  className={`px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isCatActive
                       ? 'bg-slate-900 text-white shadow-sm'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
