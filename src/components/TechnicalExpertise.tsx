@@ -139,7 +139,7 @@ const app = workflow.compile({ checkpointer: memoryStore });`
     ],
     projectsCount: '25+ Projects',
     projectCategory: 'Enterprise Automation',
-    orbitAngle: -22,
+    orbitAngle: -10,
     brandBg: 'bg-[#f05a28]',
     brandText: 'text-white',
     brandBorder: 'border-[#f05a28]',
@@ -302,7 +302,7 @@ async def process_batch(items: List[Dict]) -> List[Dict]:
     ],
     projectsCount: '28+ Projects',
     projectCategory: 'LLM Architectures',
-    orbitAngle: -158,
+    orbitAngle: -170,
     brandBg: 'bg-[#8b5cf6]',
     brandText: 'text-white',
     brandBorder: 'border-[#8b5cf6]',
@@ -603,13 +603,13 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
-  // Helper to guarantee exact horizontal correspondence between Workflow Automation (-22 deg) and LLMs (-158 deg)
+  // Helper to guarantee exact horizontal correspondence between Workflow Automation (-10 deg) and LLMs (-170 deg)
   const getSkillAngle = (skill: { id: string; orbitAngle: number }) => {
     if (skill.id === 'workflow-automation' || skill.id === 'workflow-auto') {
-      return -22;
+      return -10;
     }
     if (skill.id === 'llm' || skill.id === 'llms') {
-      return -158;
+      return -170;
     }
     return skill.orbitAngle;
   };
