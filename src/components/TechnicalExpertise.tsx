@@ -761,9 +761,9 @@ export function TechnicalExpertise() {
             transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           >
             {[
-              { id: 'all', label: 'All Connected Systems' },
-              { id: 'ai-core', label: 'AI & Intelligence Core' },
-              { id: 'frameworks', label: 'Frameworks & Graphs' },
+              { id: 'all', label: 'All Systems' },
+              { id: 'ai-core', label: 'AI Core' },
+              { id: 'frameworks', label: 'Frameworks' },
               { id: 'engineering', label: 'APIs & Backend' }
             ].map((cat) => {
               const isCatActive = categoryFilter === cat.id;
@@ -771,7 +771,7 @@ export function TechnicalExpertise() {
                 <button
                   key={cat.id}
                   onClick={() => setCategoryFilter(cat.id)}
-                  className={`px-3 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-[11px] font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isCatActive
                       ? 'bg-slate-900 text-white shadow-sm'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
