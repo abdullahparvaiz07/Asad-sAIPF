@@ -11,6 +11,20 @@ interface AdminDashboardProps {
   onLogout: () => void;
 }
 
+const DEFAULT_SKILL_LOGOS: Record<string, string> = {
+  'ai-agents': '/openai.png',
+  'langchain': '/langchain.png',
+  'langgraph': '/langgraph.png',
+  'workflow-automation': '/n8n.png',
+  'workflow-auto': '/n8n.png',
+  'gen-ai': '/brain.png',
+  'ai-chatbots': '/openai.png',
+  'fastapi': '/FastAPI.png',
+  'prompt-engg': '/Python.png',
+  'python': '/Python.png',
+  'llm': '/brain.png',
+};
+
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const { projects, skills, addProject, updateProject, deleteProject, addSkill, updateSkill, deleteSkill, resetToDefaults } = useDataContext();
 
@@ -39,7 +53,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [skillUseCases, setSkillUseCases] = useState('');
   const [skillProjectsCount, setSkillProjectsCount] = useState('10+ Systems');
   const [skillProjectCat, setSkillProjectCat] = useState('AI Engineering');
-  const [skillOrbitAngle, setSkillOrbitAngle] = useState(0);
   const [skillRelatedTech, setSkillRelatedTech] = useState('');
   const [skillCodeSnippet, setSkillCodeSnippet] = useState('');
   const [skillIconSrc, setSkillIconSrc] = useState('');
@@ -137,7 +150,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setSkillUseCases('');
     setSkillProjectsCount('10+ Systems');
     setSkillProjectCat('AI Engineering');
-    setSkillOrbitAngle(0);
     setSkillRelatedTech('Python, OpenAI');
     setSkillCodeSnippet('');
     setSkillIconSrc('');
@@ -163,7 +175,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setSkillUseCases(skill.useCases.join('\n'));
     setSkillProjectsCount(skill.projectsCount);
     setSkillProjectCat(skill.projectCategory);
-    setSkillOrbitAngle(skill.orbitAngle);
     setSkillRelatedTech(skill.relatedTech.join(', '));
     setSkillCodeSnippet(skill.codeSnippet);
     setSkillIconSrc(skill.iconSrc || '');
@@ -183,7 +194,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         useCases: useCasesArray,
         projectsCount: skillProjectsCount,
         projectCategory: skillProjectCat,
-        orbitAngle: Number(skillOrbitAngle),
+        orbitAngle: editingSkill.orbitAngle || 0,
         relatedTech: relatedTechArray,
         codeSnippet: skillCodeSnippet,
         iconSrc: skillIconSrc || undefined,
@@ -197,7 +208,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         useCases: useCasesArray,
         projectsCount: skillProjectsCount,
         projectCategory: skillProjectCat,
-        orbitAngle: Number(skillOrbitAngle),
+        orbitAngle: 0,
         brandBg: 'bg-[#f05a28]',
         brandText: 'text-white',
         brandBorder: 'border-[#f05a28]',
@@ -389,14 +400,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <span className="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-wider">
                       {skill.category}
                     </span>
-                    <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 font-mono text-[9px] text-zinc-400">
-                      Orbit: {skill.orbitAngle}°
-                    </span>
                   </div>
 
                   <div className="flex items-center gap-2 mb-2">
-                    {skill.iconSrc ? (
-                      <img src={skill.iconSrc} alt={skill.name} className="w-6 h-6 object-contain shrink-0" />
+                    {skill.iconSrc || DEFAULT_SKILL_LOGOS[skill.id] ? (
+                      <img src={skill.iconSrc || DEFAULT_SKILL_LOGOS[skill.id]} alt={skill.name} className="w-6 h-6 object-contain shrink-0" />
                     ) : (
                       <Layers className="w-5 h-5 text-orange-400 shrink-0" />
                     )}
@@ -591,15 +599,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <textarea value={skillUseCases} onChange={e => setSkillUseCases(e.target.value)} required rows={3} placeholder="Multi-step workflow execution&#10;Tool calling bindings" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">ORBIT ANGLE (-180° to 180°)</label>
-                    <input type="number" value={skillOrbitAngle} onChange={e => setSkillOrbitAngle(Number(e.target.value))} required className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">RELATED TECH (comma separated)</label>
-                    <input type="text" value={skillRelatedTech} onChange={e => setSkillRelatedTech(e.target.value)} required placeholder="Python, OpenAI, FastAPI" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
-                  </div>
+                <div>
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 font-bold mb-1">RELATED TECH (comma separated)</label>
+                  <input type="text" value={skillRelatedTech} onChange={e => setSkillRelatedTech(e.target.value)} required placeholder="Python, OpenAI, FastAPI" className="w-full bg-zinc-950 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500" />
                 </div>
 
                 <div>

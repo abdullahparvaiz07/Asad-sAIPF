@@ -337,8 +337,8 @@ const SKILL_LOGOS: Record<string, string> = {
 
 export { getTechLogo } from '../lib/techLogos';
 
-function SkillIcon({ skillId, active = false }: { skillId: string; active?: boolean }) {
-  const logoSrc = SKILL_LOGOS[skillId];
+function SkillIcon({ skillId, active = false, customIconSrc }: { skillId: string; active?: boolean; customIconSrc?: string }) {
+  const logoSrc = customIconSrc || SKILL_LOGOS[skillId];
 
   if (logoSrc) {
     return (
@@ -607,13 +607,23 @@ export function TechnicalExpertise() {
     return { RX: 290, RY: 210 };
   }, [windowWidth]);
 
-  // Helper to guarantee exact horizontal correspondence for featured skills or distribute custom ones
-  const getSkillAngle = (skill: { id: string; orbitAngle: number }, index: number = 0, total: number = 9) => {
-    if (skill.id === 'workflow-automation' || skill.id === 'workflow-auto') {
-      return -10;
-    }
-    if (skill.id === 'llm' || skill.id === 'llms') {
-      return -170;
+  const getSkillAngle = (skill: { id: string; orbitAngle?: number }, index: number = 0, total: number = 9) => {
+    const defaultAngles: Record<string, number> = {
+      'ai-agents': -90,
+      'langchain': -55,
+      'workflow-automation': -10,
+      'workflow-auto': -10,
+      'fastapi': 35,
+      'prompt-engg': 75,
+      'gen-ai': 115,
+      'ai-chatbots': 155,
+      'llm': -170,
+      'llms': -170,
+      'python': -130,
+    };
+
+    if (defaultAngles[skill.id] !== undefined) {
+      return defaultAngles[skill.id];
     }
     if (skill.orbitAngle !== undefined && skill.orbitAngle !== 0) {
       return skill.orbitAngle;
@@ -937,7 +947,7 @@ export function TechnicalExpertise() {
                   whileTap={{ scale: 0.96 }}
                 >
                   <div className="w-6.5 h-6.5 sm:w-8.5 sm:h-8.5 rounded-lg sm:rounded-xl bg-white border border-slate-200/90 shadow-xs flex items-center justify-center flex-shrink-0 p-1 sm:p-1.5 transition-all duration-300">
-                    <SkillIcon skillId={skill.id} active={isActive} />
+                    <SkillIcon skillId={skill.id} active={isActive} customIconSrc={skill.iconSrc} />
                   </div>
 
                   <div className="hidden sm:flex flex-col text-left pr-0.5 min-w-0">
@@ -1014,7 +1024,7 @@ export function TechnicalExpertise() {
               {/* Skill Hero Section */}
               <div className="flex items-center gap-3.5 mb-4 relative z-10 p-2.5 rounded-2xl bg-gradient-to-r from-slate-50/90 to-transparent border border-slate-100">
                 <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200/90 shadow-sm flex items-center justify-center flex-shrink-0 p-2.5 transition-all duration-300 relative group">
-                  <SkillIcon skillId={activeSkill.id} active />
+                  <SkillIcon skillId={activeSkill.id} active customIconSrc={activeSkill.iconSrc} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-1">
