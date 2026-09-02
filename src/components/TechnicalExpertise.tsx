@@ -754,7 +754,7 @@ export function TechnicalExpertise() {
         {/* Category Filter Pills & View All Button */}
         <div className="flex flex-wrap items-center justify-between gap-3 max-w-full">
           <motion.div 
-            className="inline-flex flex-wrap justify-start items-center gap-1 p-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full sm:ml-auto"
+            className="inline-flex flex-wrap justify-start items-center gap-1 p-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-sm max-w-full"
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
