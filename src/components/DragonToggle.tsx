@@ -5,15 +5,21 @@ export function DragonToggle() {
   const { isDragonActive, toggleDragon } = useDragon();
 
   return (
-    <label 
-      className="relative inline-flex cursor-pointer items-center select-none scale-125 sm:scale-135 transform-gpu origin-center mx-2"
+    <button 
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        toggleDragon();
+      }}
+      className="relative inline-flex cursor-pointer items-center select-none scale-125 sm:scale-135 transform-gpu origin-center mx-2 pointer-events-auto touch-manipulation focus:outline-none border-0 bg-transparent p-0"
       title={isDragonActive ? 'Disable Dragon Cursor' : 'Enable Dragon Cursor'}
+      aria-label="Toggle Dragon Cursor"
     >
       <input 
         className="peer sr-only" 
         type="checkbox" 
         checked={isDragonActive}
-        onChange={toggleDragon}
+        onChange={() => {}}
       />
       <div
         className="border-gray-500 shadow-lg peer-checked:shadow-green-600 shadow-red-600 border flex h-6 w-12 items-center outline-none rounded bg-red-600 pl-7 text-white transition-all duration-300 peer-checked:bg-green-600 peer-checked:pl-2 peer-focus:outline-none"
@@ -51,6 +57,6 @@ export function DragonToggle() {
       <div
         className="absolute left-1 top-1 flex h-3.5 w-4 items-center justify-center rounded-sm bg-white shadow-lg transition-all duration-300 peer-checked:left-7 pointer-events-none"
       />
-    </label>
+    </button>
   );
 }

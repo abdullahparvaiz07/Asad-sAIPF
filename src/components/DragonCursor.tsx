@@ -3,25 +3,8 @@ import { useDragon } from './DragonContext';
 
 export function DragonCursor() {
   const { isDragonActive } = useDragon();
-  const [isMobileOrTouch, setIsMobileOrTouch] = useState(true);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const touchQuery = window.matchMedia('(pointer: coarse)');
-    const checkMobileOrTouch = () => {
-      setIsMobileOrTouch(window.innerWidth < 768 || touchQuery.matches);
-    };
-    checkMobileOrTouch();
-    window.addEventListener('resize', checkMobileOrTouch, { passive: true });
-    touchQuery.addEventListener('change', checkMobileOrTouch);
-
-    return () => {
-      window.removeEventListener('resize', checkMobileOrTouch);
-      touchQuery.removeEventListener('change', checkMobileOrTouch);
-    };
-  }, []);
-
-  if (!isDragonActive || isMobileOrTouch) return null;
+  if (!isDragonActive) return null;
 
   return <DragonCursorImpl />;
 }
@@ -56,7 +39,7 @@ function DragonCursorImpl() {
     let frm = Math.random();
     let rad = 0;
     const N = 24;
-    const scaleMultiplier = 1.0;
+    const scaleMultiplier = isMobileDevice ? 0.55 : 1.0;
     const elems: Array<{ use: SVGUseElement | null; x: number; y: number }> = [];
 
     for (let i = 0; i < N; i++) {
